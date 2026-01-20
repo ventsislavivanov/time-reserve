@@ -22,10 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::get('/my-appointments', [AppointmentController::class, 'myAppointments']);
 
-	// козметик вижда своите pending часове
 	Route::get('/worker/appointments/pending', [WorkerAppointmentController::class, 'pending']);
 
-	// одобряване
 	Route::post('/appointments/{appointment}/approve', [WorkerAppointmentController::class, 'approve']);
 
 	Route::post('/appointments', [BookingController::class, 'book']);
@@ -34,3 +32,12 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/appointments/worker/{workerId}', [BookingController::class, 'workerAppointments']);
+
+Route::middleware(['auth:sanctum', 'role:admin,worker'])->prefix('staff')->group(function () {
+	Route::get('/dashboard', function () {
+		return response()->json(['message' => 'Welcome to staff dashboard']);
+	});
+
+	Route::get('/worker/appointments/pending', [WorkerAppointmentController::class, 'pending']);
+	Route::post('/appointments/{appointment}/approve', [WorkerAppointmentController::class, 'approve']);
+});

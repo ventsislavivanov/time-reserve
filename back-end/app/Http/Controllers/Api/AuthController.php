@@ -32,6 +32,7 @@ class AuthController extends Controller
 		$request->validate([
 			'email' => 'required|email',
 			'password' => 'required',
+			'guard' => 'required|in:client,staff',
 		]);
 
 		$user = User::where('email', $request->email)->first();
@@ -40,8 +41,24 @@ class AuthController extends Controller
 			return response()->json(['message' => 'Invalid credentials'], 401);
 		}
 
+		if ($request->guard === 'client' && !$user->isClient()) {
+			return response()->json(['message' => 'Access denied'], 403);
+		}
+
+		if ($request->guard === 'staff' && !in_array($user->role, ['admin', 'cosmetician'])) {
+			return response()->json(['message' => 'Access denied'], 403);
+		}
+
 		return response()->json([
-			'token' => $user->createToken('react')->plainTextToken
+			'token' => $user->createToken('react')->plainTextToken,
+			'user' => [
+				'id' => $user->id,
+				'name' => $user->name,
+				'email' => $user->email,
+				'role' => $user->role,
+			],
+
+			'fullUser' => $user,
 		]);
 	}
 

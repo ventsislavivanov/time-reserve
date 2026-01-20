@@ -1,14 +1,20 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import FormInput from "../ui/form-input/FormInput.jsx";
 import { loginRules } from "../../formValidations/index.js";
+import { login as loginUser } from "../../services/auth.js";
+import { login } from "../../store/authSlice.js";
 
 const intialValues = {
 	email: '',
 	password: ''
 };
 
-export default function Login() {
+export default function Login(props = { isClient: true }) {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const methods = useForm({
 		defaultValues: intialValues,
 		mode: 'onTouched',
@@ -23,8 +29,30 @@ export default function Login() {
 
 	const loginHandler = async (data) => {
 		const { email, password } = data;
-		console.log(email, password);
-		// reset();
+		try {
+			const response = await loginUser(email, password, props.guard);
+
+			localStorage.setItem("token", response.token);
+
+			dispatch(login({
+				uid: response.user.uid,
+				email: response.user.email,
+				role: response.user.role
+			}));
+
+			if (response.user.role === 'client') {
+				navigate('/');
+				return;
+			}
+
+			navigate('/staff/dashboard');
+		}
+		catch (error) {
+			console.log("Login error", error);
+		}
+		finally {
+			reset();
+		}
 	};
 
 	const onInvalid = (errors) => {
@@ -64,9 +92,11 @@ export default function Login() {
 						</form>
 					</FormProvider>
 
-					<p className="text-center mt-3">
-						Don't have an account? <Link to="/sign-up">Sign up</Link>
-					</p>
+					{props.isClient && (
+						<p className="text-center mt-3">
+							Don't have an account? <Link to="/sign-up">Sign up</Link>
+						</p>
+					)}
 				</div>
 			</div>
 		</div>

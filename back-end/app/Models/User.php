@@ -53,13 +53,13 @@ class User extends Authenticatable
 
 	/* ---------- RELATIONS ---------- */
 
-	// Клиент → неговите записи
+	// Client → неговите записи
 	public function appointments()
 	{
 		return $this->hasMany(Appointment::class, 'client_id');
 	}
 
-	// Козметик → часовете му
+	// Worker → часовете му
 	public function workerAppointments()
 	{
 		return $this->hasMany(Appointment::class, 'worker_id');

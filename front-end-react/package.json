@@ -1,7 +1,7 @@
 {
 	"name": "front-end-react",
 	"private": true,
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
@@ -15,6 +15,7 @@
 		"@fortawesome/free-regular-svg-icons": "^7.1.0",
 		"@fortawesome/free-solid-svg-icons": "^7.1.0",
 		"@fortawesome/react-fontawesome": "^3.1.1",
+		"@reduxjs/toolkit": "^2.11.2",
 		"axios": "^1.13.2",
 		"bootstrap": "^5.3.8",
 		"bootswatch": "^5.3.8",
@@ -22,7 +23,8 @@
 		"react-dom": "^19.2.0",
 		"react-hook-form": "^7.69.0",
 		"react-redux": "^9.2.0",
-		"react-router": "^7.11.0"
+		"react-router": "^7.11.0",
+		"react-spinners": "^0.17.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.1",
