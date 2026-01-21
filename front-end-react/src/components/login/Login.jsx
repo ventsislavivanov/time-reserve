@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
-import FormInput from "../ui/form-input/FormInput.jsx";
+import { FormInput } from "../ui";
 import { loginRules } from "../../formValidations/index.js";
 import { login as loginUser } from "../../services/auth.js";
 import { login } from "../../store/authSlice.js";

@@ -2,11 +2,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { FormProvider, useForm } from "react-hook-form";
 
-import FormInput from "../ui/form-input/FormInput.jsx";
-import FormRadio from "../ui/form-radio/FormRadio.jsx";
-
+import { FormInput, FormRadio, FormDatePicker } from "../ui";
 import { makeSignUpRules } from "../../formValidations/index.js";
-import FormDatePicker from "../ui/form-datepicker/FormDatePicker.jsx";
 
 const intialValues = {
 	fullName: '',
