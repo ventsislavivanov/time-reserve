@@ -1,4 +1,4 @@
-import { Link, Navigate, Outlet, useNavigate } from "react-router";
+import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout as logoutUser } from "../services/auth.js";
 import { logout } from "../store/authSlice.js";
@@ -7,14 +7,16 @@ import Header from "../components/header/Header.jsx";
 export default function StaffLayout() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const { isAuthenticated, user } = useSelector((s) => s.auth);
+	const isLoginPage = location.pathname === "/staff/login";
 
-	if (!isAuthenticated) {
+	if (!isAuthenticated && !isLoginPage) {
 		return <Navigate to="/staff/login" replace />;
 	}
 
-	if (user?.role !== 'admin' && user?.role !== 'worker') {
+	if (!isLoginPage && user?.role !== 'admin' && user?.role !== 'worker') {
 		return <Navigate to="/" replace />;
 	}
 
@@ -30,7 +32,7 @@ export default function StaffLayout() {
 	};
 
 	return (
-		<>
+		<div className="d-flex flex-column min-vh-100">
 			{isAuthenticated && (
 				<Header>
 					<ul className="navbar-nav me-auto">
@@ -49,9 +51,10 @@ export default function StaffLayout() {
 					</ul>
 				</Header>
 			)}
-			<main>
+
+			<main className="d-flex flex-column flex-grow-1">
 				<Outlet />
 			</main>
-		</>
+		</div>
 	);
 }

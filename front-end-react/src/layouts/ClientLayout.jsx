@@ -23,7 +23,7 @@ export default function ClientLayout() {
 	};
 
 	return (
-		<>
+		<div className="d-flex flex-column min-vh-100">
 			<Header>
 				<ul className="navbar-nav me-auto">
 					<li className="nav-item">
@@ -45,10 +45,12 @@ export default function ClientLayout() {
 					)}
 				</ul>
 			</Header>
-			<main>
+
+			<main className="d-flex flex-column flex-grow-1">
 				<Outlet />
 			</main>
+
 			<Footer />
-		</>
+		</div>
 	);
 }

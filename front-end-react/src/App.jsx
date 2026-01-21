@@ -49,14 +49,13 @@ function App() {
 		<Routes>
 			<Route element={<ClientLayout />}>
 				<Route path="/" element={<h1>Home</h1>} />
-				<Route path="/login" element={<Login guard="client" />} />
+				<Route path="/login" element={<Login guard="client" isClient={true} />} />
 				<Route path="/sign-up" element={<SignUp />} />
 			</Route>
 
 			<Route path="/staff">
-				<Route path="login" element={<Login isClient={false} guard="staff" />} />
-
 				<Route element={<StaffLayout />}>
+					<Route path="login" element={<Login isClient={false} guard="staff" />} />
 					<Route index element={<Dashboard />} />
 					<Route path="dashboard" element={<Dashboard />} />
 					<Route path="appointments" element={<h1>Appointments</h1>} />

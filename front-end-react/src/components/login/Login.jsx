@@ -11,7 +11,7 @@ const intialValues = {
 	password: ''
 };
 
-export default function Login(props = { isClient: true }) {
+export default function Login(props) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -62,42 +62,40 @@ export default function Login(props = { isClient: true }) {
 	const buildFieldRules = loginRules;
 
 	return (
-		<div className="container">
-			<div className="container vh-100 d-flex justify-content-center align-items-center">
-				<div className="card shadow-sm p-4 bg-dark-subtle"
-					 style={{ maxWidth: 400, width: "100%"}}
-				>
-					<h3 className="text-center mb-4">Login</h3>
+		<div className="container flex-grow-1 d-flex justify-content-center align-items-center py-4">
+			<div className="card shadow-sm p-4 bg-dark-subtle"
+				 style={{ maxWidth: 400, width: "100%"}}
+			>
+				<h3 className="text-center mb-4">Login</h3>
 
-					<FormProvider {...methods}>
-						<form onSubmit={handleSubmit(loginHandler, onInvalid)}>
-							<FormInput
-								name="email"
-								rules={buildFieldRules.email}
-								placeholder="Place enter email..."
-								label="Email"
-								icon={['fas', 'user']}
-							/>
+				<FormProvider {...methods}>
+					<form onSubmit={handleSubmit(loginHandler, onInvalid)}>
+						<FormInput
+							name="email"
+							rules={buildFieldRules.email}
+							placeholder="Place enter email..."
+							label="Email"
+							icon={['fas', 'user']}
+						/>
 
-							<FormInput
-								type="password"
-								name="password"
-								rules={buildFieldRules.password}
-								placeholder="Place enter password..."
-								label="Password"
-								icon={['fas', 'lock']}
-							/>
+						<FormInput
+							type="password"
+							name="password"
+							rules={buildFieldRules.password}
+							placeholder="Place enter password..."
+							label="Password"
+							icon={['fas', 'lock']}
+						/>
 
-							<button type="submit" className="btn btn-primary w-100">Login</button>
-						</form>
-					</FormProvider>
+						<button type="submit" className="btn btn-primary w-100">Login</button>
+					</form>
+				</FormProvider>
 
-					{props.isClient && (
-						<p className="text-center mt-3">
-							Don't have an account? <Link to="/sign-up">Sign up</Link>
-						</p>
-					)}
-				</div>
+				{props.isClient && (
+					<p className="text-center mt-3">
+						Don't have an account? <Link to="/sign-up">Sign up</Link>
+					</p>
+				)}
 			</div>
 		</div>
 	);
