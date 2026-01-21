@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormContext } from "react-hook-form";
+import React from "react";
 
 export default function FormInput({
 	type = 'text',
@@ -38,9 +39,7 @@ export default function FormInput({
 
 	return (
 		<div className="form-group mb-3">
-			{label && (
-				<label htmlFor={name} className="control-label">{label}</label>
-			)}
+			{label && <label htmlFor={name} className="control-label">{label}</label>}
 
 			<div className="input-group">
 				{icon.length > 0 && (

@@ -1,0 +1,14 @@
+.datepickerWrapper {
+	flex-grow: 1;
+}
+
+.datepickerWrapper :global(.react-datepicker-wrapper),
+.datepickerWrapper :global(.react-datepicker__input-container),
+.datepickerWrapper :global(.react-datepicker__input-container) input {
+	width: 100%;
+}
+
+.customInput {
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+}

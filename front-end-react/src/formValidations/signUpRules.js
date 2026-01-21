@@ -1,4 +1,4 @@
-export const makeSignUpRules = ({ getValues, egnValidate }) => {
+export const makeSignUpRules = ({ getValues }) => {
 	return {
 		fullName: {
 			required: 'Full name is required',
@@ -32,9 +32,14 @@ export const makeSignUpRules = ({ getValues, egnValidate }) => {
 				return pwd === val || 'Passwords do not match';
 			},
 		},
-		pin: {
-			required: 'EGN is required',
-			validate: (val) => egnValidate(val) || 'EGN is invalid',
+		phone: {
+			required: 'Phone is required',
+			minLength: { value: 5, message: 'Phone must be at least 5 characters long' },
+			maxLength: { value: 14, message: 'Phone must be at most 14 characters long' },
+			pattern: {
+				value:  /^([\+]{1}|[0]{1})([0-9]{5,14})$/,
+				message: 'Phone number must be valid'
+			}
 		},
 		address: { required: 'Address is required' },
 		dob: { required: 'Date of Birth is required' },
