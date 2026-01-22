@@ -12,23 +12,23 @@ class AuthController extends Controller
 	public function registerClient(Request $request)
 	{
 		$request->validate([
-			'name' => 'required|string|max:255',
-			'email' => 'required|email|unique:users',
-			'password' => 'required|min:6',
-			'phone' => 'required|string|min:6|max:14',
+			'name'		 => 'required|string|max:255',
+			'email'		 => 'required|email|unique:users',
+			'password'	 => 'required|min:6',
+			'phone' 	 => 'required|string|min:6|max:14',
 			'birth_date' => 'required|date',
-			'gender' => 'required|in:male,female,other',
+			'gender'	 => 'required|in:male,female,other',
 		]);
 
 		$user = User::create([
-			'name' => $request->name,
-			'email' => $request->email,
-			'password' => Hash::make($request->password),
-			'phone' => $request->phone,
-			'birth_date' => $request->birth_date,
-			'gender' => $request->gender,
-			'role' => 'client',
-			'is_approved' => false,
+			'name'			=> $request->name,
+			'email'			=> $request->email,
+			'password'		=> Hash::make($request->password),
+			'phone'			=> $request->phone,
+			'birth_date'	=> $request->birth_date,
+			'gender'		=> $request->gender,
+			'role'			=> 'client',
+			'is_approved'	=> false,
 		]);
 
 		$user->sendEmailVerificationNotification();
@@ -89,7 +89,7 @@ class AuthController extends Controller
 			return response()->json(['message' => 'Access denied'], 403);
 		}
 
-		if ($request->guard === 'staff' && !in_array($user->role, ['admin', 'cosmetician'])) {
+		if ($request->guard === 'staff' && !in_array($user->role, ['admin', 'worker'])) {
 			return response()->json(['message' => 'Access denied'], 403);
 		}
 

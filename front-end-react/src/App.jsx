@@ -12,6 +12,7 @@ import Login from "./components/login/Login.jsx";
 import SignUp from "./components/sign-up/SignUp.jsx";
 import Dashboard from "./components/dashboard/Dashboard.jsx";
 import Loading from "./components/loading/Loading.jsx";
+import RoleGuard from "./components/auth/RoleGuard.jsx";
 
 function App() {
 	const dispatch = useDispatch();
@@ -56,9 +57,18 @@ function App() {
 			<Route path="/staff">
 				<Route element={<StaffLayout />}>
 					<Route path="login" element={<Login isClient={false} guard="staff" />} />
+
 					<Route index element={<Dashboard />} />
 					<Route path="dashboard" element={<Dashboard />} />
-					<Route path="appointments" element={<h1>Appointments</h1>} />
+
+					<Route element={<RoleGuard allowedRoles={['admin']} />}>
+						<Route path="users" element={<h1>Manage Users</h1>} />
+						<Route path="reports" element={<h1>Reports</h1>} />
+					</Route>
+
+					<Route element={<RoleGuard allowedRoles={['worker']} />}>
+						<Route path="appointments" element={<h1>My Appointments</h1>} />
+					</Route>
 				</Route>
 			</Route>
 		</Routes>

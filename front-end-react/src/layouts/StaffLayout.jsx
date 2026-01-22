@@ -10,6 +10,8 @@ export default function StaffLayout() {
 	const location = useLocation();
 
 	const { isAuthenticated, user } = useSelector((s) => s.auth);
+	const role = user?.role;
+
 	const isLoginPage = location.pathname === "/staff/login";
 
 	if (!isAuthenticated && !isLoginPage) {
@@ -40,9 +42,22 @@ export default function StaffLayout() {
 							<Link to="/staff" className="nav-link">Dashboard</Link>
 						</li>
 
-						<li className="nav-item">
-							<Link to="/staff/appointments" className="nav-link">Appointments</Link>
-						</li>
+						{role === 'admin' && (
+							<>
+								<li className="nav-item">
+									<Link to="/staff/users" className="nav-link">Manage Users</Link>
+								</li>
+								<li className="nav-item">
+									<Link to="/staff/reports" className="nav-link">Reports</Link>
+								</li>
+							</>
+						)}
+
+						{role === 'worker' && (
+							<li className="nav-item">
+								<Link to="/staff/appointments" className="nav-link">My Calendar</Link>
+							</li>
+						)}
 					</ul>
 					<ul className="navbar-nav">
 						<span className="navbar-text me-2">Role: {user?.role}</span>
