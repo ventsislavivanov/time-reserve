@@ -3,12 +3,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-	public function register(Request $request)
+	public function registerClient(Request $request)
 	{
 		$request->validate([
 			'name' => 'required|string|max:255',
@@ -23,14 +24,47 @@ class AuthController extends Controller
 			'name' => $request->name,
 			'email' => $request->email,
 			'password' => Hash::make($request->password),
-			'phone'      => $request->phone,
+			'phone' => $request->phone,
 			'birth_date' => $request->birth_date,
-			'gender'     => $request->gender,
+			'gender' => $request->gender,
+			'role' => 'client',
+			'is_approved' => false,
+		]);
+
+		$user->sendEmailVerificationNotification();
+
+		return response()->json([
+			'message' => 'Please check your email for a confirmation link.'
+		]);
+	}
+
+	public function createUser(Request $request)
+	{
+		$request->validate([
+			'name'       => 'required|string|max:255',
+			'email'      => 'required|email|unique:users',
+			'password'   => 'required|min:6',
+			'phone'      => 'required|string',
+			'birth_date' => 'required|date',
+			'gender'     => 'required|in:male,female',
+			'role'       => 'required|in:admin,worker',
+		]);
+
+		$user = User::create([
+			'name'        => $request->name,
+			'email'       => $request->email,
+			'password'    => Hash::make($request->password),
+			'phone'       => $request->phone,
+			'birth_date'  => $request->birth_date,
+			'gender'      => $request->gender,
+			'role'        => $request->role,
+			'is_approved' => true,
 		]);
 
 		return response()->json([
-			'token' => $user->createToken('react')->plainTextToken
-		]);
+			'message' => 'User created successfully',
+			'user'    => $user
+		], 201);
 	}
 
 	public function login(Request $request)
@@ -48,7 +82,7 @@ class AuthController extends Controller
 		}
 
 		if (!$user->is_approved) {
-			return response()->json(['message' => 'Our profile is not approved yet.'], 403);
+			return response()->json(['message' => 'Please confirm your email before login.'], 403);
 		}
 
 		if ($request->guard === 'client' && !$user->isClient()) {
@@ -78,33 +112,23 @@ class AuthController extends Controller
 		return response()->json(['message' => 'Logged out']);
 	}
 
-	public function createUser(Request $request)
+	public function verifyEmail(Request $request, $id, $hash)
 	{
-		$request->validate([
-			'name'       => 'required|string|max:255',
-			'email'      => 'required|email|unique:users',
-			'password'   => 'required|min:6',
-			'phone'      => 'required|string',
-			'birth_date' => 'required|date',
-			'gender'     => 'required|in:male,female,other',
-			'role'       => 'required|in:admin,worker,client',
-			'is_approved'=> 'boolean'
-		]);
+		$user = User::findOrFail($id);
 
-		$user = User::create([
-			'name'        => $request->name,
-			'email'       => $request->email,
-			'password'    => Hash::make($request->password),
-			'phone'       => $request->phone,
-			'birth_date'  => $request->birth_date,
-			'gender'      => $request->gender,
-			'role'        => $request->role,
-			'is_approved' => $request->is_approved ?? false,
-		]);
+		if (!hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+			return response()->json(['message' => 'Невалиден линк за верификация.'], 403);
+		}
 
-		return response()->json([
-			'message' => 'User created successfully',
-			'user'    => $user
-		], 201);
+		if ($user->hasVerifiedEmail()) {
+			return redirect('http://localhost:5173/login?verified=1');
+		}
+
+		if ($user->markEmailAsVerified()) {
+			event(new Verified($user));
+		}
+
+		return redirect('http://localhost:5173/login?verified=1');
 	}
+
 }

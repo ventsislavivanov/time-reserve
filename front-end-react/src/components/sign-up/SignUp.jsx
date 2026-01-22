@@ -1,11 +1,9 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { FormInput, FormRadio, FormDatePicker } from "../ui";
 import { makeSignUpRules } from "../../formValidations";
 import { register as registerUser } from "../../services/auth.js";
-import { login } from "../../store/authSlice.js";
 
 const intialValues = {
 	name: '',
@@ -19,7 +17,6 @@ const intialValues = {
 
 export default function SignUp() {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 
 	const methods = useForm({
 		defaultValues: intialValues,
@@ -40,14 +37,10 @@ export default function SignUp() {
 		try {
 			const response = await registerUser(submitData);
 
-			dispatch(login({
-				uid: response.user.id,
-				email: response.user.email,
-				role: response.user.role
-			}));
+			alert(response.message);
 
 			reset();
-			navigate('/');
+			navigate('/login');
 		} catch (err) {
 			const message = err.response?.data?.message || err.message;
 			alert(message);
@@ -147,7 +140,7 @@ export default function SignUp() {
 									name="gender"
 									rules={buildFieldRules.gender}
 									label="Gender"
-									options={['Male', 'Female', 'Other']}
+									options={['male', 'female', 'other']}
 								/>
 							</div>
 						</div>

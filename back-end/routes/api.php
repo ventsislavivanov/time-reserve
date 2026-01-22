@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'registerClient']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -45,3 +45,7 @@ Route::middleware(['auth:sanctum', 'role:admin,worker'])->prefix('staff')->group
 	Route::post('/admin/users', [AuthController::class, 'createUser'])
 		->middleware('can:admin-only');
 });
+
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+	->middleware(['signed'])
+	->name('verification.verify');

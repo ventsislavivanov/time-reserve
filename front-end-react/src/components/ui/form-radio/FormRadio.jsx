@@ -19,6 +19,8 @@ export default function FormRadio({
 		(errors[name]?.message ? { _single: errors[name].message } : {})
 	);
 
+	const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
 	return (
 		<div className="form-group mb-3">
 			<label className="form-label" style={{ paddingLeft: 5 }}>
@@ -46,7 +48,7 @@ export default function FormRadio({
 						/>
 
 						<label htmlFor={id} className="form-check-label" style={{ paddingLeft: 5 }}>
-							{option}
+							{capitalizeFirstLetter(option)}
 						</label>
 					</div>
 				);
