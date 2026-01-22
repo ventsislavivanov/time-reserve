@@ -3,16 +3,18 @@ import { useNavigate } from "react-router";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { FormInput, FormRadio, FormDatePicker } from "../ui";
-import { makeSignUpRules } from "../../formValidations/index.js";
+import { makeSignUpRules } from "../../formValidations";
+import { register as registerUser } from "../../services/auth.js";
+import { login } from "../../store/authSlice.js";
 
 const intialValues = {
-	fullName: '',
+	name: '',
 	email: '',
 	password: '',
-	confirmPassword: '',
+	confirm_password: '',
 	phone: '',
 	address: '',
-	dob: ''
+	birth_date: ''
 }
 
 export default function SignUp() {
@@ -33,32 +35,22 @@ export default function SignUp() {
 	} = methods;
 
 	const registerHandler = async (data) => {
-		const { fullName, email, password, phone, address, dob } = data;
+		const { confirm_password, ...submitData } = data;
 
 		try {
-			// const { user } = await createUserWithEmailAndPassword(
-			// 	auth,
-			// 	email,
-			// 	password
-			// );
-			//
-			// await setDoc(doc(db, "users", user.uid), {
-			// 	fullName,
-			// 	email,
-			// 	pin,
-			// 	address,
-			// 	dob,
-			// 	createdAt: serverTimestamp(),
-			// });
-			//
-			// reset();
-			// dispatch(login({
-			// 	uid: user.uid,
-			// 	email: user.email,
-			// }));
-			// navigate('/');
+			const response = await registerUser(submitData);
+
+			dispatch(login({
+				uid: response.user.id,
+				email: response.user.email,
+				role: response.user.role
+			}));
+
+			reset();
+			navigate('/');
 		} catch (err) {
-			alert(err.message);
+			const message = err.response?.data?.message || err.message;
+			alert(message);
 		}
 	}
 
@@ -80,8 +72,8 @@ export default function SignUp() {
 						<div className="row">
 							<div className="col-md-12">
 								<FormInput
-									name="fullName"
-									rules={buildFieldRules.fullName}
+									name="name"
+									rules={buildFieldRules.name}
 									placeholder="Full Name"
 									icon={['fas', 'user']}
 								/>
@@ -109,8 +101,8 @@ export default function SignUp() {
 							<div className="col-md-6">
 								<FormInput
 									type="password"
-									name="confirmPassword"
-									rules={buildFieldRules.confirmPassword}
+									name="confirm_password"
+									rules={buildFieldRules.confirm_password}
 									placeholder="Confirm password"
 									icon={['fas', 'unlock-keyhole']}
 								/>
@@ -131,7 +123,7 @@ export default function SignUp() {
 								<div className="row">
 									<div className="col-md-12">
 										<FormInput
-											name="pin"
+											name="phone"
 											rules={buildFieldRules.phone}
 											placeholder="Phone"
 											icon={['fas', 'phone']}
@@ -141,8 +133,8 @@ export default function SignUp() {
 
 									<div className="col-md-12">
 										<FormDatePicker
-											name="dob"
-											rules={buildFieldRules.dob}
+											name="birth_date"
+											rules={buildFieldRules.birth_date}
 											placeholder="dd/mm/yyyy"
 											icon={['fas', 'calendar']}
 										/>

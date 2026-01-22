@@ -25,3 +25,22 @@ export async function getMe() {
         throw error;
     }
 }
+
+export async function register(data) {
+    try {
+        const response = await api.post('/register', { ...data });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function adminCreateUser(userData) {
+    try {
+        const response = await api.post('/staff/users', userData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+
+}

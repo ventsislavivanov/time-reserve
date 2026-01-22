@@ -1,6 +1,6 @@
 export const makeSignUpRules = ({ getValues }) => {
 	return {
-		fullName: {
+		name: {
 			required: 'Full name is required',
 			pattern: {
 				value: /^[A-Z][a-z]+ [A-Z][a-z]+$/,
@@ -42,7 +42,7 @@ export const makeSignUpRules = ({ getValues }) => {
 			}
 		},
 		address: { required: 'Address is required' },
-		dob: { required: 'Date of Birth is required' },
+		birth_date: { required: 'Date of Birth is required' },
 		gender: { required: 'Gender is required' },
 	};
 };

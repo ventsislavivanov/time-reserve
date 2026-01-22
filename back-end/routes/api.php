@@ -40,4 +40,8 @@ Route::middleware(['auth:sanctum', 'role:admin,worker'])->prefix('staff')->group
 
 	Route::get('/worker/appointments/pending', [WorkerAppointmentController::class, 'pending']);
 	Route::post('/appointments/{appointment}/approve', [WorkerAppointmentController::class, 'approve']);
+
+
+	Route::post('/admin/users', [AuthController::class, 'createUser'])
+		->middleware('can:admin-only');
 });

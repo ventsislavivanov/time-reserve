@@ -14,12 +14,18 @@ class AuthController extends Controller
 			'name' => 'required|string|max:255',
 			'email' => 'required|email|unique:users',
 			'password' => 'required|min:6',
+			'phone' => 'required|string|min:6|max:14',
+			'birth_date' => 'required|date',
+			'gender' => 'required|in:male,female,other',
 		]);
 
 		$user = User::create([
 			'name' => $request->name,
 			'email' => $request->email,
 			'password' => Hash::make($request->password),
+			'phone'      => $request->phone,
+			'birth_date' => $request->birth_date,
+			'gender'     => $request->gender,
 		]);
 
 		return response()->json([
@@ -39,6 +45,10 @@ class AuthController extends Controller
 
 		if (! $user || ! Hash::check($request->password, $user->password)) {
 			return response()->json(['message' => 'Invalid credentials'], 401);
+		}
+
+		if (!$user->is_approved) {
+			return response()->json(['message' => 'Our profile is not approved yet.'], 403);
 		}
 
 		if ($request->guard === 'client' && !$user->isClient()) {
@@ -66,5 +76,35 @@ class AuthController extends Controller
 	{
 		$request->user()->currentAccessToken()->delete();
 		return response()->json(['message' => 'Logged out']);
+	}
+
+	public function createUser(Request $request)
+	{
+		$request->validate([
+			'name'       => 'required|string|max:255',
+			'email'      => 'required|email|unique:users',
+			'password'   => 'required|min:6',
+			'phone'      => 'required|string',
+			'birth_date' => 'required|date',
+			'gender'     => 'required|in:male,female,other',
+			'role'       => 'required|in:admin,worker,client',
+			'is_approved'=> 'boolean'
+		]);
+
+		$user = User::create([
+			'name'        => $request->name,
+			'email'       => $request->email,
+			'password'    => Hash::make($request->password),
+			'phone'       => $request->phone,
+			'birth_date'  => $request->birth_date,
+			'gender'      => $request->gender,
+			'role'        => $request->role,
+			'is_approved' => $request->is_approved ?? false,
+		]);
+
+		return response()->json([
+			'message' => 'User created successfully',
+			'user'    => $user
+		], 201);
 	}
 }
