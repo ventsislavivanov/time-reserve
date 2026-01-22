@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
@@ -6,6 +6,7 @@ import { FormInput } from "../ui";
 import { loginRules } from "../../formValidations/index.js";
 import { login as loginUser } from "../../services/auth.js";
 import { login } from "../../store/authSlice.js";
+import Loading from "../loading/Loading.jsx";
 
 const intialValues = {
 	email: '',
@@ -16,6 +17,7 @@ export default function Login(props) {
 	const [searchParams] = useSearchParams()
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const methods = useForm({
 		defaultValues: intialValues,
@@ -40,6 +42,7 @@ export default function Login(props) {
 	const loginHandler = async (data) => {
 		const { email, password } = data;
 		try {
+			setIsLoading(true);
 			const response = await loginUser(email, password, props.guard);
 
 			localStorage.setItem("token", response.token);
@@ -49,6 +52,8 @@ export default function Login(props) {
 				email: response.user.email,
 				role: response.user.role
 			}));
+
+			reset();
 
 			if (response.user.role === 'client') {
 				navigate('/');
@@ -61,7 +66,7 @@ export default function Login(props) {
 			console.log("Login error", error);
 		}
 		finally {
-			reset();
+			setIsLoading(false);
 		}
 	};
 
@@ -72,41 +77,46 @@ export default function Login(props) {
 	const buildFieldRules = loginRules;
 
 	return (
-		<div className="container flex-grow-1 d-flex justify-content-center align-items-center py-4">
-			<div className="card shadow-sm p-4 bg-dark-subtle"
-				 style={{ maxWidth: 400, width: "100%"}}
-			>
-				<h3 className="text-center mb-4">Login</h3>
+		<>
+			{isLoading && <Loading fullscreen={true} color="#436d9a" size={60} />}
 
-				<FormProvider {...methods}>
-					<form onSubmit={handleSubmit(loginHandler, onInvalid)}>
-						<FormInput
-							name="email"
-							rules={buildFieldRules.email}
-							placeholder="Place enter email..."
-							label="Email"
-							icon={['fas', 'user']}
-						/>
+			<div className="container flex-grow-1 d-flex justify-content-center align-items-center py-4">
+				<div className="card shadow-sm p-4 bg-dark-subtle"
+					 style={{ maxWidth: 400, width: "100%"}}
+				>
+					<h3 className="text-center mb-4">Login</h3>
 
-						<FormInput
-							type="password"
-							name="password"
-							rules={buildFieldRules.password}
-							placeholder="Place enter password..."
-							label="Password"
-							icon={['fas', 'lock']}
-						/>
+					<FormProvider {...methods}>
+						<form onSubmit={handleSubmit(loginHandler, onInvalid)}>
+							<FormInput
+								name="email"
+								rules={buildFieldRules.email}
+								placeholder="Place enter email..."
+								label="Email"
+								icon={['fas', 'user']}
+							/>
 
-						<button type="submit" className="btn btn-primary w-100">Login</button>
-					</form>
-				</FormProvider>
+							<FormInput
+								type="password"
+								name="password"
+								rules={buildFieldRules.password}
+								placeholder="Place enter password..."
+								label="Password"
+								icon={['fas', 'lock']}
+							/>
 
-				{props.isClient && (
-					<p className="text-center mt-3">
-						Don't have an account? <Link to="/sign-up">Sign up</Link>
-					</p>
-				)}
+							<button type="submit" className="btn btn-primary w-100">Login</button>
+						</form>
+					</FormProvider>
+
+					{props.isClient && (
+						<p className="text-center mt-3">
+							Don't have an account? <Link to="/sign-up">Sign up</Link>
+						</p>
+					)}
+				</div>
 			</div>
-		</div>
+		</>
+
 	);
 }
