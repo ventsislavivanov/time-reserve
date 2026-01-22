@@ -72,12 +72,18 @@ class AuthController extends Controller
 			'email' => 'required|email',
 			'password' => 'required',
 			'guard' => 'required|in:client,staff',
+			'remember' => 'boolean'
 		]);
 
 		$user = User::where('email', $request->email)->first();
 
 		if (! $user || ! Hash::check($request->password, $user->password)) {
 			return response()->json(['message' => 'Invalid credentials'], 401);
+		}
+
+		if ($request->remember) {
+			$user->setRememberToken(\Illuminate\Support\Str::random(60));
+			$user->save();
 		}
 
 		if (!$user->is_approved) {

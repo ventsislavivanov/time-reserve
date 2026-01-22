@@ -1,7 +1,12 @@
 import api from '../configs/api';
 
-export async function login(email, password, guard) {
-    const response = await api.post('/login', { email, password, guard});
+export async function login(email, password, guard, remember) {
+    const response = await api.post('/login', {
+        email,
+        password,
+        guard,
+        remember
+    });
     return response.data;
 }
 
@@ -15,6 +20,8 @@ export async function getMe() {
 }
 
 export async function register(data) {
-    const response = await api.post('/register', { ...data });
+    const response = await api.post('/register', {
+        ...data
+    });
     return response.data;
 }

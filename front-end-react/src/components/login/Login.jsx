@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
-import { FormInput } from "../ui";
+import { FormInput, FormCheckbox  } from "../ui";
 import { loginRules } from "../../formValidations/index.js";
 import { login as loginUser } from "../../services/authService.js";
 import { login } from "../../store/authSlice.js";
@@ -10,7 +10,8 @@ import Loading from "../loading/Loading.jsx";
 
 const intialValues = {
 	email: '',
-	password: ''
+	password: '',
+	remember: false
 };
 
 export default function Login(props) {
@@ -40,10 +41,10 @@ export default function Login(props) {
 	}, [searchParams, setValue]);
 
 	const loginHandler = async (data) => {
-		const { email, password } = data;
+		const { email, password, remember  } = data;
 		try {
 			setIsLoading(true);
-			const response = await loginUser(email, password, props.guard);
+			const response = await loginUser(email, password, props.guard, remember);
 
 			localStorage.setItem("token", response.token);
 
@@ -103,6 +104,11 @@ export default function Login(props) {
 								placeholder="Place enter password..."
 								label="Password"
 								icon={['fas', 'lock']}
+							/>
+
+							<FormCheckbox
+								name="remember"
+								label="Remember me"
 							/>
 
 							<button type="submit" className="btn btn-primary w-100">Login</button>
