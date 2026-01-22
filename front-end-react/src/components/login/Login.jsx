@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router";
+import { useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormInput } from "../ui";
@@ -12,6 +13,7 @@ const intialValues = {
 };
 
 export default function Login(props) {
+	const [searchParams] = useSearchParams()
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -24,8 +26,16 @@ export default function Login(props) {
 
 	const {
 		handleSubmit,
-		reset
+		reset,
+		setValue
 	} = methods;
+
+	useEffect(() => {
+		const emailFromUrl = searchParams.get('email');
+		if (emailFromUrl) {
+			setValue('email', emailFromUrl);
+		}
+	}, [searchParams, setValue]);
 
 	const loginHandler = async (data) => {
 		const { email, password } = data;

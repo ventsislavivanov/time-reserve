@@ -128,7 +128,7 @@ class AuthController extends Controller
 			event(new Verified($user));
 		}
 
-		return redirect('http://localhost:5173/login?verified=1');
+		return redirect('http://localhost:5173/login?verified=1&email=' . urlencode($user->email));
 	}
 
 }
