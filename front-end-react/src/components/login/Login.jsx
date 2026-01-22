@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { FormInput, FormCheckbox  } from "../ui";
 import { loginRules } from "../../formValidations/index.js";
 import { login as loginUser } from "../../services/authService.js";
@@ -46,8 +47,9 @@ export default function Login(props) {
 			setIsLoading(true);
 			const response = await loginUser(email, password, props.guard, remember);
 
-			localStorage.setItem("token", response.token);
+			toast.success('Login successful');
 
+			localStorage.setItem("token", response.token);
 			dispatch(login({
 				uid: response.user.uid,
 				email: response.user.email,
@@ -55,16 +57,10 @@ export default function Login(props) {
 			}));
 
 			reset();
-
-			if (response.user.role === 'client') {
-				navigate('/');
-				return;
-			}
-
-			navigate('/staff/dashboard');
+			navigate(response.user.role === 'client' ? '/' : '/staff/dashboard');
 		}
 		catch (error) {
-			console.log("Login error", error);
+			console.error("Login error", error);
 		}
 		finally {
 			setIsLoading(false);

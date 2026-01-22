@@ -45,10 +45,11 @@ export default function SignUp() {
 
 			reset();
 			navigate('/');
-		} catch (err) {
-			const message = err.response?.data?.message || err.message;
-			alert(message);
-		} finally {
+		}
+		catch (error) {
+			console.error("Sign up error", error);
+		}
+		finally {
 			setIsLoading(false);
 		}
 	}

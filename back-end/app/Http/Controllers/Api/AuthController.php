@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -82,7 +83,7 @@ class AuthController extends Controller
 		}
 
 		if ($request->remember) {
-			$user->setRememberToken(\Illuminate\Support\Str::random(60));
+			$user->setRememberToken(Str::random(60));
 			$user->save();
 		}
 

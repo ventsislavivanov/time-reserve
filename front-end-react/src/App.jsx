@@ -15,6 +15,7 @@ import Loading from "./components/loading/Loading.jsx";
 import RoleGuard from "./components/auth/RoleGuard.jsx";
 import Home from "./components/Home/Home.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
+import Toast from "./components/toast/Toast.jsx";
 
 function App() {
 	const dispatch = useDispatch();
@@ -49,31 +50,36 @@ function App() {
 	}
 
 	return (
-		<Routes>
-			<Route element={<ClientLayout />}>
-				<Route path="/" element={<Home/>} />
-				<Route path="/login" element={<Login guard="client" isClient={true} />} />
-				<Route path="/sign-up" element={<SignUp />} />
-			</Route>
+		<>
+			<Routes>
+				<Route element={<ClientLayout />}>
+					<Route path="/" element={<Home/>} />
+					<Route path="/login" element={<Login guard="client" isClient={true} />} />
+					<Route path="/sign-up" element={<SignUp />} />
+				</Route>
 
-			<Route path="/staff">
-				<Route element={<StaffLayout />}>
-					<Route path="login" element={<Login isClient={false} guard="staff" />} />
+				<Route path="/staff">
+					<Route element={<StaffLayout />}>
+						<Route path="login" element={<Login isClient={false} guard="staff" />} />
 
-					<Route index element={<Dashboard />} />
-					<Route path="dashboard" element={<Dashboard />} />
+						<Route index element={<Dashboard />} />
+						<Route path="dashboard" element={<Dashboard />} />
 
-					<Route element={<RoleGuard allowedRoles={['admin']} />}>
-						<Route path="users" element={<ManageUsers />} />
-						<Route path="reports" element={<h1>Reports</h1>} />
-					</Route>
+						<Route element={<RoleGuard allowedRoles={['admin']} />}>
+							<Route path="users" element={<ManageUsers />} />
+							<Route path="reports" element={<h1>Reports</h1>} />
+						</Route>
 
-					<Route element={<RoleGuard allowedRoles={['worker']} />}>
-						<Route path="appointments" element={<h1>My Appointments</h1>} />
+						<Route element={<RoleGuard allowedRoles={['worker']} />}>
+							<Route path="appointments" element={<h1>My Appointments</h1>} />
+						</Route>
 					</Route>
 				</Route>
-			</Route>
-		</Routes>
+			</Routes>
+
+			<Toast/>
+		</>
+
 	)
 }
 
