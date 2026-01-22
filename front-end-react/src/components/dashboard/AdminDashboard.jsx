@@ -1,9 +1,5 @@
-import WorkerWeeklyCalendar from "../calender/WorkerWeeklyCalendar.jsx";
-
 export default function AdminDashboard() {
 	return (
-		<>
-			<WorkerWeeklyCalendar workerId={2} />
-		</>
+		<h1>Admin Dashboard</h1>
 	);
 }

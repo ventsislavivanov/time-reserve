@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormInput } from "../ui";
 import { loginRules } from "../../formValidations/index.js";
-import { login as loginUser } from "../../services/auth.js";
+import { login as loginUser } from "../../services/authService.js";
 import { login } from "../../store/authSlice.js";
 import Loading from "../loading/Loading.jsx";
 

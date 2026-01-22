@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { FormInput, FormRadio, FormDatePicker } from "../ui";
 import { makeSignUpRules } from "../../formValidations";
-import { register as registerUser } from "../../services/auth.js";
+import { register as registerUser } from "../../services/authService.js";
 import Loading from "../loading/Loading.jsx"
 
 const intialValues = {

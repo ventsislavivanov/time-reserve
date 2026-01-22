@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { logout as logoutUser } from "../services/auth.js";
+import { logout as logoutUser } from "../services/authService.js";
 import { logout } from "../store/authSlice.js";
 import Header from "../components/header/Header.jsx";
 import Footer from "../components/footer/Footer.jsx";

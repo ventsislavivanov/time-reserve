@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { login, logout } from "./store/authSlice.js";
-import { getMe } from "./services/auth.js";
+import { getMe } from "./services/authService.js";
 
 import ClientLayout from "./layouts/ClientLayout.jsx";
 import StaffLayout from "./layouts/StaffLayout.jsx";
@@ -13,6 +13,8 @@ import SignUp from "./components/sign-up/SignUp.jsx";
 import Dashboard from "./components/dashboard/Dashboard.jsx";
 import Loading from "./components/loading/Loading.jsx";
 import RoleGuard from "./components/auth/RoleGuard.jsx";
+import Home from "./components/Home/Home.jsx";
+import ManageUsers from "./components/admin/ManageUsers.jsx";
 
 function App() {
 	const dispatch = useDispatch();
@@ -49,7 +51,7 @@ function App() {
 	return (
 		<Routes>
 			<Route element={<ClientLayout />}>
-				<Route path="/" element={<h1>Home</h1>} />
+				<Route path="/" element={<Home/>} />
 				<Route path="/login" element={<Login guard="client" isClient={true} />} />
 				<Route path="/sign-up" element={<SignUp />} />
 			</Route>
@@ -62,7 +64,7 @@ function App() {
 					<Route path="dashboard" element={<Dashboard />} />
 
 					<Route element={<RoleGuard allowedRoles={['admin']} />}>
-						<Route path="users" element={<h1>Manage Users</h1>} />
+						<Route path="users" element={<ManageUsers />} />
 						<Route path="reports" element={<h1>Reports</h1>} />
 					</Route>
 

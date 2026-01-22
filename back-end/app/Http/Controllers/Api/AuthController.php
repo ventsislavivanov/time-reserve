@@ -27,7 +27,6 @@ class AuthController extends Controller
 			'phone'			=> $request->phone,
 			'birth_date'	=> $request->birth_date,
 			'gender'		=> $request->gender,
-			'role'			=> 'client',
 			'is_approved'	=> false,
 		]);
 
@@ -129,6 +128,27 @@ class AuthController extends Controller
 		}
 
 		return redirect('http://localhost:5173/login?verified=1&email=' . urlencode($user->email));
+	}
+
+	public function getAllUsers() {
+		return response()->json(User::all());
+	}
+
+	public function toggleActive($id) {
+		$user = User::findOrFail($id);
+
+		// Предотвратяваме админ да деактивира сам себе си (по желание)
+		if (auth()->id() == $user->id) {
+			return response()->json(['message' => 'Не можете да деактивирате собствения си профил.'], 400);
+		}
+
+		$user->is_active = !$user->is_active;
+		$user->save();
+
+		return response()->json([
+			'message' => $user->is_active ? 'Потребителят е активиран.' : 'Потребителят е блокиран.',
+			'user' => $user
+		]);
 	}
 
 }
