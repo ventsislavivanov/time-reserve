@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BaseModal from './BaseModal';
+import WorkerServicesManager from '../admin/WorkerServicesManager';
 
 export default function UserDetailsModal({ user }) {
 	if (!user) return null;
@@ -25,6 +26,7 @@ export default function UserDetailsModal({ user }) {
 			id="userDetailsModal"
 			title="User Details"
 			icon="id-card"
+			size={user.role === 'worker' ? 'modal-lg' : 'modal-md'}
 			centered={true}
 		>
 			<div className="text-center">
@@ -81,6 +83,11 @@ export default function UserDetailsModal({ user }) {
 							/>
 						</div>
 					</div>
+					{user.role === 'worker' && (
+						<div className="col-12 mt-2">
+							<WorkerServicesManager workerId={user.id} />
+						</div>
+					)}
 				</div>
 			</div>
 		</BaseModal>

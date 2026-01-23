@@ -48,6 +48,7 @@ class AuthController extends Controller
 			'birth_date' => 'required|date',
 			'gender'     => 'required|in:male,female',
 			'role'       => 'required|in:admin,worker',
+			'job_position_id' => 'nullable|exists:job_positions,id',
 		]);
 
 		$user = User::create([
@@ -58,6 +59,7 @@ class AuthController extends Controller
 			'birth_date'  		=> $request->birth_date,
 			'gender'      		=> $request->gender,
 			'role'        		=> $request->role,
+			'job_position_id'   => $request->job_position_id,
 			'email_verified_at' => now(),
 			'is_approved' 		=> true,
 		]);
@@ -80,6 +82,7 @@ class AuthController extends Controller
 			'gender'     => 'required|in:male,female,other',
 			'role'       => 'required|in:admin,worker,client',
 			'password'   => 'nullable|min:6',
+			'job_position_id' => 'nullable|exists:job_positions,id',
 		]);
 
 		$user->name = $request->name;
@@ -88,6 +91,7 @@ class AuthController extends Controller
 		$user->birth_date = $request->birth_date;
 		$user->gender = $request->gender;
 		$user->role = $request->role;
+		$user->job_position_id = $request->job_position_id;
 
 		if ($request->filled('password')) {
 			$user->password = Hash::make($request->password);
@@ -211,6 +215,25 @@ class AuthController extends Controller
 			'message' => $user->is_active ? 'User is active.' : 'User is blocked.',
 			'user' => $user
 		]);
+	}
+
+	public function getUserServices($id)
+	{
+		$user = User::findOrFail($id);
+		return response()->json($user->services);
+	}
+
+	public function syncUserServices(Request $request, $id)
+	{
+		$user = User::findOrFail($id);
+		$request->validate([
+			'service_ids' => 'required|array',
+			'service_ids.*' => 'exists:services,id',
+		]);
+
+		$user->services()->sync($request->service_ids);
+
+		return response()->json(['message' => 'Services synced successfully']);
 	}
 
 }

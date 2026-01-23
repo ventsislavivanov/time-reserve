@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -28,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'is_approved',
 		'is_active',
+		'job_position_id',
     ];
 
     /**
@@ -57,13 +60,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	/* ---------- RELATIONS ---------- */
 
-	// Client → неговите записи
 	public function appointments()
 	{
 		return $this->hasMany(Appointment::class, 'client_id');
 	}
 
-	// Worker → часовете му
 	public function workerAppointments()
 	{
 		return $this->hasMany(Appointment::class, 'worker_id');
@@ -84,5 +85,15 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function isClient(): bool
 	{
 		return $this->role === 'client';
+	}
+
+	public function jobPosition(): BelongsTo
+	{
+		return $this->belongsTo(JobPosition::class);
+	}
+
+	public function services(): BelongsToMany
+	{
+		return $this->belongsToMany(Service::class, 'worker_service', 'user_id', 'service_id');
 	}
 }

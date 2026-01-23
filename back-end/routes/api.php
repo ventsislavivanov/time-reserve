@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\JobPositionController;
+use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\WorkerAppointmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +49,13 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 	Route::post('/users', [AuthController::class, 'createUser']);
 	Route::put('/users/{id}', [AuthController::class, 'updateUser']);
 	Route::patch('/users/{id}/toggle-active', [AuthController::class, 'toggleActive']);
+
+	Route::apiResource('job-positions', JobPositionController::class);
+	Route::get('/services', [ServiceController::class, 'index']);
+	Route::post('/services', [ServiceController::class, 'store']);
+
+	Route::get('/users/{id}/services', [AuthController::class, 'getUserServices']);
+	Route::post('/users/{id}/services', [AuthController::class, 'syncUserServices']);
 });
 
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])

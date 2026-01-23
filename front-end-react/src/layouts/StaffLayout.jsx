@@ -48,6 +48,9 @@ export default function StaffLayout() {
 									<Link to="/staff/users" className="nav-link">Manage Users</Link>
 								</li>
 								<li className="nav-item">
+									<Link to="/staff/job-positions" className="nav-link">Job Positions</Link>
+								</li>
+								<li className="nav-item">
 									<Link to="/staff/reports" className="nav-link">Reports</Link>
 								</li>
 							</>

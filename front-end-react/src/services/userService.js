@@ -25,3 +25,13 @@ export async function toggleUserActive(id) {
 	const response = await api.patch(`/staff/users/${id}/toggle-active`);
 	return response.data;
 }
+
+export async function getUserServices(id) {
+	const response = await api.get(`/staff/users/${id}/services`);
+	return response.data;
+}
+
+export async function syncUserServices(id, serviceIds) {
+	const response = await api.post(`/staff/users/${id}/services`, { service_ids: serviceIds });
+	return response.data;
+}

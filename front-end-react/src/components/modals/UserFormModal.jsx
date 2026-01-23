@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UIInput, UIRadio, UIDatePicker } from '../common/ui';
+import { UIInput, UIRadio, UIDatePicker, UISelect } from '../common/ui';
 import { createUser, updateUser } from '../../services/userService';
+import { getJobPositions } from '../../services/jobPositionService';
 import { userFormRules } from '../../formValidations/userFormRules';
 import { toast } from "react-toastify";
 import BaseModal from './BaseModal';
 
 const UserFormModal = ({ user, onSuccess, onCancel }) => {
+    const [jobPositions, setJobPositions] = useState([]);
+
     const methods = useForm({
         defaultValues: {
             name: '',
@@ -16,11 +19,25 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
             birth_date: null,
             gender: 'male',
             role: 'worker',
+            job_position_id: '',
             password: ''
         }
     });
 
-    const { handleSubmit, reset, setValue } = methods;
+    const { handleSubmit, reset, watch } = methods;
+    const selectedRole = watch('role');
+
+    useEffect(() => {
+        const fetchJobPositions = async () => {
+            try {
+                const data = await getJobPositions();
+                setJobPositions(data);
+            } catch (error) {
+                console.error('Error fetching job positions:', error);
+            }
+        };
+        fetchJobPositions();
+    }, []);
 
     useEffect(() => {
         if (user) {
@@ -39,6 +56,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                 birth_date: validBirthDate,
                 gender: user.gender || 'male',
                 role: user.role || 'worker',
+                job_position_id: user.job_position_id || '',
                 password: ''
             });
         } else {
@@ -49,6 +67,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                 birth_date: null,
                 gender: 'male',
                 role: 'worker',
+                job_position_id: '',
                 password: ''
             });
         }
@@ -153,6 +172,17 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                                     rules={rules.role}
                                 />
                             </div>
+                            {selectedRole === 'worker' && (
+                                <div className="col-md-6">
+                                    <UISelect
+                                        name="job_position_id"
+                                        label="Job Position"
+                                        options={jobPositions}
+                                        icon="briefcase"
+                                        placeholder="Select position..."
+                                    />
+                                </div>
+                            )}
                             <div className="col-md-12 mt-3">
                                 <UIInput
                                     name="password"

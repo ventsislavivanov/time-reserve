@@ -15,6 +15,7 @@ import Loading from "./components/common/loading/Loading.jsx";
 import RoleGuard from "./components/auth/RoleGuard.jsx";
 import Home from "./components/Home/Home.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";
+import ManageJobPositions from "./components/admin/ManageJobPositions.jsx";
 import Toast from "./components/toast/Toast.jsx";
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
 
 						<Route element={<RoleGuard allowedRoles={['admin']} />}>
 							<Route path="users" element={<ManageUsers />} />
+							<Route path="job-positions" element={<ManageJobPositions />} />
 							<Route path="reports" element={<h1>Reports</h1>} />
 						</Route>
 
