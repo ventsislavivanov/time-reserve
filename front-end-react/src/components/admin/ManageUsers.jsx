@@ -116,7 +116,7 @@ export default function ManageUsers() {
 					Manage Users
 				</h3>
 				<div className="d-flex gap-2">
-					<button className="btn btn-success shadow-sm" onClick={handleCreate}>
+					<button className="btn btn-sm btn-success shadow-sm" onClick={handleCreate}>
 						<FontAwesomeIcon icon="user-plus" className="me-2" />
 						Add User
 					</button>

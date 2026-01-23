@@ -56,11 +56,11 @@ export default function UserFilters({ filters, onFilterChange, onReset }) {
 				/>
 
 				<div className="col-md-2 d-flex gap-2">
-					<button className="btn btn-primary w-100 shadow-sm" onClick={handleApply}>
+					<button className="btn btn-sm btn-primary w-100 shadow-sm" onClick={handleApply}>
 						<FontAwesomeIcon icon="filter" className="me-2" />
 						Apply
 					</button>
-					<button className="btn btn-outline-secondary shadow-sm" onClick={handleReset} title="Reset">
+					<button className="btn btn-sm btn-outline-secondary shadow-sm" onClick={handleReset} title="Reset">
 						<FontAwesomeIcon icon="undo" />
 					</button>
 				</div>
