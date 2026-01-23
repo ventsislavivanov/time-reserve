@@ -51,14 +51,15 @@ class AuthController extends Controller
 		]);
 
 		$user = User::create([
-			'name'        => $request->name,
-			'email'       => $request->email,
-			'password'    => Hash::make($request->password),
-			'phone'       => $request->phone,
-			'birth_date'  => $request->birth_date,
-			'gender'      => $request->gender,
-			'role'        => $request->role,
-			'is_approved' => true,
+			'name'        		=> $request->name,
+			'email'       		=> $request->email,
+			'password'    		=> Hash::make($request->password),
+			'phone'       		=> $request->phone,
+			'birth_date'  		=> $request->birth_date,
+			'gender'      		=> $request->gender,
+			'role'        		=> $request->role,
+			'email_verified_at' => now(),
+			'is_approved' 		=> true,
 		]);
 
 		return response()->json([
