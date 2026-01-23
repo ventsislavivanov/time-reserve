@@ -23,7 +23,6 @@ const BaseModal = ({
 		>
 			<div className={`modal-dialog ${size} ${centered ? 'modal-dialog-centered' : ''}`}>
 				<div className="modal-content border-0 shadow">
-					{/* Унифициран Хедър */}
 					<div className="modal-header bg-primary text-white border-0">
 						<h5 className="modal-title fw-bold text-white">
 							{icon && <FontAwesomeIcon icon={icon} className="me-2" />}

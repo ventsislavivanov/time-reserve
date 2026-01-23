@@ -34,7 +34,7 @@ export default function StaffLayout() {
 	};
 
 	return (
-		<div className="d-flex flex-column min-vh-100">
+		<div className="d-flex flex-column min-vh-100 bg-light">
 			{isAuthenticated && (
 				<Header>
 					<ul className="navbar-nav me-auto">

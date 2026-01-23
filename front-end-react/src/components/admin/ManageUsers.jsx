@@ -135,9 +135,9 @@ export default function ManageUsers() {
 				onReset={() => setFilters({ search: "", role: "", gender: "" })}
 			/>
 
-			<div className="card shadow-sm border-0 rounded-3 overflow-hidden">
+			<div className="card shadow-sm border-0 rounded-3 overflow-hidden bg-white">
 				<div className="table-responsive">
-					<table className="table table-hover align-middle mb-0" style={{ fontSize: '0.875rem' }}>
+					<table className="table table-hover table-striped align-middle mb-0" style={{ fontSize: '0.875rem' }}>
 						<thead className="bg-light text-secondary text-uppercase" style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}>
 						<tr>
 							<th className="ps-4 py-3">User info</th>
