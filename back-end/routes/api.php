@@ -44,6 +44,8 @@ Route::middleware(['auth:sanctum', 'role:admin,worker'])->prefix('staff')->group
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(function () {
 	Route::get('/users', [AuthController::class, 'getAllUsers']);
+	Route::post('/users', [AuthController::class, 'createUser']);
+	Route::put('/users/{id}', [AuthController::class, 'updateUser']);
 	Route::patch('/users/{id}/toggle-active', [AuthController::class, 'toggleActive']);
 });
 

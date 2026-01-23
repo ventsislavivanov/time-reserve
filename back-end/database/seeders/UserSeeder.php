@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 				'is_approved' => true,
 				'phone' => '+380991234567',
 				'gender' => 'female',
-				'birth_date' => 'null',
+				'birth_date' => null,
 			],
 			[
 				'name' => 'Eva',
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
 				'is_approved' => true,
 				'phone' => '+380991234567',
 				'gender' => 'female',
-				'birth_date' => 'null',
+				'birth_date' => null,
 			]
 		]);
     }

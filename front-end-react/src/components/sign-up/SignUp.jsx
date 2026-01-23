@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { UIInput, UIRadio, UIDatePicker } from "../common/ui";
-import { makeSignUpRules } from "../../formValidations";
+import { signUpRules } from "../../formValidations/signUpRules.js";
 import { register as registerUser } from "../../services/authService.js";
 import Loading from "../common/loading/Loading.jsx"
 
@@ -58,7 +58,7 @@ export default function SignUp() {
 		console.log(errors);
 	}
 
-	const buildFieldRules = makeSignUpRules({ getValues });
+	const buildFieldRules = signUpRules({ getValues });
 
 	return (
 		<>

@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import styles from './Header.module.css';
 
 export default function Header({ children }) {
+	const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+	const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
 	return (
 		<nav
@@ -14,13 +18,17 @@ export default function Header({ children }) {
 				<button
 					className="navbar-toggler"
 					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#navbarColor01"
+					onClick={handleNavCollapse}
+					aria-expanded={!isNavCollapsed}
+					aria-label="Toggle navigation"
 				>
 					<span className="navbar-toggler-icon"></span>
 				</button>
 
-				<div id="navbarColor01" className="collapse navbar-collapse">
+				<div 
+					id="navbarColor01" 
+					className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`}
+				>
 					{children}
 				</div>
 			</div>

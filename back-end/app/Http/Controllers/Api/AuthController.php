@@ -67,6 +67,39 @@ class AuthController extends Controller
 		], 201);
 	}
 
+	public function updateUser(Request $request, $id)
+	{
+		$user = User::findOrFail($id);
+
+		$request->validate([
+			'name'       => 'required|string|max:255',
+			'email'      => 'required|email|unique:users,email,' . $id,
+			'phone'      => 'required|string',
+			'birth_date' => 'required|date',
+			'gender'     => 'required|in:male,female,other',
+			'role'       => 'required|in:admin,worker,client',
+			'password'   => 'nullable|min:6',
+		]);
+
+		$user->name = $request->name;
+		$user->email = $request->email;
+		$user->phone = $request->phone;
+		$user->birth_date = $request->birth_date;
+		$user->gender = $request->gender;
+		$user->role = $request->role;
+
+		if ($request->filled('password')) {
+			$user->password = Hash::make($request->password);
+		}
+
+		$user->save();
+
+		return response()->json([
+			'message' => 'User updated successfully',
+			'user'    => $user
+		]);
+	}
+
 	public function login(Request $request)
 	{
 		$request->validate([

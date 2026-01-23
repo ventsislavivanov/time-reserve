@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StatusBadge from "../common/status-badge/StatusBadge.jsx";
 
-const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails }) => {
+const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) => {
     return (
         <tr className={!user.is_active ? "bg-light opacity-75" : ""}>
             <td className="ps-4 py-3">
@@ -43,6 +43,14 @@ const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails }) => {
             </td>
             <td className="pe-4 text-center py-3">
                 <div className="d-flex justify-content-center gap-2">
+                    <button
+                        className="btn btn-sm btn-light border shadow-sm rounded-circle"
+                        style={{ width: '32px', height: '32px' }}
+                        onClick={() => onEdit(user)}
+                        title="Edit User"
+                    >
+                        <FontAwesomeIcon icon="edit" className="text-warning small" />
+                    </button>
                     <button
                         className="btn btn-sm btn-light border shadow-sm rounded-circle"
                         style={{ width: '32px', height: '32px' }}

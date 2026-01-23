@@ -7,11 +7,13 @@ import Pagination from "../common/pagination/Pagination";
 import UserFilters from "./UserFilters";
 import UserRow from "./UserRow";
 import UserDetailsModal from "../modals/UserDetailsModal";
+import UserFormModal from "../modals/UserFormModal";
 
 export default function ManageUsers() {
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [selectedUser, setSelectedUser] = useState(null);
+	const [editUser, setEditUser] = useState(null);
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -73,6 +75,37 @@ export default function ManageUsers() {
 		}, 10);
 	};
 
+	const handleCreate = () => {
+		setEditUser(null);
+		setTimeout(() => {
+			const modalElement = document.getElementById('userFormModal');
+			if (modalElement) {
+				const modal = new Modal(modalElement);
+				modal.show();
+			}
+		}, 10);
+	};
+
+	const handleEdit = (user) => {
+		setEditUser(user);
+		setTimeout(() => {
+			const modalElement = document.getElementById('userFormModal');
+			if (modalElement) {
+				const modal = new Modal(modalElement);
+				modal.show();
+			}
+		}, 10);
+	};
+
+	const handleFormSuccess = () => {
+		const modalElement = document.getElementById('userFormModal');
+		if (modalElement) {
+			const modal = Modal.getInstance(modalElement);
+			if (modal) modal.hide();
+		}
+		fetchUsers();
+	};
+
 	if (loading) return <Loading />;
 
 	return (
@@ -83,6 +116,10 @@ export default function ManageUsers() {
 					Manage Users
 				</h3>
 				<div className="d-flex gap-2">
+					<button className="btn btn-success shadow-sm" onClick={handleCreate}>
+						<FontAwesomeIcon icon="user-plus" className="me-2" />
+						Add User
+					</button>
                     <span className="badge bg-light text-dark shadow-sm border p-2">
                         Filtered: {users.length}
                     </span>
@@ -118,6 +155,7 @@ export default function ManageUsers() {
 								roleBadgeMap={roleBadgeMap}
 								onToggleActive={handleToggleActive}
 								onViewDetails={openDetails}
+								onEdit={handleEdit}
 							/>
 						))}
 						</tbody>
@@ -135,6 +173,11 @@ export default function ManageUsers() {
 			/>
 
 			<UserDetailsModal user={selectedUser} />
+			<UserFormModal 
+				user={editUser} 
+				onSuccess={handleFormSuccess} 
+				onCancel={() => setEditUser(null)} 
+			/>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-export const makeSignUpRules = ({ getValues }) => {
+export const signUpRules = ({ getValues }) => {
 	return {
 		name: {
 			required: 'Full name is required',

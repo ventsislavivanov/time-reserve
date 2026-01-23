@@ -16,6 +16,11 @@ export async function createUser(userData) {
 	return response.data;
 }
 
+export async function updateUser(id, userData) {
+	const response = await api.put(`/staff/users/${id}`, userData);
+	return response.data;
+}
+
 export async function toggleUserActive(id) {
 	const response = await api.patch(`/staff/users/${id}/toggle-active`);
 	return response.data;
