@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { useFormContext } from "react-hook-form";
 
-export default function FormRadio({
+export default function Radio({
 	name,
 	options,
 	rules = {},

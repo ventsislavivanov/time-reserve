@@ -11,7 +11,7 @@ import StaffLayout from "./layouts/StaffLayout.jsx";
 import Login from "./components/login/Login.jsx";
 import SignUp from "./components/sign-up/SignUp.jsx";
 import Dashboard from "./components/dashboard/Dashboard.jsx";
-import Loading from "./components/loading/Loading.jsx";
+import Loading from "./components/common/loading/Loading.jsx";
 import RoleGuard from "./components/auth/RoleGuard.jsx";
 import Home from "./components/Home/Home.jsx";
 import ManageUsers from "./components/admin/ManageUsers.jsx";

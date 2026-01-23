@@ -3,11 +3,11 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { FormInput, FormCheckbox  } from "../ui";
+import { UIInput, UICheckbox  } from "../common/ui";
 import { loginRules } from "../../formValidations/index.js";
 import { login as loginUser } from "../../services/authService.js";
 import { login } from "../../store/authSlice.js";
-import Loading from "../loading/Loading.jsx";
+import Loading from "../common/loading/Loading.jsx";
 
 const intialValues = {
 	email: '',
@@ -85,7 +85,7 @@ export default function Login(props) {
 
 					<FormProvider {...methods}>
 						<form onSubmit={handleSubmit(loginHandler, onInvalid)}>
-							<FormInput
+							<UIInput
 								name="email"
 								rules={buildFieldRules.email}
 								placeholder="Place enter email..."
@@ -93,7 +93,7 @@ export default function Login(props) {
 								icon={['fas', 'user']}
 							/>
 
-							<FormInput
+							<UIInput
 								type="password"
 								name="password"
 								rules={buildFieldRules.password}
@@ -102,7 +102,7 @@ export default function Login(props) {
 								icon={['fas', 'lock']}
 							/>
 
-							<FormCheckbox
+							<UICheckbox
 								name="remember"
 								label="Remember me"
 							/>

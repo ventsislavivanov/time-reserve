@@ -137,23 +137,44 @@ class AuthController extends Controller
 		return redirect('http://localhost:5173/login?verified=1&email=' . urlencode($user->email));
 	}
 
-	public function getAllUsers() {
-		return response()->json(User::all());
+	public function getAllUsers(Request $request) {
+		$query = User::query();
+
+		if ($request->has('role') && $request->role != '') {
+			$query->where('role', $request->role);
+		}
+
+		if ($request->has('gender') && $request->gender != '') {
+			$query->where('gender', $request->gender);
+		}
+
+		if ($request->has('search') && $request->search != '') {
+			$search = $request->search;
+			$query->where(function($q) use ($search) {
+				$q->where('name', 'like', "%$search%")
+					->orWhere('email', 'like', "%$search%")
+					->orWhere('phone', 'like', "%$search%");
+			});
+		}
+
+		$perPage = $request->query('limit', 10);
+		$users = $query->paginate($perPage);
+
+		return response()->json($users);
 	}
 
 	public function toggleActive($id) {
 		$user = User::findOrFail($id);
 
-		// Предотвратяваме админ да деактивира сам себе си (по желание)
 		if (auth()->id() == $user->id) {
-			return response()->json(['message' => 'Не можете да деактивирате собствения си профил.'], 400);
+			return response()->json(['message' => 'Cannot deactivate own account.'], 400);
 		}
 
 		$user->is_active = !$user->is_active;
 		$user->save();
 
 		return response()->json([
-			'message' => $user->is_active ? 'Потребителят е активиран.' : 'Потребителят е блокиран.',
+			'message' => $user->is_active ? 'User is active.' : 'User is blocked.',
 			'user' => $user
 		]);
 	}

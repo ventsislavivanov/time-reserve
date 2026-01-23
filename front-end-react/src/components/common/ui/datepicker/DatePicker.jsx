@@ -1,15 +1,15 @@
 import React from "react";
-import DatePicker from "react-datepicker";
+import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Controller, useFormContext } from "react-hook-form";
 import { registerLocale } from  "react-datepicker";
 import { bg } from 'date-fns/locale/bg';
-import styles from './FormDatePicker.module.css';
+import styles from './DatePicker.module.css';
 
 registerLocale('bg', bg);
 
-export default function FormDatePicker({
+export default function DatePicker({
    name,
    rules,
    label,
@@ -34,7 +34,7 @@ export default function FormDatePicker({
 					name={name}
 					rules={rules}
 					render={({ field: { onChange, onBlur, value, ref } }) => (
-						<DatePicker
+						<ReactDatePicker
 							onChange={onChange}
 							onBlur={onBlur}
 							selected={value}

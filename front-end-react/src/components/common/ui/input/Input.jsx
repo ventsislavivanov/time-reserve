@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormContext } from "react-hook-form";
 import React from "react";
 
-export default function FormInput({
+export default function Input({
 	type = 'text',
 	name,
 	placeholder,

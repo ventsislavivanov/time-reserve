@@ -1,7 +1,13 @@
 import api from '../configs/api';
 
-export async function getUsers() {
-	const response = await api.get('/staff/users');
+export async function getUsers(page = 1, limit = 10, filters = {}) {
+	const params = new URLSearchParams({
+		page,
+		limit,
+		...filters
+	}).toString();
+
+	const response = await api.get(`/staff/users?${params}`);
 	return response.data;
 }
 

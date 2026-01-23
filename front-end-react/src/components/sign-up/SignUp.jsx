@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { FormInput, FormRadio, FormDatePicker } from "../ui";
+import { UIInput, UIRadio, UIDatePicker } from "../common/ui";
 import { makeSignUpRules } from "../../formValidations";
 import { register as registerUser } from "../../services/authService.js";
-import Loading from "../loading/Loading.jsx"
+import Loading from "../common/loading/Loading.jsx"
 
 const intialValues = {
 	name: '',
@@ -74,7 +74,7 @@ export default function SignUp() {
 						<form onSubmit={handleSubmit(registerHandler, onInvalid)}>
 							<div className="row">
 								<div className="col-md-12">
-									<FormInput
+									<UIInput
 										name="name"
 										rules={buildFieldRules.name}
 										placeholder="Full Name"
@@ -83,7 +83,7 @@ export default function SignUp() {
 								</div>
 
 								<div className="col-md-12">
-									<FormInput
+									<UIInput
 										name="email"
 										rules={buildFieldRules.email}
 										placeholder="Email"
@@ -92,7 +92,7 @@ export default function SignUp() {
 								</div>
 
 								<div className="col-md-6">
-									<FormInput
+									<UIInput
 										type="password"
 										name="password"
 										rules={buildFieldRules.password}
@@ -102,7 +102,7 @@ export default function SignUp() {
 								</div>
 
 								<div className="col-md-6">
-									<FormInput
+									<UIInput
 										type="password"
 										name="confirm_password"
 										rules={buildFieldRules.confirm_password}
@@ -112,7 +112,7 @@ export default function SignUp() {
 								</div>
 
 								<div className="col-md-12">
-									<FormInput
+									<UIInput
 										name="address"
 										rules={buildFieldRules.address}
 										placeholder="Address"
@@ -125,7 +125,7 @@ export default function SignUp() {
 								<div className="col-md-8">
 									<div className="row">
 										<div className="col-md-12">
-											<FormInput
+											<UIInput
 												name="phone"
 												rules={buildFieldRules.phone}
 												placeholder="Phone"
@@ -135,7 +135,7 @@ export default function SignUp() {
 										</div>
 
 										<div className="col-md-12">
-											<FormDatePicker
+											<UIDatePicker
 												name="birth_date"
 												rules={buildFieldRules.birth_date}
 												placeholder="dd/mm/yyyy"
@@ -146,7 +146,7 @@ export default function SignUp() {
 								</div>
 
 								<div className="col-md-4">
-									<FormRadio
+									<UIRadio
 										name="gender"
 										rules={buildFieldRules.gender}
 										label="Gender"
