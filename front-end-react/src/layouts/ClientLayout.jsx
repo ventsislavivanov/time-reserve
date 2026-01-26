@@ -1,9 +1,9 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { logout as logoutUser } from "../services/authService.js";
+import { logout as logoutUser } from "../features/auth";
 import { logout } from "../store/authSlice.js";
-import Header from "../components/header/Header.jsx";
-import Footer from "../components/footer/Footer.jsx";
+import Header from "../components/layout/header/Header.jsx";
+import Footer from "../components/layout/footer/Footer.jsx";
 
 export default function ClientLayout() {
 	const dispatch = useDispatch();

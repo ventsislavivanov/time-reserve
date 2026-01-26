@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import AdminDashboard from "./AdminDashboard";
 import WorkerDashboard from "./WorkerDashboard.jsx";
 
-export default function StaffDashboard() {
+const StaffDashboard = () => {
   const user = useSelector((s) => s.auth.user);
   const role = user?.role;
 
@@ -11,3 +11,5 @@ export default function StaffDashboard() {
 
   return null;
 }
+
+export default StaffDashboard;

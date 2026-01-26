@@ -3,24 +3,21 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { login, logout } from "./store/authSlice.js";
-import { getMe } from "./services/authService.js";
 
 import ClientLayout from "./layouts/ClientLayout.jsx";
 import StaffLayout from "./layouts/StaffLayout.jsx";
 
-import Login from "./components/login/Login.jsx";
-import SignUp from "./components/sign-up/SignUp.jsx";
+import { Login, SignUp, RoleGuard, getMe } from "./features/auth";
+import { ManageUsers } from "./features/users";
+import { ManageJobs } from "./features/jobs";
+
 import Dashboard from "./components/dashboard/Dashboard.jsx";
-import Loading from "./components/common/loading/Loading.jsx";
-import RoleGuard from "./components/auth/RoleGuard.jsx";
 import Home from "./components/Home/Home.jsx";
-import ManageUsers from "./components/admin/ManageUsers.jsx";
-import ManageJobPositions from "./components/admin/ManageJobPositions.jsx";
-import Toast from "./components/toast/Toast.jsx";
+import { UILoading, UIToast } from "./components/common/ui";
 
 function App() {
 	const dispatch = useDispatch();
-	const [loading, setLoading] = useState(true);
+	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -46,8 +43,8 @@ function App() {
 		checkAuth();
 	}, [dispatch]);
 
-	if (loading) {
-		return <Loading fullscreen={true} color="#436d9a" size={60} />;
+	if (isLoading) {
+		return <UILoading fullscreen={true} color="#436d9a" size={60} />;
 	}
 
 	return (
@@ -55,7 +52,7 @@ function App() {
 			<Routes>
 				<Route element={<ClientLayout />}>
 					<Route path="/" element={<Home/>} />
-					<Route path="/login" element={<Login guard="client" isClient={true} />} />
+					<Route path="/login" element={<Login isClient={true} guard="client" />} />
 					<Route path="/sign-up" element={<SignUp />} />
 				</Route>
 
@@ -68,7 +65,7 @@ function App() {
 
 						<Route element={<RoleGuard allowedRoles={['admin']} />}>
 							<Route path="users" element={<ManageUsers />} />
-							<Route path="job-positions" element={<ManageJobPositions />} />
+							<Route path="jobs" element={<ManageJobs />} />
 							<Route path="reports" element={<h1>Reports</h1>} />
 						</Route>
 
@@ -79,7 +76,7 @@ function App() {
 				</Route>
 			</Routes>
 
-			<Toast/>
+			<UIToast/>
 		</>
 
 	)

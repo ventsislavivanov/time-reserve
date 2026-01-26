@@ -1,8 +1,9 @@
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { logout as logoutUser } from "../services/authService.js";
+import { logout as logoutUser } from "../features/auth";
 import { logout } from "../store/authSlice.js";
-import Header from "../components/header/Header.jsx";
+import Header from "../components/layout/header/Header.jsx";
+import { UINavLink } from "../components/common/ui";
 
 export default function StaffLayout() {
 	const dispatch = useDispatch();
@@ -44,21 +45,15 @@ export default function StaffLayout() {
 
 						{role === 'admin' && (
 							<>
-								<li className="nav-item">
-									<Link to="/staff/users" className="nav-link">Manage Users</Link>
-								</li>
-								<li className="nav-item">
-									<Link to="/staff/job-positions" className="nav-link">Job Positions</Link>
-								</li>
-								<li className="nav-item">
-									<Link to="/staff/reports" className="nav-link">Reports</Link>
-								</li>
+								<UINavLink to="/staff/users">Manage Users</UINavLink>
+								<UINavLink to="/staff/jobs">Manage Jobs</UINavLink>
+								<UINavLink to="/staff/reports">Reports</UINavLink>
 							</>
 						)}
 
 						{role === 'worker' && (
 							<li className="nav-item">
-								<Link to="/staff/appointments" className="nav-link">My Calendar</Link>
+								<UINavLink to="/staff/appointments">My Calendar</UINavLink>
 							</li>
 						)}
 					</ul>

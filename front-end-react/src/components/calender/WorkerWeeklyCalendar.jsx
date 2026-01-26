@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
-import api from "../../configs/api";
+import { useState, useEffect, useMemo } from "react";
+import api from "../../services/common/api.js";
 
 const HOURS = Array.from({ length: 12 }, (_, i) => 8 + i); // 08:00 - 20:00
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -12,7 +12,7 @@ const statusClasses = {
 
 export default function WorkerWeeklyCalendar({ workerId }) {
 	const [appointments, setAppointments] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (!workerId) return;
@@ -20,7 +20,6 @@ export default function WorkerWeeklyCalendar({ workerId }) {
 		const fetchAppointments = async () => {
 			try {
 				setLoading(true);
-				// Примерна заявка към вашето API
 				// const response = await api.get(`/appointments/worker/${workerId}`);
 				const response = await api.get(`/appointments/worker/2`);
 				setAppointments(response.data);
@@ -43,7 +42,7 @@ export default function WorkerWeeklyCalendar({ workerId }) {
 		return map;
 	}, [appointments]);
 
-	if (loading) return <div className="p-4 text-center text-muted">Зареждане на график...</div>;
+	if (isLoading) return <div className="p-4 text-center text-muted">Зареждане на график...</div>;
 
 	return (
 		<div className="card shadow-sm border-0">

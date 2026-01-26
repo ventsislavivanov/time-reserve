@@ -1,9 +1,11 @@
 import WorkerWeeklyCalendar from "../calender/WorkerWeeklyCalendar.jsx";
 
-export default function Home() {
+const Home = () => {
 	return (
 		<>
 			<WorkerWeeklyCalendar workerId={2} />
 		</>
 	);
 }
+
+export default Home;
