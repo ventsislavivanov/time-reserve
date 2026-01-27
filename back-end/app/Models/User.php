@@ -31,7 +31,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'birth_date',
         'role',
         'is_approved',
-		'is_active',
 		'job_position_id',
     ];
 
@@ -74,6 +73,16 @@ class User extends Authenticatable implements MustVerifyEmail
 		return $this->hasMany(Appointment::class, 'worker_id');
 	}
 
+	public function jobPosition(): BelongsTo
+	{
+		return $this->belongsTo(Job::class);
+	}
+
+	public function services(): BelongsToMany
+	{
+		return $this->belongsToMany(Service::class, 'worker_service', 'user_id', 'service_id');
+	}
+
 	/* ---------- HELPERS ---------- */
 
 	public function isAdmin(): bool
@@ -91,22 +100,32 @@ class User extends Authenticatable implements MustVerifyEmail
 		return $this->role === 'client';
 	}
 
-	public function jobPosition(): BelongsTo
+	public function isStaff(): bool
 	{
-		return $this->belongsTo(Job::class);
+		return in_array($this->role, ['admin', 'worker'], true);
 	}
 
-	public function services(): BelongsToMany
+	public function isApproved(): bool
 	{
-		return $this->belongsToMany(Service::class, 'worker_service', 'user_id', 'service_id');
+		return (bool) $this->is_approved;
 	}
 
-	/* ---------- ATTRIBUTES ---------- */
-	protected function password(): Attribute
+	public function canLogin(): bool
 	{
-		return Attribute::make(
-			set: fn ($value) => $value ? Hash::make($value) : null
-		);
+		if (!$this->is_active) {
+			return false;
+		}
+
+		if (is_null($this->email_verified_at)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function canBeAssigned(): bool
+	{
+		return $this->is_active && $this->is_approved;
 	}
 
 	/* ---------- SCOPES ---------- */
@@ -129,4 +148,26 @@ class User extends Authenticatable implements MustVerifyEmail
 		});
 	}
 
+	/* ---------- ACCESSORS ---------- */
+	public function getIsVerifiedAttribute(): bool
+	{
+		return !is_null($this->email_verified_at);
+	}
+
+	public function getStatusAttribute(): string
+	{
+		if (!$this->is_active) {
+			return 'inactive';
+		}
+
+		if (!$this->email_verified_at) {
+			return 'unverified';
+		}
+
+		if (!$this->is_approved) {
+			return 'pending';
+		}
+
+		return 'active';
+	}
 }

@@ -73,15 +73,17 @@ class AuthController extends Controller
 			$user->save();
 		}
 
-		if (!$user->is_approved) {
-			return response()->json(['message' => 'Please confirm your email before login.'], 403);
+		if (! $user->canLogin()) {
+			return response()->json([
+				'message' => 'Account is not active or email not verified.'
+			], 403);
 		}
 
-		if ($request->guard === 'client' && !$user->isClient()) {
+		if ($request->guard === 'client' && ! $user->isClient()) {
 			return response()->json(['message' => 'Access denied'], 403);
 		}
 
-		if ($request->guard === 'staff' && !in_array($user->role, ['admin', 'worker'])) {
+		if ($request->guard === 'staff' && ! $user->isStaff()) {
 			return response()->json(['message' => 'Access denied'], 403);
 		}
 
@@ -106,7 +108,7 @@ class AuthController extends Controller
 	{
 		$user = User::findOrFail($id);
 
-		if (!hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+		if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
 			return response()->json(['message' => 'Невалиден линк за верификация.'], 403);
 		}
 
@@ -153,7 +155,7 @@ class AuthController extends Controller
 			return response()->json(['message' => 'Cannot deactivate own account.'], 400);
 		}
 
-		$user->is_active = !$user->is_active;
+		$user->is_active = ! $user->is_active;
 		$user->save();
 
 		return response()->json([
