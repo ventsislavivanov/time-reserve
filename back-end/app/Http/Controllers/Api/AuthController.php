@@ -1,7 +1,13 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterClientRequest;
+use App\Http\Requests\SyncUserServicesRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -10,25 +16,11 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-	public function registerClient(Request $request)
+	public function registerClient(RegisterClientRequest  $request)
 	{
-		$request->validate([
-			'name'		 => 'required|string|max:255',
-			'email'		 => 'required|email|unique:users',
-			'password'	 => 'required|min:6',
-			'phone' 	 => 'required|string|min:6|max:14',
-			'birth_date' => 'required|date',
-			'gender'	 => 'required|in:male,female,other',
-		]);
-
 		$user = User::create([
-			'name'			=> $request->name,
-			'email'			=> $request->email,
-			'password'		=> Hash::make($request->password),
-			'phone'			=> $request->phone,
-			'birth_date'	=> $request->birth_date,
-			'gender'		=> $request->gender,
-			'is_approved'	=> false,
+			...$request->validated(),
+			'is_approved' => false,
 		]);
 
 		$user->sendEmailVerificationNotification();
@@ -38,28 +30,10 @@ class AuthController extends Controller
 		]);
 	}
 
-	public function createUser(Request $request)
+	public function createUser(CreateUserRequest $request)
 	{
-		$request->validate([
-			'name'       => 'required|string|max:255',
-			'email'      => 'required|email|unique:users',
-			'password'   => 'required|min:6',
-			'phone'      => 'required|string',
-			'birth_date' => 'required|date',
-			'gender'     => 'required|in:male,female',
-			'role'       => 'required|in:admin,worker',
-			'job_position_id' => 'nullable|exists:job_positions,id',
-		]);
-
 		$user = User::create([
-			'name'        		=> $request->name,
-			'email'       		=> $request->email,
-			'password'    		=> Hash::make($request->password),
-			'phone'       		=> $request->phone,
-			'birth_date'  		=> $request->birth_date,
-			'gender'      		=> $request->gender,
-			'role'        		=> $request->role,
-			'job_position_id'   => $request->job_position_id,
+			...$request->validated(),
 			'email_verified_at' => now(),
 			'is_approved' 		=> true,
 		]);
@@ -70,35 +44,15 @@ class AuthController extends Controller
 		], 201);
 	}
 
-	public function updateUser(Request $request, User $user)
+	public function updateUser(UpdateUserRequest $request, User $user)
 	{
+		$data = $request->validated();
 
-		$request->validate([
-			'name'       => 'required|string|max:255',
-			'email'      => 'required|email|unique:users,email,' . $user->id,
-			'phone'      => 'required|string',
-			'birth_date' => 'required|date',
-			'gender'     => 'required|in:male,female,other',
-			'role'       => 'required|in:admin,worker,client',
-			'password'   => 'nullable|min:6',
-			'job_position_id' => 'nullable|exists:job_positions,id',
-		]);
-
-		$user->fill([
-			'name' => $request->name,
-			'email' => $request->email,
-			'phone' => $request->phone,
-			'birth_date' => $request->birth_date,
-			'gender' => $request->gender,
-			'role' => $request->role,
-			'job_position_id' => $request->job_position_id,
-		]);
-
-		if ($request->filled('password')) {
-			$user->password = Hash::make($request->password);
+		if (empty($data['password'])) {
+			unset($data['password']);
 		}
 
-		$user->save();
+		$user->update($data);
 
 		return response()->json([
 			'message' => 'User updated successfully',
@@ -106,15 +60,8 @@ class AuthController extends Controller
 		]);
 	}
 
-	public function login(Request $request)
+	public function login(LoginRequest $request)
 	{
-		$request->validate([
-			'email' => 'required|email',
-			'password' => 'required',
-			'guard' => 'required|in:client,staff',
-			'remember' => 'boolean'
-		]);
-
 		$user = User::where('email', $request->email)->first();
 
 		if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -145,9 +92,7 @@ class AuthController extends Controller
 				'name' => $user->name,
 				'email' => $user->email,
 				'role' => $user->role,
-			],
-
-			'fullUser' => $user,
+			]
 		]);
 	}
 
@@ -222,13 +167,8 @@ class AuthController extends Controller
 		return response()->json($user->services);
 	}
 
-	public function syncUserServices(Request $request, User $user)
+	public function syncUserServices(SyncUserServicesRequest $request, User $user)
 	{
-		$request->validate([
-			'service_ids' => 'required|array',
-			'service_ids.*' => 'exists:services,id',
-		]);
-
 		$user->services()->sync($request->service_ids);
 
 		return response()->json(['message' => 'Services synced successfully']);

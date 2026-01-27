@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -55,6 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
 			'is_approved' => 'boolean',
 			'is_active' => 'boolean',
+			'birth_date' => 'date',
+			'job_position_id' => 'integer',
         ];
     }
 
@@ -96,4 +100,33 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		return $this->belongsToMany(Service::class, 'worker_service', 'user_id', 'service_id');
 	}
+
+	/* ---------- ATTRIBUTES ---------- */
+	protected function password(): Attribute
+	{
+		return Attribute::make(
+			set: fn ($value) => $value ? Hash::make($value) : null
+		);
+	}
+
+	/* ---------- SCOPES ---------- */
+	public function scopeRole($query, $role)
+	{
+		return $query->when($role, fn ($q) => $q->where('role', $role));
+	}
+
+	public function scopeGender($query, $gender)
+	{
+		return $query->when($gender, fn ($q) => $q->where('gender', $gender));
+	}
+
+	public function scopeSearch($query, $search)
+	{
+		return $query->when($search, function ($q) use ($search) {
+			$q->where('name', 'like', "%$search%")
+				->orWhere('email', 'like', "%$search%")
+				->orWhere('phone', 'like', "%$search%");
+		});
+	}
+
 }
