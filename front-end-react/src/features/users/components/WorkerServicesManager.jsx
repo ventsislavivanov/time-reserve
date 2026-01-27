@@ -55,7 +55,7 @@ const WorkerServicesManager = ({ workerId }) => {
     };
 
     if (isLoading) {
-        return <UILoading fullscreen={true} color="#436d9a" size={60}/>;
+        return <UILoading />;
     }
 
     return (
@@ -96,7 +96,7 @@ const WorkerServicesManager = ({ workerId }) => {
                 <button 
                     className="btn btn-primary btn-sm" 
                     onClick={handleSave}
-                    disabled={isSaving}
+                    disabled={selectedServiceIds.length === 0 || isSaving}
                 >
                     {isSaving ? (
                         <><span className="spinner-border spinner-border-sm me-1"></span> Saving...</>

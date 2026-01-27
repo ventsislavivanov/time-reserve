@@ -4,11 +4,11 @@ import AddNewJob from './AddNewJob';
 import JobsList from './JobsList.jsx';
 
 import {
-    getJobPositions,
-    createJobPosition,
-    updateJobPosition,
-    deleteJobPosition
-} from '../services/jobPositionService.js';
+    getJobs,
+    createJob,
+    updateJob,
+    deleteJob
+} from '../services/jobService.js';
 import { notify } from "../../../services";
 
 const ManageJobs = () => {
@@ -27,7 +27,7 @@ const ManageJobs = () => {
     const loadPositions = async () => {
         try {
             setIsLoading(true);
-            const data = await getJobPositions();
+            const data = await getJobs();
             setPositions(data);
         } catch {
             notify.error('Failed to load job positions');
@@ -39,10 +39,10 @@ const ManageJobs = () => {
     const handleSubmit = async () => {
         try {
             if (isEditing) {
-                await updateJobPosition(currentPosition.id, currentPosition);
+                await updateJob(currentPosition.id, currentPosition);
                 notify.success('Position updated successfully');
             } else {
-                await createJobPosition(currentPosition);
+                await createJob(currentPosition);
                 notify.success('Position created successfully');
             }
 
@@ -62,7 +62,7 @@ const ManageJobs = () => {
         if (!window.confirm('Are you sure you want to delete this position?')) return;
 
         try {
-            await deleteJobPosition(id);
+            await deleteJob(id);
             notify.success('Position deleted successfully');
             loadPositions();
         } catch {

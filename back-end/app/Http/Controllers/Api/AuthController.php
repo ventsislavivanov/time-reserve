@@ -70,13 +70,12 @@ class AuthController extends Controller
 		], 201);
 	}
 
-	public function updateUser(Request $request, $id)
+	public function updateUser(Request $request, User $user)
 	{
-		$user = User::findOrFail($id);
 
 		$request->validate([
 			'name'       => 'required|string|max:255',
-			'email'      => 'required|email|unique:users,email,' . $id,
+			'email'      => 'required|email|unique:users,email,' . $user->id,
 			'phone'      => 'required|string',
 			'birth_date' => 'required|date',
 			'gender'     => 'required|in:male,female,other',
@@ -85,13 +84,15 @@ class AuthController extends Controller
 			'job_position_id' => 'nullable|exists:job_positions,id',
 		]);
 
-		$user->name = $request->name;
-		$user->email = $request->email;
-		$user->phone = $request->phone;
-		$user->birth_date = $request->birth_date;
-		$user->gender = $request->gender;
-		$user->role = $request->role;
-		$user->job_position_id = $request->job_position_id;
+		$user->fill([
+			'name' => $request->name,
+			'email' => $request->email,
+			'phone' => $request->phone,
+			'birth_date' => $request->birth_date,
+			'gender' => $request->gender,
+			'role' => $request->role,
+			'job_position_id' => $request->job_position_id,
+		]);
 
 		if ($request->filled('password')) {
 			$user->password = Hash::make($request->password);
@@ -201,9 +202,8 @@ class AuthController extends Controller
 		return response()->json($users);
 	}
 
-	public function toggleActive($id) {
-		$user = User::findOrFail($id);
-
+	public function toggleActive(User $user)
+	{
 		if (auth()->id() == $user->id) {
 			return response()->json(['message' => 'Cannot deactivate own account.'], 400);
 		}
@@ -217,15 +217,13 @@ class AuthController extends Controller
 		]);
 	}
 
-	public function getUserServices($id)
+	public function getUserServices(User $user)
 	{
-		$user = User::findOrFail($id);
 		return response()->json($user->services);
 	}
 
-	public function syncUserServices(Request $request, $id)
+	public function syncUserServices(Request $request, User $user)
 	{
-		$user = User::findOrFail($id);
 		$request->validate([
 			'service_ids' => 'required|array',
 			'service_ids.*' => 'exists:services,id',

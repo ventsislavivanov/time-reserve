@@ -89,7 +89,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	public function jobPosition(): BelongsTo
 	{
-		return $this->belongsTo(JobPosition::class);
+		return $this->belongsTo(Job::class);
 	}
 
 	public function services(): BelongsToMany
