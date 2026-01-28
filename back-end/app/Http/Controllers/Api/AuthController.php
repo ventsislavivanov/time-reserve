@@ -3,14 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterClientRequest;
-use App\Http\Requests\SyncUserServicesRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User\UserAuthResource;
-use App\Http\Resources\User\UserListResource;
-use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Services\AuthService;
 use Illuminate\Auth\Events\Verified;
@@ -23,54 +18,6 @@ class AuthController extends Controller
 		// auto-resolve
 		protected AuthService $authService
 	) {}
-
-	public function registerClient(RegisterClientRequest  $request)
-	{
-		$user = User::create([
-			...$request->validated(),
-			'is_approved' => false,
-		]);
-
-		$user->sendEmailVerificationNotification();
-
-		return response()->json([
-			'message' => 'Please check your email for a confirmation link.'
-		]);
-	}
-
-	public function createUser(CreateUserRequest $request)
-	{
-		$this->authorize('create', User::class);
-
-		$user = User::create([
-			...$request->validated(),
-			'email_verified_at' => now(),
-			'is_approved' 		=> true,
-		]);
-
-		return response()->json([
-			'message' => 'User created successfully',
-			'user'    => new UserResource($user)
-		], 201);
-	}
-
-	public function updateUser(UpdateUserRequest $request, User $user)
-	{
-		$this->authorize('update', $user);
-
-		$data = $request->validated();
-
-		if (empty($data['password'])) {
-			unset($data['password']);
-		}
-
-		$user->update($data);
-
-		return response()->json([
-			'message' => 'User updated successfully',
-			'user'    => new UserResource($user)
-		]);
-	}
 
 	public function login(LoginRequest $request)
 	{
@@ -93,6 +40,20 @@ class AuthController extends Controller
 		return response()->json(['message' => 'Logged out']);
 	}
 
+	public function registerClient(RegisterClientRequest  $request)
+	{
+		$user = User::create([
+			...$request->validated(),
+			'is_approved' => false,
+		]);
+
+		$user->sendEmailVerificationNotification();
+
+		return response()->json([
+			'message' => 'Please check your email for a confirmation link.'
+		]);
+	}
+
 	public function verifyEmail(Request $request, $id, $hash)
 	{
 		$user = User::findOrFail($id);
@@ -110,43 +71,6 @@ class AuthController extends Controller
 		}
 
 		return redirect('http://localhost:5173/login?verified=1&email=' . urlencode($user->email));
-	}
-
-	public function getAllUsers(Request $request) {
-		$this->authorize('viewAny', User::class);
-
-		$users = User::query()
-			->role($request->query('role'))
-			->gender($request->query('gender'))
-			->search($request->query('search'))
-			->paginate($request->query('limit', 10));
-
-		return UserListResource::collection($users);
-	}
-
-	public function toggleActive(User $user)
-	{
-		$this->authorize('toggleActive', $user);
-
-		$user->update([
-			'is_active' => ! $user->is_active,
-		]);
-
-		return response()->json([
-			'message' => $user->is_active ? 'User is active.' : 'User is blocked.',
-		]);
-	}
-
-	public function getUserServices(User $user)
-	{
-		return response()->json($user->services);
-	}
-
-	public function syncUserServices(SyncUserServicesRequest $request, User $user)
-	{
-		$user->services()->sync($request->service_ids);
-
-		return response()->json(['message' => 'Services synced successfully']);
 	}
 
 }

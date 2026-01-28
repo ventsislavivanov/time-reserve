@@ -3,6 +3,9 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,18 +19,19 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(function () {
-	Route::get('/users', [AuthController::class, 'getAllUsers']);
-	Route::post('/users', [AuthController::class, 'createUser']);
-	Route::put('/users/{user}', [AuthController::class, 'updateUser']);
-	Route::patch('/users/{user}/toggle-active', [AuthController::class, 'toggleActive']);
+	Route::get('/users', [UserController::class, 'index']);
+	Route::post('/users', [UserController::class, 'store']);
+	Route::put('/users/{user}', [UserController::class, 'update']);
+
+	Route::patch('/users/{user}/toggle-active', [AdminUserController::class, 'toggleActive']);
+
+	Route::get('/users/{user}/services', [UserController::class, 'services']);
+	Route::post('/users/{user}/services', [UserController::class, 'syncServices']);
 
 	Route::apiResource('jobs', JobController::class);
 
 	Route::apiResource('services', ServiceController::class)
 		->only(['index', 'store']);
-
-	Route::get('/users/{user}/services', [AuthController::class, 'getUserServices']);
-	Route::post('/users/{user}/services', [AuthController::class, 'syncUserServices']);
 });
 
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
