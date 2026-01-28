@@ -8,6 +8,9 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterClientRequest;
 use App\Http\Requests\SyncUserServicesRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\User\UserAuthResource;
+use App\Http\Resources\User\UserListResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Services\AuthService;
 use Illuminate\Auth\Events\Verified;
@@ -47,7 +50,7 @@ class AuthController extends Controller
 
 		return response()->json([
 			'message' => 'User created successfully',
-			'user'    => $user
+			'user'    => new UserResource($user)
 		], 201);
 	}
 
@@ -65,7 +68,7 @@ class AuthController extends Controller
 
 		return response()->json([
 			'message' => 'User updated successfully',
-			'user'    => $user
+			'user'    => new UserResource($user)
 		]);
 	}
 
@@ -80,12 +83,7 @@ class AuthController extends Controller
 
 		return response()->json([
 			'token' => $result['token'],
-			'user' => [
-				'id'    => $result['user']->id,
-				'name'  => $result['user']->name,
-				'email' => $result['user']->email,
-				'role'  => $result['user']->role,
-			]
+			'user' => new UserAuthResource($result['user']),
 		]);
 	}
 
@@ -123,7 +121,7 @@ class AuthController extends Controller
 			->search($request->query('search'))
 			->paginate($request->query('limit', 10));
 
-		return response()->json($users);
+		return UserListResource::collection($users);
 	}
 
 	public function toggleActive(User $user)
