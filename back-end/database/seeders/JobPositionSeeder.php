@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Job;
+use App\Models\JobPosition;
 use Illuminate\Database\Seeder;
 
 class JobPositionSeeder extends Seeder
@@ -12,17 +12,17 @@ class JobPositionSeeder extends Seeder
      */
     public function run(): void
     {
-        Job::create([
+        JobPosition::create([
             'name' => 'Фризьор',
             'description' => 'Специалист по подстригване и оформяне на прически.',
         ]);
 
-        Job::create([
+        JobPosition::create([
             'name' => 'Маникюрист',
             'description' => 'Специалист по грижа за ръцете и ноктите.',
         ]);
 
-        Job::create([
+        JobPosition::create([
             'name' => 'Козметик',
             'description' => 'Специалист по грижа за кожата и лицето.',
         ]);

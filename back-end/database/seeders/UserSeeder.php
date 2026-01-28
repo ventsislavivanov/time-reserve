@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Job;
+use App\Models\JobPosition;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        $hairdresser = Job::where('name', 'Фризьор')->first();
+        $hairdresser = JobPosition::where('name', 'Фризьор')->first();
         $workerAn = User::create([
             'name' => 'An',
             'email' => 'an@test.com',

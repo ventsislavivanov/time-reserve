@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Job;
+use App\Models\JobPosition;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
     public function index()
     {
-        return response()->json(Job::all());
+        return response()->json(JobPosition::all());
     }
 
-	public function show(Job $job)
+	public function show(JobPosition $job)
 	{
 		return response()->json($job);
 	}
@@ -26,12 +26,12 @@ class JobController extends Controller
         ]);
 
 		return response()->json(
-			Job::create($validated),
+			JobPosition::create($validated),
 			201
 		);
     }
 
-    public function update(Request $request, Job $job)
+    public function update(Request $request, JobPosition $job)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -43,10 +43,10 @@ class JobController extends Controller
         return response()->json($job);
     }
 
-    public function destroy(Job $job)
+    public function destroy(JobPosition $job)
     {
         $job->delete();
 
-        return response()->json(['message' => 'Job position deleted successfully']);
+        return response()->json(['message' => 'JobPosition position deleted successfully']);
     }
 }
