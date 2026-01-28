@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'registerClient']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
+
 Route::middleware('auth:sanctum')->group(function () {
 	Route::post('/logout', [AuthController::class, 'logout']);
 	Route::get('/me', fn (Request $r) => $r->user());
@@ -33,7 +37,3 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 	Route::apiResource('services', ServiceController::class)
 		->only(['index', 'store']);
 });
-
-Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
-	->middleware(['signed'])
-	->name('verification.verify');
