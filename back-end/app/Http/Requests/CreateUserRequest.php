@@ -12,7 +12,7 @@ class CreateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-		return auth()->user()?->isAdmin();
+		return auth()->user()?->isAdmin() ?? false;
     }
 
     /**

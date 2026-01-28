@@ -32,6 +32,8 @@ class AuthController extends Controller
 
 	public function createUser(CreateUserRequest $request)
 	{
+		$this->authorize('create', User::class);
+
 		$user = User::create([
 			...$request->validated(),
 			'email_verified_at' => now(),
@@ -46,6 +48,8 @@ class AuthController extends Controller
 
 	public function updateUser(UpdateUserRequest $request, User $user)
 	{
+		$this->authorize('update', $user);
+
 		$data = $request->validated();
 
 		if (empty($data['password'])) {
@@ -124,6 +128,8 @@ class AuthController extends Controller
 	}
 
 	public function getAllUsers(Request $request) {
+		$this->authorize('viewAny', User::class);
+
 		$query = User::query();
 
 		if ($request->has('role') && $request->role != '') {
@@ -151,16 +157,14 @@ class AuthController extends Controller
 
 	public function toggleActive(User $user)
 	{
-		if (auth()->id() == $user->id) {
-			return response()->json(['message' => 'Cannot deactivate own account.'], 400);
-		}
+		$this->authorize('toggleActive', $user);
 
-		$user->is_active = ! $user->is_active;
-		$user->save();
+		$user->update([
+			'is_active' => ! $user->is_active,
+		]);
 
 		return response()->json([
 			'message' => $user->is_active ? 'User is active.' : 'User is blocked.',
-			'user' => $user
 		]);
 	}
 
