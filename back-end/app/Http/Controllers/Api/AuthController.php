@@ -130,27 +130,11 @@ class AuthController extends Controller
 	public function getAllUsers(Request $request) {
 		$this->authorize('viewAny', User::class);
 
-		$query = User::query();
-
-		if ($request->has('role') && $request->role != '') {
-			$query->where('role', $request->role);
-		}
-
-		if ($request->has('gender') && $request->gender != '') {
-			$query->where('gender', $request->gender);
-		}
-
-		if ($request->has('search') && $request->search != '') {
-			$search = $request->search;
-			$query->where(function($q) use ($search) {
-				$q->where('name', 'like', "%$search%")
-					->orWhere('email', 'like', "%$search%")
-					->orWhere('phone', 'like', "%$search%");
-			});
-		}
-
-		$perPage = $request->query('limit', 10);
-		$users = $query->paginate($perPage);
+		$users = User::query()
+			->role($request->query('role'))
+			->gender($request->query('gender'))
+			->search($request->query('search'))
+			->paginate($request->query('limit', 10));
 
 		return response()->json($users);
 	}
