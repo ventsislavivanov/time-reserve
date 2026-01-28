@@ -9,13 +9,18 @@ use App\Http\Requests\RegisterClientRequest;
 use App\Http\Requests\SyncUserServicesRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+
+	public function __construct(
+		// auto-resolve
+		protected AuthService $authService
+	) {}
+
 	public function registerClient(RegisterClientRequest  $request)
 	{
 		$user = User::create([
@@ -66,38 +71,20 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request)
 	{
-		$user = User::where('email', $request->email)->first();
-
-		if (! $user || ! Hash::check($request->password, $user->password)) {
-			return response()->json(['message' => 'Invalid credentials'], 401);
-		}
-
-		if ($request->remember) {
-			$user->setRememberToken(Str::random(60));
-			$user->save();
-		}
-
-		if (! $user->canLogin()) {
-			return response()->json([
-				'message' => 'Account is not active or email not verified.'
-			], 403);
-		}
-
-		if ($request->guard === 'client' && ! $user->isClient()) {
-			return response()->json(['message' => 'Access denied'], 403);
-		}
-
-		if ($request->guard === 'staff' && ! $user->isStaff()) {
-			return response()->json(['message' => 'Access denied'], 403);
-		}
+		$result = $this->authService->login(
+			email: $request->email,
+			password: $request->password,
+			guard: $request->guard,
+			remember: $request->remember ?? false
+		);
 
 		return response()->json([
-			'token' => $user->createToken('react')->plainTextToken,
+			'token' => $result['token'],
 			'user' => [
-				'id' => $user->id,
-				'name' => $user->name,
-				'email' => $user->email,
-				'role' => $user->role,
+				'id'    => $result['user']->id,
+				'name'  => $result['user']->name,
+				'email' => $result['user']->email,
+				'role'  => $result['user']->role,
 			]
 		]);
 	}
