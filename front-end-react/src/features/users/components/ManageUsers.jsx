@@ -37,9 +37,11 @@ export default function ManageUsers() {
 		try {
 			const response = await getUsers(currentPage, itemsPerPage, filters);
 
-			setUsers(response.data);
-			setTotalItems(response.total);
-			setTotalPages(response.last_page);
+			const { data, meta } = response;
+
+			setUsers(data);
+			setTotalItems(meta.total);
+			setTotalPages(meta.last_page);
 		} catch (error) {
 			console.error("Error loading users", error);
 		} finally {
