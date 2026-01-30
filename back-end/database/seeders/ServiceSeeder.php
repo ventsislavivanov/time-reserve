@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Service;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ServiceSeeder extends Seeder
 {
@@ -12,32 +12,73 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        Service::create([
-            'name' => 'Мъжко подстригване',
-            'duration_minutes' => 30,
-            'description' => 'Класическо мъжко подстригване.',
-            'is_active' => true,
-        ]);
-
-        Service::create([
-            'name' => 'Дамско подстригване',
-            'duration_minutes' => 60,
-            'description' => 'Подстригване, измиване и сешоар.',
-            'is_active' => true,
-        ]);
-
-        Service::create([
-            'name' => 'Маникюр с гел лак',
-            'duration_minutes' => 90,
-            'description' => 'Професионален маникюр с дълготраен гел лак.',
-            'is_active' => true,
-        ]);
-
-        Service::create([
-            'name' => 'Почистване на лице',
-            'duration_minutes' => 60,
-            'description' => 'Дълбоко почистване на кожата на лицето.',
-            'is_active' => true,
-        ]);
+		DB::table('services')->insert([
+			[
+				'name' => 'Мъжко подстригване',
+				'description' => 'Класическо мъжко подстригване.',
+				'duration' => 30,
+				'price' => 20.00,
+				'category_id' => 1,
+				'preparation_time' => 5,
+				'cleanup_time' => 5,
+				'is_active' => true,
+				'image' => null,
+				'created_at' => now(),
+				'updated_at' => now(),
+			],
+			[
+				'name' => 'Дамско подстригване',
+				'description' => 'Подстригване,
+				измиване и сешоар.',
+				'duration' => 60,
+				'price' => 45.00,
+				'category_id' => 1,
+				'preparation_time' => 10,
+				'cleanup_time' => 10,
+				'is_active' => true,
+				'image' => null,
+				'created_at' => now(),
+				'updated_at' => now(),
+			],
+			[
+				'name' => 'Маникюр с гел лак',
+				'description' => 'Професионален маникюр с дълготраен гел лак.',
+				'duration' => 90,
+				'price' => 35.00,
+				'category_id' => 2,
+				'preparation_time' => 5,
+				'cleanup_time' => 10,
+				'is_active' => true,
+				'image' => null,
+				'created_at' => now(),
+				'updated_at' => now(),
+			],
+			[
+				'name' => 'Почистване на лице',
+				'description' => 'Дълбоко почистване на кожата на лицето.',
+				'duration' => 60,
+				'price' => 50.00,
+				'category_id' => 3,
+				'preparation_time' => 10,
+				'cleanup_time' => 10,
+				'is_active' => true,
+				'image' => null,
+				'created_at' => now(),
+				'updated_at' => now(),
+			],
+			[
+				'name' => 'Мезотерапия',
+				'description' => 'Подмладяваща мезотерапия за лице.',
+				'duration' => 45,
+				'price' => 80.00,
+				'category_id' => 3,
+				'preparation_time' => 10,
+				'cleanup_time' => 10,
+				'is_active' => true,
+				'image' => null,
+				'created_at' => now(),
+				'updated_at' => now(),
+			],
+		]);
     }
 }
