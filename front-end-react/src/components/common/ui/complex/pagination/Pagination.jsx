@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Pagination = ({
 	currentPage,
 	totalPages,
-	onPageChange,
+	totalItems,
 	itemsPerPage,
+	onPageChange,
 	onItemsPerPageChange,
-	totalItems
 }) => {
 	const getPageNumbers = () => {
 		const pages = [];
