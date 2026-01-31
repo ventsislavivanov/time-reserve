@@ -42,7 +42,7 @@ const ManageJobs = () => {
                 await updateJob(currentJob.id, data);
                 notify.success('Position updated successfully');
             } else {
-                await createJob(currentJob);
+                await createJob(data);
                 notify.success('Position created successfully');
             }
 
@@ -64,6 +64,7 @@ const ManageJobs = () => {
         try {
             await deleteJob(id);
             notify.success('Job position deleted successfully');
+            resetForm();
             loadJobs();
         } catch {
             notify.error('Failed to delete job position');
@@ -82,7 +83,6 @@ const ManageJobs = () => {
                     <AddNewJob
                         isEditing={isEditing}
                         job={currentJob}
-                        setPosition={setCurrentJob}
                         onSubmit={handleSubmit}
                         onCancel={resetForm}
                     />

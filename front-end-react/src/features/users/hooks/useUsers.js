@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUsers, toggleUserActive } from "../services/userService";
+import { notify } from "../../../services/index.js";
 
 export default function useUsers() {
 	const [users, setUsers] = useState([]);
@@ -42,10 +43,14 @@ export default function useUsers() {
 	}, [filters, itemsPerPage]);
 
 	const toggleActive = async (id) => {
-		const response = await toggleUserActive(id);
-		setUsers(prev =>
-			prev.map(u => (u.id === id ? response.user : u))
-		);
+		try {
+			const updatedUser = await toggleUserActive(id);
+			setUsers(prev =>
+				prev.map(u => (u.id === id ? updatedUser : u))
+			);
+		} catch (error) {
+			notify.error("Failed to update status");
+		}
 	};
 
 	return {

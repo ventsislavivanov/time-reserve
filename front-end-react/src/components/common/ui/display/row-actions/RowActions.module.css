@@ -1,0 +1,9 @@
+.actionButton:hover svg,
+.actionButton:hover i {
+	color: white !important;
+}
+
+.actionButton:hover svg,
+.actionButton:hover i {
+	filter: brightness(0) invert(1);
+}

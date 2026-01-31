@@ -1,9 +1,12 @@
-import React from 'react';
-import { UILoading, UIButton, UICard } from '../../../components/common/ui';
+﻿import { UILoading, UICard, UIRowActions } from '../../../components/common/ui';
 
 const JobsList = ({ jobs, isLoading, onEdit, onDelete }) => {
 	return (
-		<UICard title="Job Positions List">
+		<UICard
+			variant="primary"
+			title="Job Positions List"
+			headerIcon="clipboard-list"
+		>
 			{isLoading ? (
 				<UILoading />
 			) : jobs.length === 0 ? (
@@ -28,18 +31,23 @@ const JobsList = ({ jobs, isLoading, onEdit, onDelete }) => {
 									{job.description}
 								</td>
 								<td className="text-end">
-									<UIButton
-										size="sm"
-										variant="outline-primary"
-										className="me-2"
-										onClick={() => onEdit(job)}
-										icon="edit"
-									/>
-									<UIButton
-										size="sm"
-										variant="outline-danger"
-										onClick={() => onDelete(job.id)}
-										icon="trash"
+									<UIRowActions
+										actions={[
+											{
+												icon: "edit",
+												iconClassName: "text-warning",
+												variant: "outline-warning",
+												onClick: () => onEdit(job),
+												title: "Edit"
+											},
+											{
+												icon: "trash",
+												iconClassName: "text-danger",
+												variant: "outline-danger",
+												onClick: () => onDelete(job.id),
+												title: "Delete"
+											}
+										]}
 									/>
 								</td>
 							</tr>

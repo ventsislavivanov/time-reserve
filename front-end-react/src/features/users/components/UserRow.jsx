@@ -1,8 +1,37 @@
-import React from 'react';
+﻿import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UIStatusBadge, UIButton } from "../../../components/common/ui";
+import { UIStatusBadge, UIButton, UIRowActions } from "../../../components/common/ui";
 
 const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) => {
+    const actions = [
+        {
+            icon: "edit",
+            variant: "light",
+            className: "border shadow-sm rounded-circle p-0",
+            style: { width: "32px", height: "32px" },
+            iconClassName: "text-warning small",
+            title: "Edit User",
+            onClick: () => onEdit(user)
+        },
+        {
+            icon: "eye",
+            variant: "light",
+            className: "border shadow-sm rounded-circle p-0",
+            style: { width: "32px", height: "32px" },
+            iconClassName: "text-primary small",
+            title: "View Details",
+            onClick: () => onViewDetails(user)
+        },
+        {
+            icon: user.is_active ? "ban" : "check",
+            variant: user.is_active ? "outline-danger" : "outline-success",
+            className: "shadow-sm rounded-pill px-3",
+            label: user.is_active ? "Block" : "Activate",
+            iconClassName: user.is_active ? "text-danger small" : "text-success small",
+            onClick: () => onToggleActive(user.id)
+        }
+    ]
+
     return (
         <tr className={!user.is_active ? "bg-light opacity-75" : ""}>
             <td className="ps-4 py-3">
@@ -42,37 +71,7 @@ const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) 
                 </div>
             </td>
             <td className="pe-4 text-center py-3">
-                <div className="d-flex justify-content-center gap-2">
-                    <UIButton
-                        size="sm"
-                        variant="light"
-                        className="border shadow-sm rounded-circle p-0"
-                        style={{ width: '32px', height: '32px' }}
-                        onClick={() => onEdit(user)}
-                        title="Edit User"
-                        icon="edit"
-                        iconClassName={'text-warning small'}
-                    />
-                    <UIButton
-                        size="sm"
-                        variant="light"
-                        className="border shadow-sm rounded-circle p-0"
-                        style={{ width: '32px', height: '32px' }}
-                        onClick={() => onViewDetails(user)}
-                        title="View Details"
-                        icon="eye"
-                        iconClassName={'text-primary small'}
-                    />
-                    <UIButton
-                        size="sm"
-                        variant={user.is_active ? 'outline-danger' : 'outline-success'}
-                        className="shadow-sm rounded-pill px-3"
-                        onClick={() => onToggleActive(user.id)}
-                        icon={user.is_active ? 'ban' : 'check'}
-                    >
-                        {user.is_active ? 'Block' : 'Activate'}
-                    </UIButton>
-                </div>
+                <UIRowActions actions={actions} />
             </td>
         </tr>
     );

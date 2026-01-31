@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const UICard = ({
     children,
     title,
@@ -17,7 +19,10 @@ const UICard = ({
             {(title || headerIcon || headerActions) && (
                 <div className={`card-header d-flex justify-content-between align-items-center py-3 ${headerBgClass} ${headerClassName}`}>
                     <h5 className="mb-0 d-flex align-items-center fw-bold">
-                        {headerIcon && <span className="me-2">{headerIcon}</span>}
+                        {headerIcon && (
+                            <span className="me-2">
+                                <FontAwesomeIcon icon={headerIcon} />
+                            </span>)}
                         {title}
                     </h5>
                     {headerActions && <div>{headerActions}</div>}
