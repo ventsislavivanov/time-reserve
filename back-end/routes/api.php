@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\UserController;
@@ -33,6 +34,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 	Route::post('/users/{user}/services', [UserController::class, 'syncServices']);
 
 	Route::apiResource('jobs', JobController::class);
+
+	Route::apiResource('categories', CategoryController::class);
 
 	Route::apiResource('services', ServiceController::class)
 		->only(['index', 'store']);
