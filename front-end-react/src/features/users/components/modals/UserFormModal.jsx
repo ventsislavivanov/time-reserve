@@ -3,7 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { UIInput, UIRadio, UIDatePicker, UISelect, UIModal, UIButton } from '../../../../components/common/ui/index.js';
 import { createUser, updateUser } from '../../services/userService.js';
 import { getJobs } from '../../../jobs/services/jobService.js';
-import { userFormRules } from '../../validation/userFormRules.js';
+import { userFormRules } from '../../validations/userFormRules.js';
 import { notify } from "../../../../services";
 
 const UserFormModal = ({ user, onSuccess, onCancel }) => {

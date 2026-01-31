@@ -12,23 +12,23 @@ import {
 import { notify } from "../../../services";
 
 const ManageJobs = () => {
-    const [positions, setPositions] = useState([]);
+    const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
-    const [currentPosition, setCurrentPosition] = useState({
+    const [currentJob, setCurrentJob] = useState({
         name: '',
         description: ''
     });
 
     useEffect(() => {
-        loadPositions();
+        loadJobs();
     }, []);
 
-    const loadPositions = async () => {
+    const loadJobs = async () => {
         try {
             setIsLoading(true);
             const data = await getJobs();
-            setPositions(data);
+            setJobs(data);
         } catch {
             notify.error('Failed to load job positions');
         } finally {
@@ -36,42 +36,42 @@ const ManageJobs = () => {
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (data) => {
         try {
             if (isEditing) {
-                await updateJob(currentPosition.id, currentPosition);
+                await updateJob(currentJob.id, data);
                 notify.success('Position updated successfully');
             } else {
-                await createJob(currentPosition);
+                await createJob(currentJob);
                 notify.success('Position created successfully');
             }
 
             resetForm();
-            loadPositions();
+            loadJobs();
         } catch {
             notify.error('Failed to save position');
         }
     };
 
-    const handleEdit = (position) => {
-        setCurrentPosition(position);
+    const handleEdit = (job) => {
+        setCurrentJob(job);
         setIsEditing(true);
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this position?')) return;
+        if (!window.confirm('Are you sure you want to delete this job position?')) return;
 
         try {
             await deleteJob(id);
-            notify.success('Position deleted successfully');
-            loadPositions();
+            notify.success('Job position deleted successfully');
+            loadJobs();
         } catch {
-            notify.error('Failed to delete position');
+            notify.error('Failed to delete job position');
         }
     };
 
     const resetForm = () => {
-        setCurrentPosition({ name: '', description: '' });
+        setCurrentJob({ name: '', description: '' });
         setIsEditing(false);
     };
 
@@ -81,8 +81,8 @@ const ManageJobs = () => {
                 <div className="col-md-4">
                     <AddNewJob
                         isEditing={isEditing}
-                        position={currentPosition}
-                        setPosition={setCurrentPosition}
+                        job={currentJob}
+                        setPosition={setCurrentJob}
                         onSubmit={handleSubmit}
                         onCancel={resetForm}
                     />
@@ -90,7 +90,7 @@ const ManageJobs = () => {
 
                 <div className="col-md-8">
                     <JobsList
-                        positions={positions}
+                        jobs={jobs}
                         isLoading={isLoading}
                         onEdit={handleEdit}
                         onDelete={handleDelete}

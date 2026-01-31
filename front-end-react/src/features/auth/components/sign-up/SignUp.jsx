@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { UIInput, UIRadio, UIDatePicker, UIButton, UILoading } from "../../../../components/common/ui/index.js";
-import { signUpRules } from "../../validation/signUpRules.js";
+import { signUpRules } from "../../validations/signUpRules.js";
 import { register as registerUser } from "../../services/authService.js";
 
 const intialValues = {
@@ -57,7 +57,7 @@ const SignUp = () => {
 		console.log(errors);
 	}
 
-	const buildFieldRules = signUpRules({ getValues });
+	const rules = signUpRules({ getValues });
 
 	return (
 		<>
@@ -75,7 +75,7 @@ const SignUp = () => {
 								<div className="col-md-12">
 									<UIInput
 										name="name"
-										rules={buildFieldRules.name}
+										rules={rules.name}
 										placeholder="Full Name"
 										icon={['fas', 'user']}
 									/>
@@ -84,7 +84,7 @@ const SignUp = () => {
 								<div className="col-md-12">
 									<UIInput
 										name="email"
-										rules={buildFieldRules.email}
+										rules={rules.email}
 										placeholder="Email"
 										icon={['fas', 'envelope']}
 									/>
@@ -94,7 +94,7 @@ const SignUp = () => {
 									<UIInput
 										type="password"
 										name="password"
-										rules={buildFieldRules.password}
+										rules={rules.password}
 										placeholder="Password"
 										icon={['fas', 'unlock']}
 									/>
@@ -104,7 +104,7 @@ const SignUp = () => {
 									<UIInput
 										type="password"
 										name="confirm_password"
-										rules={buildFieldRules.confirm_password}
+										rules={rules.confirm_password}
 										placeholder="Confirm password"
 										icon={['fas', 'unlock-keyhole']}
 									/>
@@ -113,7 +113,7 @@ const SignUp = () => {
 								<div className="col-md-12">
 									<UIInput
 										name="address"
-										rules={buildFieldRules.address}
+										rules={rules.address}
 										placeholder="Address"
 										icon={['fas', 'location-pin']}
 									/>
@@ -126,7 +126,7 @@ const SignUp = () => {
 										<div className="col-md-12">
 											<UIInput
 												name="phone"
-												rules={buildFieldRules.phone}
+												rules={rules.phone}
 												placeholder="Phone"
 												icon={['fas', 'phone']}
 												inputMode="numeric"
@@ -136,7 +136,7 @@ const SignUp = () => {
 										<div className="col-md-12">
 											<UIDatePicker
 												name="birth_date"
-												rules={buildFieldRules.birth_date}
+												rules={rules.birth_date}
 												placeholder="dd/mm/yyyy"
 												icon={['fas', 'calendar']}
 											/>
@@ -147,7 +147,7 @@ const SignUp = () => {
 								<div className="col-md-4">
 									<UIRadio
 										name="gender"
-										rules={buildFieldRules.gender}
+										rules={rules.gender}
 										label="Gender"
 										options={['male', 'female', 'other']}
 									/>

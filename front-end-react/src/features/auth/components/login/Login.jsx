@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { notify } from "../../../../services";
 import { UIInput, UICheckbox, UIButton, UILoading  } from "../../../../components/common/ui";
-import { loginRules } from "../../validation/loginRules.js";
+import { loginRules } from "../../validations/loginRules.js";
 import { login as loginUser } from "../../services/authService.js";
 import { login } from "../../../../store/authSlice.js";
 
@@ -69,7 +69,7 @@ const Login = ({ isClient, guard }) => {
 		console.log(errors);
 	};
 
-	const buildFieldRules = loginRules;
+	const rules = loginRules;
 
 	return (
 		<>
@@ -85,7 +85,7 @@ const Login = ({ isClient, guard }) => {
 						<form onSubmit={handleSubmit(loginHandler, onInvalid)}>
 							<UIInput
 								name="email"
-								rules={buildFieldRules.email}
+								rules={rules.email}
 								placeholder="Place enter email..."
 								label="Email"
 								icon={['fas', 'user']}
@@ -94,7 +94,7 @@ const Login = ({ isClient, guard }) => {
 							<UIInput
 								type="password"
 								name="password"
-								rules={buildFieldRules.password}
+								rules={rules.password}
 								placeholder="Place enter password..."
 								label="Password"
 								icon={['fas', 'lock']}

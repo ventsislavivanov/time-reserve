@@ -1,12 +1,12 @@
 import React from 'react';
 import { UILoading, UIButton, UICard } from '../../../components/common/ui';
 
-const JobsList = ({ positions, isLoading, onEdit, onDelete }) => {
+const JobsList = ({ jobs, isLoading, onEdit, onDelete }) => {
 	return (
 		<UICard title="Job Positions List">
 			{isLoading ? (
 				<UILoading />
-			) : positions.length === 0 ? (
+			) : jobs.length === 0 ? (
 				<p className="text-center text-muted py-4">
 					No job positions found. Create one to get started.
 				</p>
@@ -21,24 +21,24 @@ const JobsList = ({ positions, isLoading, onEdit, onDelete }) => {
 						</tr>
 						</thead>
 						<tbody>
-						{positions.map((position) => (
-							<tr key={position.id}>
-								<td className="fw-bold">{position.name}</td>
+						{jobs.map((job) => (
+							<tr key={job.id}>
+								<td className="fw-bold">{job.name}</td>
 								<td className="text-muted small">
-									{position.description}
+									{job.description}
 								</td>
 								<td className="text-end">
 									<UIButton
 										size="sm"
 										variant="outline-primary"
 										className="me-2"
-										onClick={() => onEdit(position)}
+										onClick={() => onEdit(job)}
 										icon="edit"
 									/>
 									<UIButton
 										size="sm"
 										variant="outline-danger"
-										onClick={() => onDelete(position.id)}
+										onClick={() => onDelete(job.id)}
 										icon="trash"
 									/>
 								</td>

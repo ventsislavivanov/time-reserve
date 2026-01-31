@@ -1,67 +1,73 @@
+import { useForm, FormProvider } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { UIButton, UICard } from '../../../components/common/ui';
+import { UIButton, UICard, UIInput, UITextarea } from '../../../components/common/ui';
+import { jobRules } from "../validations/jobRules.js";
+import { useEffect } from "react";
 
 const AddNewJob = ({
 	isEditing,
-	position,
-	setPosition,
+	job,
 	onSubmit,
 	onCancel
 }) => {
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		onSubmit();
-	};
+	const methods = useForm({
+		defaultValues: job
+	});
+
+	const {
+		handleSubmit,
+		reset
+	} = methods;
+
+	useEffect(() => {
+		reset(job);
+	}, [job, reset]);
+
+	const rules  = jobRules();
 
 	return (
-		<UICard
-			variant="primary"
-			title={isEditing ? 'Edit Position' : 'Add New Position'}
-			headerIcon={<FontAwesomeIcon icon={isEditing ? 'edit' : 'plus-circle'} />}
-		>
-			<form onSubmit={handleSubmit}>
-				<div className="mb-3">
-					<label className="form-label fw-bold small">Name</label>
-					<input
-						type="text"
-						className="form-control"
-						value={position.name}
-						onChange={(e) => setPosition({ ...position, name: e.target.value })}
-						required
+		<FormProvider {...methods}>
+			<UICard
+				variant="primary"
+				title={isEditing ? 'Edit Job Position' : 'Add New Job Position'}
+				headerIcon={
+					<FontAwesomeIcon icon={isEditing ? 'edit' : 'plus-circle'} />
+				}
+			>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<UIInput
+						name="name"
+						label="Name"
 						placeholder="e.g. Job position"
+						rules={rules.name}
 					/>
-				</div>
 
-				<div className="mb-3">
-					<label className="form-label fw-bold small">Description</label>
-					<textarea
-						className="form-control"
-						rows="3"
-						value={position.description}
-						onChange={(e) =>
-							setPosition({ ...position, description: e.target.value })
-						}
+					<UITextarea
+						name="description"
+						label="Description"
 						placeholder="Brief description of the role..."
+						rows={3}
+						rules={rules.description}
 					/>
-				</div>
 
-				<div className="d-grid gap-2">
-					<UIButton type="submit">
-						{isEditing ? 'Update Position' : 'Save Position'}
-					</UIButton>
-
-					{isEditing && (
-						<UIButton
-							variant="outline-secondary"
-							type="button"
-							onClick={onCancel}
-						>
-							Cancel
+					<div className="d-grid gap-2">
+						<UIButton type="submit">
+							{isEditing ? 'Update Job Position' : 'Save Job Position'}
 						</UIButton>
-					)}
-				</div>
-			</form>
-		</UICard>
+
+						{isEditing && (
+							<UIButton
+								variant="outline-secondary"
+								type="button"
+								onClick={onCancel}
+							>
+								Cancel
+							</UIButton>
+						)}
+					</div>
+				</form>
+			</UICard>
+		</FormProvider>
 	);
 };
 

@@ -16,11 +16,13 @@ export { default as UIDatePicker } from './controlled/datepicker/DatePicker.jsx'
 export { default as UIInput } from './controlled/input/Input.jsx';
 export { default as UIRadio } from './controlled/radio/Radio.jsx';
 export { default as UISelect } from './controlled/select/Select.jsx';
+export { default as UITextarea } from './controlled/textarea/Textarea.jsx';
 
 //Display
 export { default as UILoading } from './display/loading/Loading.jsx';
 export { default as UIToast } from './display/toast/Toast.jsx';
 export { default as UIStatusBadge } from './display/status-badge/StatusBadge.jsx';
+export { default as UIRowActions } from './display/row-actions/RowActions.jsx';
 
 //Navigation
 export { default as UINavLink } from './navigation/nav-link/NavLink.jsx';

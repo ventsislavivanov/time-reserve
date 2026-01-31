@@ -64,11 +64,8 @@ export default function ManageUsers() {
 	};
 
 	const handleFormSuccess = () => {
-		const modalElement = document.getElementById('userFormModal');
-		if (modalElement) {
-			const modal = Modal.getInstance(modalElement);
-			if (modal) modal.hide();
-		}
+		const el = document.getElementById('userFormModal');
+		el && new Modal(el).hide();
 		fetchUsers();
 	};
 

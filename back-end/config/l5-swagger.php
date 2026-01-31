@@ -266,7 +266,7 @@ return [
 
         /*
          * Pass the validatorUrl parameter to SwaggerUi init on the JS side.
-         * A null value here disables validation.
+         * A null value here disables validations.
          */
         'validator_url' => null,
 
