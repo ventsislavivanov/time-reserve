@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Modal } from "bootstrap";
 import { UILoading, UIButton, UIPagination } from "../../../components/common/ui";
+import { useBootstrapModal } from "../../../hooks/useBootstrapModal";
 import UserFilters from "./UserFilters.jsx";
 import UserRow from "./UserRow.jsx";
 import { UserDetailsModal, UserFormModal } from "./modals";
 import useUsers from "../hooks/useUsers";
-
 
 export default function ManageUsers() {
 	const {
@@ -27,6 +26,8 @@ export default function ManageUsers() {
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [editUser, setEditUser] = useState(null);
 
+	const { showModal, hideModal } = useBootstrapModal();
+
 	const roleBadgeMap = {
 		admin: 'bg-primary',
 		worker: 'bg-info',
@@ -35,34 +36,21 @@ export default function ManageUsers() {
 
 	const openDetails = (user) => {
 		setSelectedUser(user);
-		setTimeout(() => {
-			const el = document.getElementById('userDetailsModal');
-			el && new Modal(el).show();
-		}, 10);
+		setTimeout(() => showModal('userDetailsModal'), 10);
 	};
 
 	const handleCreate = () => {
 		setEditUser(null);
-		setTimeout(() => {
-			const modalElement = document.getElementById('userFormModal');
-			if (modalElement) {
-				const modal = new Modal(modalElement);
-				modal.show();
-			}
-		}, 10);
+		setTimeout(() => showModal('userFormModal'), 10);
 	};
 
 	const handleEdit = (user) => {
 		setEditUser(user);
-		setTimeout(() => {
-			const el = document.getElementById('userFormModal');
-			el && new Modal(el).show();
-		}, 10);
+		setTimeout(() => showModal('userFormModal'), 10);
 	};
 
 	const handleFormSuccess = () => {
-		const el = document.getElementById('userFormModal');
-		el && new Modal(el).hide();
+		hideModal('userFormModal');
 		fetchUsers();
 	};
 
