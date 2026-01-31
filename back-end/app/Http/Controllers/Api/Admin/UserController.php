@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 
 class UserController extends Controller
@@ -15,8 +16,6 @@ class UserController extends Controller
 			'is_active' => ! $user->is_active,
 		]);
 
-		return response()->json([
-			'message' => $user->is_active ? 'User is active.' : 'User is blocked.',
-		]);
+		return new UserResource($user);
 	}
 }

@@ -55,11 +55,8 @@ export default function ManageUsers() {
 	const handleEdit = (user) => {
 		setEditUser(user);
 		setTimeout(() => {
-			const modalElement = document.getElementById('userFormModal');
-			if (modalElement) {
-				const modal = new Modal(modalElement);
-				modal.show();
-			}
+			const el = document.getElementById('userFormModal');
+			el && new Modal(el).show();
 		}, 10);
 	};
 
@@ -81,15 +78,16 @@ export default function ManageUsers() {
 					Manage Users
 				</h3>
 				<div className="d-flex gap-2">
-					<UIButton size="sm"
-							  variant="success"
-							  className="shadow-sm"
-							  onClick={handleCreate}
-							  icon="user-plus"
+					<UIButton
+						size="sm"
+						variant="success"
+						className="shadow-sm"
+						onClick={handleCreate}
+						icon="user-plus"
 					>
 						Add User
 					</UIButton>
-                    <span className="badge bg-light text-dark shadow-sm border p-2">
+					<span className="badge bg-light text-dark shadow-sm border p-2">
                         Filtered: {users.length}
                     </span>
 					<span className="badge bg-primary shadow-sm p-2">
@@ -124,16 +122,24 @@ export default function ManageUsers() {
 						</tr>
 						</thead>
 						<tbody>
-						{users.map(user => (
-							<UserRow
-								key={user.id}
-								user={user}
-								roleBadgeMap={roleBadgeMap}
-								onToggleActive={toggleActive}
-								onViewDetails={openDetails}
-								onEdit={handleEdit}
-							/>
-						))}
+						{users && users.length > 0 ? (
+							users.map(user => (
+								<UserRow
+									key={`user-${user.id}`}
+									user={user}
+									roleBadgeMap={roleBadgeMap}
+									onToggleActive={toggleActive}
+									onViewDetails={openDetails}
+									onEdit={handleEdit}
+								/>
+							))
+						) : (
+							<tr>
+								<td colSpan="5" className="text-center py-4 text-muted">
+									No users found
+								</td>
+							</tr>
+						)}
 						</tbody>
 					</table>
 				</div>
@@ -149,10 +155,10 @@ export default function ManageUsers() {
 			/>
 
 			<UserDetailsModal user={selectedUser} />
-			<UserFormModal 
-				user={editUser} 
-				onSuccess={handleFormSuccess} 
-				onCancel={() => setEditUser(null)} 
+			<UserFormModal
+				user={editUser}
+				onSuccess={handleFormSuccess}
+				onCancel={() => setEditUser(null)}
 			/>
 		</div>
 	);

@@ -5,6 +5,7 @@ import { UIStatusBadge, UIButton, UIRowActions } from "../../../components/commo
 const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) => {
     const actions = [
         {
+            key: `edit-${user.id}`,
             icon: "edit",
             variant: "light",
             className: "border shadow-sm rounded-circle p-0",
@@ -14,6 +15,7 @@ const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) 
             onClick: () => onEdit(user)
         },
         {
+            key: `view-${user.id}`,
             icon: "eye",
             variant: "light",
             className: "border shadow-sm rounded-circle p-0",
@@ -23,6 +25,7 @@ const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) 
             onClick: () => onViewDetails(user)
         },
         {
+            key: `toggle-${user.id}-${user.is_active}`,
             icon: user.is_active ? "ban" : "check",
             variant: user.is_active ? "outline-danger" : "outline-success",
             className: "shadow-sm rounded-pill px-3",

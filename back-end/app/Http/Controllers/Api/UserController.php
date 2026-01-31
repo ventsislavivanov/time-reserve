@@ -18,7 +18,8 @@ class UserController extends Controller
 		protected AuthService $authService
 	) {}
 
-	public function index(Request $request) {
+	public function index(Request $request)
+	{
 		$this->authorize('viewAny', User::class);
 
 		$users = User::query()
@@ -66,6 +67,6 @@ class UserController extends Controller
 	{
 		$user->services()->sync($request->service_ids);
 
-		return response()->json(['message' => 'Services synced successfully']);
+		return response()->json($user->fresh()->services);
 	}
 }

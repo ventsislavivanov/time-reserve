@@ -40,9 +40,9 @@ const UIRowActions = ({ actions = [], align = "end" }) => {
 		<div ref={ref}>
 			{/* DESKTOP */}
 			<div className={`d-none d-md-flex justify-content-${align} gap-2`}>
-				{actions.map((action, index) => (
+				{actions.map((action) => (
 					<UIButton
-						key={index}
+						key={action.key || action.title}
 						size={action.size || "sm"}
 						variant={action.variant || "light"}
 						className={`${action.className || ''} ${styles.actionButton}`}
@@ -73,9 +73,9 @@ const UIRowActions = ({ actions = [], align = "end" }) => {
 						className="dropdown-menu show mt-2 shadow-sm"
 						style={{ right: 0, left: "auto" }}
 					>
-						{actions.map((action, index) => (
+						{actions.map((action) => (
 							<button
-								key={index}
+								key={action.key || action.title}
 								className="dropdown-item d-flex align-items-center gap-2"
 								onClick={() => {
 									setOpen(false);

@@ -44,9 +44,15 @@ export default function useUsers() {
 
 	const toggleActive = async (id) => {
 		try {
-			const updatedUser = await toggleUserActive(id);
+			const response = await toggleUserActive(id);
+			const updatedUser = response.data;
+
 			setUsers(prev =>
 				prev.map(u => (u.id === id ? updatedUser : u))
+			);
+
+			notify.success(
+				updatedUser.is_active ? 'User is active' : 'User is blocked'
 			);
 		} catch (error) {
 			notify.error("Failed to update status");
