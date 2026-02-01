@@ -10,7 +10,11 @@ const AddNewCategory = ({
 	onCancel
 }) => {
 	const methods = useForm({
-		defaultValues: category
+		defaultValues: category,
+		mode: 'onTouched',
+		reValidateMode: 'onChange',
+		criteriaMode: 'all',
+		shouldFocusError: true
 	});
 
 	const {

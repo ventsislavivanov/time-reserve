@@ -10,7 +10,11 @@ const AddNewJob = ({
 	onCancel
 }) => {
 	const methods = useForm({
-		defaultValues: job
+		defaultValues: job,
+		mode: 'onTouched',
+		reValidateMode: 'onChange',
+		criteriaMode: 'all',
+		shouldFocusError: true
 	});
 
 	const {
