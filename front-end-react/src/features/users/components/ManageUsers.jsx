@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UILoading, UIButton, UIPagination } from "../../../components/common/ui";
-import { useBootstrapModal } from "../../../hooks/useBootstrapModal";
+import { useBootstrapModal } from "../../../hooks";
 import UserFilters from "./UserFilters.jsx";
 import UserRow from "./UserRow.jsx";
 import { UserDetailsModal, UserFormModal } from "./modals";

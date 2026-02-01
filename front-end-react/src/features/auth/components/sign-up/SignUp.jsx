@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 
-import { UIInput, UIRadio, UIDatePicker, UIButton, UILoading } from "../../../../components/common/ui/index.js";
+import { UIInput, UIRadio, UIDatePicker, UIButton, UILoading } from "../../../../components/common/ui";
 import { signUpRules } from "../../validations/signUpRules.js";
 import { register as registerUser } from "../../services/authService.js";
+import { useAppForm } from "../../../../hooks";
 
 const intialValues = {
 	name: '',
@@ -20,11 +21,8 @@ const SignUp = () => {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 
-	const methods = useForm({
+	const methods = useAppForm({
 		defaultValues: intialValues,
-		mode: 'onTouched',
-		reValidateMode: 'onChange',
-		criteriaMode: 'all'
 	});
 
 	const {

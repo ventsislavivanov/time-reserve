@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { UIButton, UICard, UIInput } from '../../../components/common/ui';
 import { categoryRules } from "../validations/categoryRules.js";
+import { useAppForm } from '../../../hooks';
 
 const AddNewCategory = ({
 	isEditing,
@@ -9,12 +10,8 @@ const AddNewCategory = ({
 	onSubmit,
 	onCancel
 }) => {
-	const methods = useForm({
+	const methods = useAppForm({
 		defaultValues: category,
-		mode: 'onTouched',
-		reValidateMode: 'onChange',
-		criteriaMode: 'all',
-		shouldFocusError: true
 	});
 
 	const {

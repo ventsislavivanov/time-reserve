@@ -1,7 +1,8 @@
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { UIButton, UICard, UIInput, UITextarea } from '../../../components/common/ui';
 import { jobRules } from "../validations/jobRules.js";
 import { useEffect } from "react";
+import { useAppForm } from '../../../hooks';
 
 const AddNewJob = ({
 	isEditing,
@@ -9,12 +10,8 @@ const AddNewJob = ({
 	onSubmit,
 	onCancel
 }) => {
-	const methods = useForm({
+	const methods = useAppForm({
 		defaultValues: job,
-		mode: 'onTouched',
-		reValidateMode: 'onChange',
-		criteriaMode: 'all',
-		shouldFocusError: true
 	});
 
 	const {

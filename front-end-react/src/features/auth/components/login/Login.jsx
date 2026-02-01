@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { useDispatch } from "react-redux";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import { notify } from "../../../../services";
 import { UIInput, UICheckbox, UIButton, UILoading  } from "../../../../components/common/ui";
 import { loginRules } from "../../validations/loginRules.js";
 import { login as loginUser } from "../../services/authService.js";
 import { login } from "../../../../store/authSlice.js";
+import { useAppForm } from "../../../../hooks";
 
 const intialValues = {
 	email: '',
@@ -20,11 +21,8 @@ const Login = ({ isClient, guard }) => {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 
-	const methods = useForm({
-		defaultValues: intialValues,
-		mode: 'onTouched',
-		reValidateMode: 'onChange',
-		criteriaMode: 'all'
+	const methods = useAppForm({
+		defaultValues: intialValues
 	});
 
 	const {
