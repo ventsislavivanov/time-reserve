@@ -4,10 +4,10 @@ import AddNewJob from './AddNewJob';
 import JobsList from './JobsList.jsx';
 
 import {
-    getJobs,
-    createJob,
-    updateJob,
-    deleteJob
+    getAll,
+    create,
+    update,
+    remove
 } from '../services/jobService.js';
 import { notify } from "../../../services";
 
@@ -27,10 +27,10 @@ const ManageJobs = () => {
     const loadJobs = async () => {
         try {
             setIsLoading(true);
-            const data = await getJobs();
+            const data = await getAll();
             setJobs(data);
         } catch {
-            notify.error('Failed to load job positions');
+            console.error('Failed to load job positions');
         } finally {
             setIsLoading(false);
         }
@@ -39,17 +39,17 @@ const ManageJobs = () => {
     const handleSubmit = async (data) => {
         try {
             if (isEditing) {
-                await updateJob(currentJob.id, data);
+                await update(currentJob.id, data);
                 notify.success('Position updated successfully');
             } else {
-                await createJob(data);
+                await create(data);
                 notify.success('Position created successfully');
             }
 
             resetForm();
             loadJobs();
         } catch {
-            notify.error('Failed to save position');
+            console.error('Failed to save position');
         }
     };
 
@@ -62,12 +62,12 @@ const ManageJobs = () => {
         if (!window.confirm('Are you sure you want to delete this job position?')) return;
 
         try {
-            await deleteJob(id);
+            await remove(50);
             notify.success('Job position deleted successfully');
             resetForm();
             loadJobs();
         } catch {
-            notify.error('Failed to delete job position');
+            console.error('Failed to delete job position');
         }
     };
 

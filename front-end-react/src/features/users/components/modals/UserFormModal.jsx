@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { UIInput, UIRadio, UIDatePicker, UISelect, UIModal, UIButton } from '../../../../components/common/ui/index.js';
 import { createUser, updateUser } from '../../services/userService.js';
-import { getJobs } from '../../../jobs/services/jobService.js';
+import { getAll as getJobPostions } from '../../../jobs';
 import { userFormRules } from '../../validations/userFormRules.js';
 import { notify } from "../../../../services";
 
@@ -32,7 +32,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
     useEffect(() => {
         const fetchJobPositions = async () => {
             try {
-                const data = await getJobs();
+                const data = await getJobPostions();
                 setJobPositions(data);
             } catch (error) {
                 console.error('Error fetching job positions:', error);
