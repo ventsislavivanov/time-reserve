@@ -1,0 +1,1 @@
+export { default as ManageCategories } from './components/ManageCategories.jsx';
