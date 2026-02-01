@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\JobPositionController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 	Route::get('/users/{user}/services', [UserController::class, 'services']);
 	Route::post('/users/{user}/services', [UserController::class, 'syncServices']);
 
-	Route::apiResource('jobs', JobController::class);
+	Route::apiResource('job-positions', JobPositionController::class);
 
 	Route::apiResource('categories', CategoryController::class);
 

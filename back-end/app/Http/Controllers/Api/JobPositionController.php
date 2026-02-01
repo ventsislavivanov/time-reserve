@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\JobRequest;
+use App\Http\Requests\JobPositionRequest;
 use App\Models\JobPosition;
 
-class JobController extends Controller
+class JobPositionController extends Controller
 {
     public function index()
     {
@@ -22,7 +22,7 @@ class JobController extends Controller
 		return response()->json($job);
 	}
 
-    public function store(JobRequest $request)
+    public function store(JobPositionRequest $request)
     {
 		$this->authorize('create', JobPosition::class);
 
@@ -31,7 +31,7 @@ class JobController extends Controller
 		return response()->json($job, 201);
     }
 
-    public function update(JobRequest $request, JobPosition $job)
+    public function update(JobPositionRequest $request, JobPosition $job)
     {
 		$this->authorize('update', JobPosition::class);
 

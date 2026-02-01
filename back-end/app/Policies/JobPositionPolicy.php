@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class JobPolicy
+class JobPositionPolicy
 {
 	public function viewAny(User $user): bool
 	{
