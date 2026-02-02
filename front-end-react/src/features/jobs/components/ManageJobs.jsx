@@ -1,4 +1,4 @@
-import { GenericForm, GenericList } from '../../../components/common/ui';
+import { GenericForm, GenericList, SkeletonList } from '../../../components/common/ui';
 import { useEntityManager } from '../../../hooks';
 import * as jobService from '../services/jobService.js';
 import { jobRules } from "../validations/jobRules.js";
@@ -57,15 +57,18 @@ const ManageJobs = () => {
                 </div>
 
                 <div className="col-md-8">
-                    <GenericList
-                        items={jobs}
-                        isLoading={isLoading}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        title="Job Positions List"
-                        columns={listColumns}
-                        emptyMessage="No job positions found. Create one to get started."
-                    />
+                    {isLoading ? (
+                        <SkeletonList rows={5} />
+                    ) : (
+                        <GenericList
+                            items={jobs}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                            title="Job Positions List"
+                            columns={listColumns}
+                            emptyMessage="No job positions found. Create one to get started."
+                        />
+                    )}
                 </div>
             </div>
         </div>

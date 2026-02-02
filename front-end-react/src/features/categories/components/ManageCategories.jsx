@@ -1,4 +1,4 @@
-import { GenericForm, GenericList } from '../../../components/common/ui';
+import { GenericForm, GenericList, SkeletonList } from '../../../components/common/ui';
 import { useEntityManager } from '../../../hooks';
 import * as categoryService from '../services/categoryService.js';
 import { categoryRules } from "../validations/categoryRules.js";
@@ -46,15 +46,18 @@ const ManageCategories = () => {
                 </div>
 
                 <div className="col-md-8">
-                    <GenericList
-                        items={categories}
-                        isLoading={isLoading}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        title="Categories List"
-                        columns={listColumns}
-                        emptyMessage="No categories found. Create one to get started."
-                    />
+                    {isLoading ? (
+                        <SkeletonList rows={5} />
+                    ) : (
+                        <GenericList
+                            items={categories}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                            title="Categories List"
+                            columns={listColumns}
+                            emptyMessage="No categories found. Create one to get started."
+                        />
+                    )}
                 </div>
             </div>
         </div>
