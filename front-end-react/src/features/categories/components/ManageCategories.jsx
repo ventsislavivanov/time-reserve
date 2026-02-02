@@ -1,99 +1,59 @@
-import { useState, useEffect } from 'react';
-
-import AddNewCategory from './AddNewCategory.jsx';
-import CategoriesList from './CategoriesList.jsx';
-
-import {
-    getAll,
-    create,
-    update,
-    remove
-} from '../services/categoryService.js';
-import { notify } from "../../../services";
+import { GenericForm, GenericList } from '../../../components/common/ui';
+import { useEntityManager } from '../../../hooks';
+import * as categoryService from '../services/categoryService.js';
+import { categoryRules } from "../validations/categoryRules.js";
 
 const ManageCategories = () => {
-    const [categories, setCategories] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isEditing, setIsEditing] = useState(false);
-    const [currentCategory, setCurrentCategory] = useState({
-        name: '',
-        description: ''
-    });
+    const {
+        items: categories,
+        isLoading,
+        isEditing,
+        currentItem,
+        handleSubmit,
+        handleEdit,
+        handleDelete,
+        resetForm
+    } = useEntityManager(categoryService, 'Category', { name: '' });
 
-    useEffect(() => {
-        loadCategories();
-    }, []);
+    const rules = categoryRules();
 
-    const loadCategories = async () => {
-        try {
-            setIsLoading(true);
-            const data = await getAll();
-            setCategories(data);
-        } catch {
-            console.error('Failed to load categories');
-        } finally {
-            setIsLoading(false);
+    const formFields = [
+        {
+            name: 'name',
+            label: 'Name',
+            placeholder: 'e.g. Category name',
+            type: 'input'
         }
-    };
+    ];
 
-    const handleSubmit = async (data) => {
-        try {
-            if (isEditing) {
-                await update(currentCategory.id, data);
-                notify.success('Category updated successfully');
-            } else {
-                await create(data);
-                notify.success('Category created successfully');
-            }
-
-            resetForm();
-            loadCategories();
-        } catch {
-            console.error('Failed to save position');
-        }
-    };
-
-    const handleEdit = (category) => {
-        setCurrentCategory(category);
-        setIsEditing(true);
-    };
-
-    const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this category?')) return;
-
-        try {
-            await remove(id);
-            notify.success('Category deleted successfully');
-            resetForm();
-            loadCategories();
-        } catch {
-            console.error('Failed to delete category');
-        }
-    };
-
-    const resetForm = () => {
-        setCurrentCategory({ name: '', description: '' });
-        setIsEditing(false);
-    };
+    const listColumns = [
+        { key: 'name', label: 'Name', className: 'fw-bold' }
+    ];
 
     return (
         <div className="container mt-4 pb-5">
             <div className="row">
                 <div className="col-md-4">
-                    <AddNewCategory
+                    <GenericForm
                         isEditing={isEditing}
-                        category={currentCategory}
+                        item={currentItem}
                         onSubmit={handleSubmit}
                         onCancel={resetForm}
+                        title="Category"
+                        fields={formFields}
+                        rules={rules}
                     />
                 </div>
 
                 <div className="col-md-8">
-                    <CategoriesList
-                        categories={categories}
+                    <GenericList
+                        items={categories}
                         isLoading={isLoading}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        title="Categories List"
+                        columns={listColumns}
+                        emptyMessage="No categories found. Create one to get started."
                     />
                 </div>
             </div>

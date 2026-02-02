@@ -35,12 +35,7 @@ class JobPositionController extends Controller
     {
 		$this->authorize('update', JobPosition::class);
 
-		$data = array_filter(
-			$request->validated(),
-			fn ($v) => !is_null($v)
-		);
-
-        $job->update($data);
+        $job->update($request->validated());
 
         return response()->json($job);
     }

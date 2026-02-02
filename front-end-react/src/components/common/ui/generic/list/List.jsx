@@ -1,35 +1,48 @@
-﻿import { UILoading, UICard, UIRowActions } from '../../../components/common/ui';
+import { UILoading, UICard, UIRowActions } from '../../index.js';
 
-const JobsList = ({ jobs, isLoading, onEdit, onDelete }) => {
+const List = ({
+	items,
+	isLoading,
+	onEdit,
+	onDelete,
+	title,
+	columns,
+	emptyMessage
+}) => {
 	return (
 		<UICard
 			variant="primary"
-			title="Job Positions List"
+			title={title}
 			headerIcon="clipboard-list"
 		>
 			{isLoading ? (
 				<UILoading />
-			) : jobs.length === 0 ? (
+			) : items.length === 0 ? (
 				<p className="text-center text-muted py-4">
-					No job positions found. Create one to get started.
+					{emptyMessage}
 				</p>
 			) : (
 				<div className="table-responsive">
 					<table className="table table-hover align-middle mb-0">
 						<thead className="table-light">
 						<tr>
-							<th>Name</th>
-							<th>Description</th>
+							{columns.map(col => (
+								<th key={col.key}>{col.label}</th>
+							))}
 							<th className="text-end pe-3">Actions</th>
 						</tr>
 						</thead>
 						<tbody>
-						{jobs.map((job) => (
-							<tr key={job.id}>
-								<td className="fw-bold">{job.name}</td>
-								<td className="text-muted small">
-									{job.description}
-								</td>
+						{items.map((item) => (
+							<tr key={item.id}>
+								{columns.map(col => (
+									<td
+										key={col.key}
+										className={col.className}
+									>
+										{col.render ? col.render(item[col.key]) : item[col.key]}
+									</td>
+								))}
 								<td className="text-end">
 									<UIRowActions
 										actions={[
@@ -37,14 +50,14 @@ const JobsList = ({ jobs, isLoading, onEdit, onDelete }) => {
 												icon: "edit",
 												iconClassName: "text-warning",
 												variant: "outline-warning",
-												onClick: () => onEdit(job),
+												onClick: () => onEdit(item),
 												title: "Edit"
 											},
 											{
 												icon: "trash",
 												iconClassName: "text-danger",
 												variant: "outline-danger",
-												onClick: () => onDelete(job.id),
+												onClick: () => onDelete(item.id),
 												title: "Delete"
 											}
 										]}
@@ -60,4 +73,4 @@ const JobsList = ({ jobs, isLoading, onEdit, onDelete }) => {
 	);
 };
 
-export default JobsList;
+export default List;

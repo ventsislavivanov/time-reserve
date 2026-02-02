@@ -25,5 +25,9 @@ export { default as UIToast } from './display/toast/Toast.jsx';
 export { default as UIStatusBadge } from './display/status-badge/StatusBadge.jsx';
 export { default as UIRowActions } from './display/row-actions/RowActions.jsx';
 
+//Generic
+export { default as GenericForm } from './generic/form/Form.jsx';
+export { default as GenericList } from './generic/list/List.jsx';
+
 //Navigation
 export { default as UINavLink } from './navigation/nav-link/NavLink.jsx';

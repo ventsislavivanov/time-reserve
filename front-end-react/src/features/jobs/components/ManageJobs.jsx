@@ -1,99 +1,72 @@
-import { useState, useEffect } from 'react';
+import { GenericForm, GenericList } from '../../../components/common/ui';
+import { useEntityManager } from '../../../hooks';
+import * as jobService from '../services/jobService.js';
+import { jobRules } from "../validations/jobRules.js";
 
-import AddNewJob from './AddNewJob';
-import JobsList from './JobsList.jsx';
-
-import {
-    getAll,
-    create,
-    update,
-    remove
-} from '../services/jobService.js';
-import { notify } from "../../../services";
+console.log(jobService);
 
 const ManageJobs = () => {
-    const [jobs, setJobs] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isEditing, setIsEditing] = useState(false);
-    const [currentJob, setCurrentJob] = useState({
+    const {
+        items: jobs,
+        isLoading,
+        isEditing,
+        currentItem,
+        handleSubmit,
+        handleEdit,
+        handleDelete,
+        resetForm
+    } = useEntityManager(jobService, 'Job position', {
         name: '',
         description: ''
     });
 
-    useEffect(() => {
-        loadJobs();
-    }, []);
+    const rules = jobRules();
 
-    const loadJobs = async () => {
-        try {
-            setIsLoading(true);
-            const data = await getAll();
-            setJobs(data);
-        } catch {
-            console.error('Failed to load job positions');
-        } finally {
-            setIsLoading(false);
+    const formFields = [
+        {
+            name: 'name',
+            label: 'Name',
+            placeholder: 'e.g. Job position',
+            type: 'input'
+        },
+        {
+            name: 'description',
+            label: 'Description',
+            placeholder: 'Brief description of the role...',
+            type: 'textarea',
+            rows: 3
         }
-    };
+    ];
 
-    const handleSubmit = async (data) => {
-        try {
-            if (isEditing) {
-                await update(currentJob.id, data);
-                notify.success('Position updated successfully');
-            } else {
-                await create(data);
-                notify.success('Position created successfully');
-            }
-
-            resetForm();
-            loadJobs();
-        } catch {
-            console.error('Failed to save position');
-        }
-    };
-
-    const handleEdit = (job) => {
-        setCurrentJob(job);
-        setIsEditing(true);
-    };
-
-    const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this job position?')) return;
-
-        try {
-            await remove(50);
-            notify.success('Job position deleted successfully');
-            resetForm();
-            loadJobs();
-        } catch {
-            console.error('Failed to delete job position');
-        }
-    };
-
-    const resetForm = () => {
-        setCurrentJob({ name: '', description: '' });
-        setIsEditing(false);
-    };
+    const listColumns = [
+        { key: 'name', label: 'Name', className: 'fw-bold' },
+        { key: 'description', label: 'Description', className: 'text-muted small' }
+    ];
 
     return (
         <div className="container mt-4 pb-5">
             <div className="row">
                 <div className="col-md-4">
-                    <AddNewJob
+                    <GenericForm
                         isEditing={isEditing}
-                        job={currentJob}
+                        item={currentItem}
                         onSubmit={handleSubmit}
                         onCancel={resetForm}
+                        title="Job Position"
+                        fields={formFields}
+                        rules={rules}
                     />
                 </div>
 
                 <div className="col-md-8">
-                    <JobsList
-                        jobs={jobs}
+                    <GenericList
+                        items={jobs}
                         isLoading={isLoading}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        title="Job Positions List"
+                        columns={listColumns}
+                        emptyMessage="No job positions found. Create one to get started."
                     />
                 </div>
             </div>
