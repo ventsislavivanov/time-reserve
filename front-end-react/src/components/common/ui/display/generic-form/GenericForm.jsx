@@ -52,6 +52,7 @@ const GenericForm = ({
 				{...(field.type === 'select' && { options: field.options })}
 				{...(field.type === 'radio' && { options: field.options })}
 				{...(field.type === 'checkbox' && { checked: field.checked })}
+				{...(field.type === 'number' && { type: 'number' })}
 				{...field.props}
 			/>
 		);

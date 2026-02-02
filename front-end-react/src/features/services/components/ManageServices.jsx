@@ -19,7 +19,7 @@ const ManageServices = () => {
     } = useEntityManager(serviceService, 'Service', {
         name: '',
         description: '',
-        category: '',
+        category_id: '',
         duration: '',
         price: '',
         preparation_time: '',
@@ -44,7 +44,7 @@ const ManageServices = () => {
             rows: 3
         },
         {
-            name: 'category',
+            name: 'category_id',
             label: 'Category',
             placeholder: 'Select a category...',
             type: 'select',
