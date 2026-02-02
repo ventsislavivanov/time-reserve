@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormContext } from "react-hook-form";
+import { useFieldError } from "../../../../../hooks";
 
 const Input = ({
 	type = 'text',
@@ -11,34 +12,12 @@ const Input = ({
 	disabled,
 	classes = 'form-control',
 	showErrors = true,
+	...rest
 }) => {
-	const {
-		register,
-		formState,
-		getFieldState
-	} = useFormContext();
-	const { errors, isSubmitted } = formState;
-
-	const isInvalid = (field) => {
-		const { isTouched } = getFieldState(field, formState);
-		return (isTouched || isSubmitted) && errors[field];
-	};
+	const { register } = useFormContext();
+	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
 	const cx = (...classes) => classes.filter(Boolean).join(' ');
-
-	const fieldErrors = (field) => {
-		const { isTouched } = getFieldState(field, formState);
-
-		if (!isTouched && !isSubmitted) return [];
-
-		const types = errors[field]?.types || {};
-		return Object.entries(types).map(([key, message]) => ({
-			$uid: `${field}-${key}`,
-			$message: message,
-		}));
-	};
-
-	const showInvalid = showErrors && isInvalid(name);
 
 	return (
 		<div className="form-group mb-3">
@@ -56,13 +35,16 @@ const Input = ({
 					id={name}
 					placeholder={placeholder}
 					{...register(name, rules)}
-					className={cx(classes, showInvalid ? 'is-invalid' : null)}
+					className={cx(classes, isInvalid ? 'is-invalid' : null)}
 					disabled={disabled}
+					{...rest}
 				/>
 			</div>
 
-			{showErrors && fieldErrors(name).map((e) => (
-				<div key={e.$uid} className="invalid-feedback d-block">{e.$message}</div>
+			{errorMessages.map((e) => (
+				<div key={e.$uid} className="invalid-feedback d-block">
+					{e.$message}
+				</div>
 			))}
 		</div>
 	);

@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useFieldError } from "../../../../../hooks";
 
 const UISelect = ({
     name,
@@ -7,12 +8,11 @@ const UISelect = ({
     options,
     icon,
     rules,
-    placeholder = "Select option..."
+    placeholder = "Select option...",
+    showErrors = true
 }) => {
-    const {
-        register,
-        formState: { errors }
-    } = useFormContext();
+    const { register } = useFormContext();
+    const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
     return (
         <div className="mb-3">
@@ -24,7 +24,7 @@ const UISelect = ({
                     </span>
                 )}
                 <select
-                    className={`form-select ${errors[name] ? 'is-invalid' : ''}`}
+                    className={`form-select ${isInvalid ? 'is-invalid' : ''}`}
                     {...register(name, rules)}
                 >
                     <option value="">{placeholder}</option>
@@ -34,11 +34,12 @@ const UISelect = ({
                         </option>
                     ))}
                 </select>
-                {errors[name] && (
-                    <div className="invalid-feedback">
-                        {errors[name].message}
+
+                {errorMessages.map((e) => (
+                    <div key={e.$uid} className="invalid-feedback">
+                        {e.$message}
                     </div>
-                )}
+                ))}
             </div>
         </div>
     );

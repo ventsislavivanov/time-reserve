@@ -1,32 +1,43 @@
 import { useEffect, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import { UIInput, UIRadio, UIDatePicker, UISelect, UIModal, UIButton } from '../../../../components/common/ui/index.js';
+import {
+    UIAppForm,
+    UIInput,
+    UIRadio,
+    UIDatePicker,
+    UISelect,
+    UIModal,
+    UIButton
+} from '../../../../components/common/ui';
+import { useAppForm } from '../../../../hooks';
+import { notify } from "../../../../services";
 import { createUser, updateUser } from '../../services/userService.js';
 import { getAll as getJobPostions } from '../../../jobs';
 import { userFormRules } from '../../validations/userFormRules.js';
-import { notify } from "../../../../services";
+
+const defaultValues = {
+    name: '',
+    email: '',
+    phone: '',
+    birth_date: null,
+    gender: 'male',
+    role: 'worker',
+    job_position_id: '',
+    password: ''
+};
 
 const UserFormModal = ({ user, onSuccess, onCancel }) => {
     const [jobPositions, setJobPositions] = useState([]);
 
-    const methods = useForm({
-        defaultValues: {
-            name: '',
-            email: '',
-            phone: '',
-            birth_date: null,
-            gender: 'male',
-            role: 'worker',
-            job_position_id: '',
-            password: ''
-        }
+    const methods = useAppForm({
+        defaultValues
     });
 
     const {
-        handleSubmit,
         reset,
-        watch
+        watch,
+        isLoading
     } = methods;
+
     const selectedRole = watch('role');
 
     useEffect(() => {
@@ -62,47 +73,45 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                 password: ''
             });
         } else {
-            reset({
-                name: '',
-                email: '',
-                phone: '',
-                birth_date: null,
-                gender: 'male',
-                role: 'worker',
-                job_position_id: '',
-                password: ''
-            });
+            reset(defaultValues);
         }
     }, [user, reset]);
 
     const onSubmit = async (data) => {
-        try {
-            const formattedData = {
-                ...data,
-                birth_date: data.birth_date
-                    ? data.birth_date.toISOString().split('T')[0]
-                    : null
-            };
+        const formattedData = {
+            ...data,
+            birth_date: data.birth_date
+                ? data.birth_date.toISOString().split('T')[0]
+                : null
+        };
 
-            if (user) {
-                await updateUser(user.id, formattedData);
-            } else {
-                await createUser(formattedData);
-            }
-            onSuccess();
-            
-            notify.success('User saved successfully');
-        } catch (error) {
-            console.error('Error saving user:', error);
+        if (user) {
+            await updateUser(user.id, formattedData);
+        } else {
+            await createUser(formattedData);
         }
+
+        onSuccess();
+        notify.success('User saved successfully');
     };
 
     const rules = userFormRules({ user });
 
     const footer = (
         <>
-            <UIButton variant="secondary" data-bs-dismiss="modal" onClick={onCancel}>Cancel</UIButton>
-            <UIButton type="submit" form="user-form">
+            <UIButton
+                variant="secondary"
+                data-bs-dismiss="modal"
+                isLoading={isLoading}
+                onClick={onCancel}
+            >
+                Cancel
+            </UIButton>
+            <UIButton
+                type="submit"
+                form="user-form"
+                isLoading={isLoading}
+            >
                 {user ? 'Update User' : 'Create User'}
             </UIButton>
         </>
@@ -118,87 +127,83 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
             onClose={onCancel}
             footer={footer}
         >
-            <FormProvider {...methods}>
-                <form id="user-form" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <UIInput
-                                    name="name"
-                                    label="Full Name"
-                                    placeholder="John Doe"
-                                    icon="user"
-                                    rules={rules.name}
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <UIInput
-                                    name="email"
-                                    label="Email Address"
-                                    type="email"
-                                    placeholder="john@example.com"
-                                    icon="envelope"
-                                    rules={rules.email}
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <UIInput
-                                    name="phone"
-                                    label="Phone Number"
-                                    placeholder="+359..."
-                                    icon="phone"
-                                    rules={rules.phone}
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <UIDatePicker
-                                    name="birth_date"
-                                    label="Birth Date"
-                                    placeholder="Select date"
-                                    rules={rules.birth_date}
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <UIRadio
-                                    name="gender"
-                                    label="Gender"
-                                    options={['male', 'female', 'other']}
-                                    rules={rules.gender}
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <UIRadio
-                                    name="role"
-                                    label="Role"
-                                    options={['admin', 'worker', 'client']}
-                                    rules={rules.role}
-                                />
-                            </div>
-                            {selectedRole === 'worker' && (
-                                <div className="col-md-6">
-                                    <UISelect
-                                        name="job_position_id"
-                                        label="Job Position"
-                                        options={jobPositions}
-                                        icon="briefcase"
-                                        placeholder="Select position..."
-                                    />
-                                </div>
-                            )}
-                            <div className="col-md-12 mt-3">
-                                <UIInput
-                                    name="password"
-                                    label={user ? 'New Password (leave blank to keep current)' : 'Password'}
-                                    type="password"
-                                    placeholder="******"
-                                    icon="lock"
-                                    rules={rules.password}
-                                />
-                            </div>
-                        </div>
+            <UIAppForm methods={methods} onSubmit={onSubmit} id="user-form">
+                <div className="row">
+                    <div className="col-md-6">
+                        <UIInput
+                            name="name"
+                            label="Full Name"
+                            placeholder="John Doe"
+                            icon="user"
+                            rules={rules.name}
+                        />
                     </div>
-                </form>
-            </FormProvider>
+                    <div className="col-md-6">
+                        <UIInput
+                            name="email"
+                            label="Email Address"
+                            type="email"
+                            placeholder="john@example.com"
+                            icon="envelope"
+                            rules={rules.email}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <UIInput
+                            name="phone"
+                            label="Phone Number"
+                            placeholder="+359..."
+                            icon="phone"
+                            rules={rules.phone}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <UIDatePicker
+                            name="birth_date"
+                            label="Birth Date"
+                            placeholder="Select date"
+                            rules={rules.birth_date}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <UIRadio
+                            name="gender"
+                            label="Gender"
+                            options={['male', 'female', 'other']}
+                            rules={rules.gender}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <UIRadio
+                            name="role"
+                            label="Role"
+                            options={['admin', 'worker', 'client']}
+                            rules={rules.role}
+                        />
+                    </div>
+                    {selectedRole === 'worker' && (
+                        <div className="col-md-6">
+                            <UISelect
+                                name="job_position_id"
+                                label="Job Position"
+                                options={jobPositions}
+                                icon="briefcase"
+                                placeholder="Select position..."
+                            />
+                        </div>
+                    )}
+                    <div className="col-md-12 mt-3">
+                        <UIInput
+                            name="password"
+                            label={user ? 'New Password (leave blank to keep current)' : 'Password'}
+                            type="password"
+                            placeholder="******"
+                            icon="lock"
+                            rules={rules.password}
+                        />
+                    </div>
+                </div>
+            </UIAppForm>
         </UIModal>
     );
 };

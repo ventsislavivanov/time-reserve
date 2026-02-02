@@ -32,15 +32,11 @@ api.interceptors.response.use(
 					notify.warning(message);
 					break;
 				case 422:
-					const validationErrors = error.response.data.errors;
-					if (validationErrors) {
-						const firstError = Object.values(validationErrors)[0][0];
-						notify.error(`⚠️ ${firstError}`, {
-							icon: false
-						});
-					} else {
-						notify.error(message);
-					}
+					error.validationErrors = error.response.data.errors;
+					break;
+				case 500:
+				case 503:
+					notify.error(message);
 					break;
 				default:
 					notify.error(message);

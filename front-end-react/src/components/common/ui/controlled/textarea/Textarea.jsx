@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { useFieldError } from "../../../../../hooks";
 
 const Textarea = ({
 	name,
@@ -10,34 +11,10 @@ const Textarea = ({
 	classes = 'form-control',
 	showErrors = true,
 }) => {
-	const {
-		register,
-		formState,
-		getFieldState
-	} = useFormContext();
-
-	const { errors, isSubmitted } = formState;
+	const { register } = useFormContext();
+	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
 	const cx = (...classes) => classes.filter(Boolean).join(' ');
-
-	const isInvalid = (field) => {
-		const { isTouched } = getFieldState(field, formState);
-		return (isTouched || isSubmitted) && errors[field];
-	};
-
-	const fieldErrors = (field) => {
-		const { isTouched } = getFieldState(field, formState);
-
-		if (!isTouched && !isSubmitted) return [];
-
-		const types = errors[field]?.types || {};
-		return Object.entries(types).map(([key, message]) => ({
-			$uid: `${field}-${key}`,
-			$message: message,
-		}));
-	};
-
-	const showInvalid = showErrors && isInvalid(name);
 
 	return (
 		<div className="form-group mb-3">
@@ -52,15 +29,12 @@ const Textarea = ({
 				rows={rows}
 				placeholder={placeholder}
 				{...register(name, rules)}
-				className={cx(classes, showInvalid ? 'is-invalid' : null)}
+				className={cx(classes, isInvalid ? 'is-invalid' : null)}
 				disabled={disabled}
 			/>
 
-			{showErrors && fieldErrors(name).map((e) => (
-				<div
-					key={e.$uid}
-					className="invalid-feedback d-block"
-				>
+			{errorMessages.map((e) => (
+				<div key={e.$uid} className="invalid-feedback d-block">
 					{e.$message}
 				</div>
 			))}

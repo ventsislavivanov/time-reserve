@@ -1,20 +1,16 @@
 import { useFormContext } from "react-hook-form";
+import { useFieldError } from "../../../../../hooks";
 
 const Checkbox = ({
 	name,
 	label,
 	rules = {},
 	disabled = false,
-	className = ""
+	className = "",
+	showErrors = true
 }) => {
-	const {
-		register,
-		formState: { errors, isSubmitted },
-		getFieldState
-	} = useFormContext();
-
-	const { isTouched } = getFieldState(name);
-	const isInvalid = (isTouched || isSubmitted) && errors[name];
+	const { register } = useFormContext();
+	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
 	return (
 		<div className={`form-check mb-3 ${className}`}>
@@ -31,11 +27,11 @@ const Checkbox = ({
 				</label>
 			)}
 
-			{isInvalid && (
-				<div className="invalid-feedback d-block">
-					{errors[name]?.message}
+			{errorMessages.map((e) => (
+				<div key={e.$uid} className="invalid-feedback d-block">
+					{e.$message}
 				</div>
-			)}
+			))}
 		</div>
 	);
 }

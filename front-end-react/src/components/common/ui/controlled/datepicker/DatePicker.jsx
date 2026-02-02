@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Controller, useFormContext } from "react-hook-form";
 import { registerLocale } from  "react-datepicker";
 import { bg } from 'date-fns/locale/bg';
+import { useFieldError } from "../../../../../hooks";
 import styles from './DatePicker.module.css';
 
 registerLocale('bg', bg);
@@ -13,9 +14,11 @@ const DatePicker = ({
 	rules,
 	label,
 	placeholder,
-	icon = ['fas', 'calendar']
+	icon = ['fas', 'calendar'],
+	showErrors = true,
 }) => {
-	const { control, formState: { errors } } = useFormContext();
+	const { control } = useFormContext();
+	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
 	return (
 		<div className="form-group mb-3">
@@ -24,7 +27,7 @@ const DatePicker = ({
 			<div className="input-group">
 				{icon && (
 					<span className="input-group-text">
-						<FontAwesomeIcon icon={icon} />
+                        <FontAwesomeIcon icon={icon} />
                     </span>
 				)}
 
@@ -32,7 +35,7 @@ const DatePicker = ({
 					control={control}
 					name={name}
 					rules={rules}
-					render={({ field: { onChange, onBlur, value, ref } }) => (
+					render={({ field: { onChange, onBlur, value } }) => (
 						<ReactDatePicker
 							onChange={onChange}
 							onBlur={onBlur}
@@ -41,7 +44,7 @@ const DatePicker = ({
 							dateFormat="dd/MM/yyyy"
 							locale="bg"
 							wrapperClassName={styles.datepickerWrapper}
-							className={`form-control ${errors[name] ? 'is-invalid' : ''} ${styles.customInput}`}
+							className={`form-control ${isInvalid ? 'is-invalid' : ''} ${styles.customInput}`}
 							autoComplete="off"
 							showMonthDropdown
 							showYearDropdown
@@ -54,11 +57,11 @@ const DatePicker = ({
 				/>
 			</div>
 
-			{errors[name] && (
-				<div className="invalid-feedback d-block">
-					{errors[name]?.message}
+			{errorMessages.map((e) => (
+				<div key={e.$uid} className="invalid-feedback d-block">
+					{e.$message}
 				</div>
-			)}
+			))}
 		</div>
 	);
 }

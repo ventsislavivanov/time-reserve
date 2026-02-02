@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UIStatusBadge, UIButton, UIRowActions } from "../../../components/common/ui";
+import { UIStatusBadge, UIRowActions } from "../../../components/common/ui";
 
 const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) => {
     const actions = [

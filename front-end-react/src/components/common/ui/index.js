@@ -11,6 +11,7 @@ export { default as UIModal } from './complex/modal/Modal.jsx';
 export { default as UIPagination } from './complex/pagination/Pagination.jsx';
 
 //Controlled
+export { default as UIAppForm } from './controlled/app-form/AppForm.jsx';
 export { default as UICheckbox } from './controlled/checkbox/Checkbox.jsx';
 export { default as UIDatePicker } from './controlled/datepicker/DatePicker.jsx';
 export { default as UIInput } from './controlled/input/Input.jsx';

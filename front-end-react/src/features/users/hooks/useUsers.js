@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUsers, toggleUserActive } from "../services/userService";
-import { notify } from "../../../services/index.js";
+import { notify } from "../../../services";
 
 export default function useUsers() {
 	const [users, setUsers] = useState([]);

@@ -1,23 +1,17 @@
 import { useId } from 'react';
 import { useFormContext } from "react-hook-form";
+import { useFieldError } from "../../../../../hooks";
 
 const Radio = ({
 	name,
 	options,
 	rules = {},
 	label,
+	showErrors = true,
 }) => {
 	const groupId = useId();
-	const { register, formState, getFieldState } = useFormContext();
-	const { errors, isSubmitted } = formState;
-	const { isTouched } = getFieldState(name, formState);
-
-	const showError = (isTouched || isSubmitted) && errors[name];
-
-	const messages = Object.values(
-		errors[name]?.types ||
-		(errors[name]?.message ? { _single: errors[name].message } : {})
-	);
+	const { register } = useFormContext();
+	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
 	const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -30,9 +24,7 @@ const Radio = ({
 
 			{options.map((option, idx) => {
 				const id = `${groupId}-${option}`;
-				const regProps = idx === 0
-					? register(name, rules)
-					: register(name)
+				const regProps = idx === 0 ? register(name, rules) : register(name);
 
 				return (
 					<div key={option} className="form-check">
@@ -42,11 +34,8 @@ const Radio = ({
 							value={option}
 							name={name}
 							{...regProps}
-							className={[
-								'form-check-input',
-								showError ? 'is-invalid' : null,
-							].filter(Boolean).join(' ')}
-							aria-invalid={showError ? 'true' : undefined}
+							className={`form-check-input ${isInvalid ? 'is-invalid' : ''}`}
+							aria-invalid={isInvalid ? 'true' : undefined}
 						/>
 
 						<label htmlFor={id} className="form-check-label" style={{ paddingLeft: 5 }}>
@@ -56,15 +45,11 @@ const Radio = ({
 				);
 			})}
 
-			{showError && (
-				Array.isArray(messages) && messages.length > 0 ? (
-					messages.map((msg, idx) => (
-						<div key={`${name}-err-${idx}`} className="invalid-feedback d-block">{msg}</div>
-					))
-				) : (
-					<div className="invalid-feedback d-block">{errors[name]?.message}</div>
-				)
-			)}
+			{errorMessages.map((e) => (
+				<div key={e.$uid} className="invalid-feedback d-block">
+					{e.$message}
+				</div>
+			))}
 		</div>
 	);
 }
