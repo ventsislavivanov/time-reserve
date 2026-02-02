@@ -15,36 +15,36 @@ class JobPositionController extends Controller
         return response()->json(JobPosition::all());
     }
 
-	public function show(JobPosition $job)
+	public function show(JobPosition $jobPosition)
 	{
 		$this->authorize('view', JobPosition::class);
 
-		return response()->json($job);
+		return response()->json($jobPosition);
 	}
 
     public function store(JobPositionRequest $request)
     {
 		$this->authorize('create', JobPosition::class);
 
-		$job = JobPosition::create($request->validated());
+		$jobPosition = JobPosition::create($request->validated());
 
-		return response()->json($job, 201);
+		return response()->json($jobPosition, 201);
     }
 
-    public function update(JobPositionRequest $request, JobPosition $job)
+    public function update(JobPositionRequest $request, JobPosition $jobPosition)
     {
 		$this->authorize('update', JobPosition::class);
 
-        $job->update($request->validated());
+		$jobPosition->update($request->validated());
 
-        return response()->json($job);
+        return response()->json($jobPosition);
     }
 
-    public function destroy(JobPosition $job)
+    public function destroy(JobPosition $jobPosition)
     {
 		$this->authorize('delete', JobPosition::class);
 
-        $job->delete();
+		$jobPosition->delete();
 
         return response()->json(null, 204);
     }
