@@ -1,13 +1,12 @@
-import { GenericForm, GenericList } from '../../../components/common/ui';
+import { GenericForm, GenericList, GenericSkeleton  } from '../../../components/common/ui';
 import { useEntityManager } from '../../../hooks';
 import * as serviceService from '../services/serviceService.js';
-import { getAll as getAllCategory  } from "../../categories";
+import { useCategories } from "../../categories";
 import { serviceRules } from "../validations/serviceRules.js";
-import { useEffect, useState } from "react";
 
 const ManageServices = () => {
-    const [categories, setCategories] = useState([]);
-    const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
+    const { categories, isLoading: isCategoriesLoading } = useCategories();
+
 
     const {
         items: jobs,
@@ -88,47 +87,23 @@ const ManageServices = () => {
         { key: 'description', label: 'Description', className: 'text-muted small' }
     ];
 
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                setIsCategoriesLoading(true);
-                const data = await getAllCategory();
-                setCategories(data);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            } finally {
-                setIsCategoriesLoading(false);
-            }
-        };
-        fetchCategories();
-    }, []);
-
-    if (isCategoriesLoading) {
-        return (
-            <div className="container mt-4 pb-5">
-                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="container mt-4 pb-5">
             <div className="row">
                 <div className="col-md-4">
-                    <GenericForm
-                        isEditing={isEditing}
-                        item={currentItem}
-                        onSubmit={handleSubmit}
-                        onCancel={resetForm}
-                        title="Service"
-                        fields={formFields}
-                        rules={rules}
-                    />
+                    {isCategoriesLoading ? (
+                        <GenericSkeleton fields={8} />
+                    ) : (
+                        <GenericForm
+                            isEditing={isEditing}
+                            item={currentItem}
+                            onSubmit={handleSubmit}
+                            onCancel={resetForm}
+                            title="Service"
+                            fields={formFields}
+                            rules={rules}
+                        />
+                    )}
                 </div>
 
                 <div className="col-md-8">

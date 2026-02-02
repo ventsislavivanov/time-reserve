@@ -3,8 +3,6 @@ import { useEntityManager } from '../../../hooks';
 import * as jobService from '../services/jobService.js';
 import { jobRules } from "../validations/jobRules.js";
 
-console.log(jobService);
-
 const ManageJobs = () => {
     const {
         items: jobs,

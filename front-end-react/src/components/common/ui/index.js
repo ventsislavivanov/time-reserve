@@ -28,6 +28,7 @@ export { default as UIRowActions } from './display/row-actions/RowActions.jsx';
 //Generic
 export { default as GenericForm } from './generic/form/Form.jsx';
 export { default as GenericList } from './generic/list/List.jsx';
+export { default as GenericSkeleton } from './generic/skeleton/Skeleton.jsx';
 
 //Navigation
 export { default as UINavLink } from './navigation/nav-link/NavLink.jsx';

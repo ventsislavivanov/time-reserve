@@ -1,0 +1,40 @@
+.skeleton {
+	background: linear-gradient(
+			90deg,
+			#f0f0f0 0%,
+			#e0e0e0 50%,
+			#f0f0f0 100%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s infinite;
+	border-radius: 4px;
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+.skeletonLabel {
+	height: 16px;
+	margin-bottom: 8px;
+}
+
+.skeletonInput {
+	height: 38px;
+	margin-bottom: 16px;
+}
+
+.skeletonTextarea {
+	height: 80px;
+	margin-bottom: 16px;
+}
+
+.skeletonButton {
+	height: 48px;
+	margin-top: 16px;
+}
