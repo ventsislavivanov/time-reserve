@@ -24,13 +24,13 @@ class ServiceRequest extends FormRequest
     {
         return [
 			'name' => 'required|string|max:255',
-			'description' => 'nullable|string',
+			'description' => 'nullable|string|max:5000',
 			'category_id' => 'required|exists:categories,id',
 			'duration' => 'required|integer|min:5',
-			'price' => 'required|numeric|min:5',
+			'price' => 'required|numeric|min:0.01',
 			'is_active' => 'sometimes|boolean',
-			'preparation_time' => 'required|integer|min:5',
-			'cleanup_time' => 'required|integer|min:5',
+			'preparation_time' => 'required|integer|min:0',
+			'cleanup_time' => 'required|integer|min:0',
         ];
     }
 }

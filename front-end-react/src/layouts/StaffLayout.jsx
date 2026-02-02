@@ -48,6 +48,7 @@ export default function StaffLayout() {
 								<UINavLink to="/staff/users">Users</UINavLink>
 								<UINavLink to="/staff/jobs">Jobs</UINavLink>
 								<UINavLink to="/staff/categories">Categories</UINavLink>
+								<UINavLink to="/staff/services">Services</UINavLink>
 								<UINavLink to="/staff/reports">Reports</UINavLink>
 							</>
 						)}
