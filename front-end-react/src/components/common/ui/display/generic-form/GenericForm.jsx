@@ -19,7 +19,7 @@ const FIELD_COMPONENTS = {
 	radio: UIRadio,
 };
 
-const Form = ({
+const GenericForm = ({
  	isEditing,
  	item,
  	onSubmit,
@@ -91,4 +91,4 @@ const Form = ({
 	);
 };
 
-export default Form;
+export default GenericForm;

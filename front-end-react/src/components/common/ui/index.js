@@ -24,11 +24,10 @@ export { default as UILoading } from './display/loading/Loading.jsx';
 export { default as UIToast } from './display/toast/Toast.jsx';
 export { default as UIStatusBadge } from './display/status-badge/StatusBadge.jsx';
 export { default as UIRowActions } from './display/row-actions/RowActions.jsx';
-
-//Generic
-export { default as GenericForm } from './generic/form/Form.jsx';
-export { default as GenericList } from './generic/list/List.jsx';
-export { default as GenericSkeleton } from './generic/skeleton/Skeleton.jsx';
+export { default as GenericForm } from './display/generic-form/GenericForm.jsx';
+export { default as GenericList } from './display/generic-list/GenericList.jsx';
+export { default as SkeletonForm } from './display/skeleton-form/SkeletonForm.jsx';
+export { default as SkeletonList } from './display/skeleton-list/SkeletonList.jsx';
 
 //Navigation
 export { default as UINavLink } from './navigation/nav-link/NavLink.jsx';

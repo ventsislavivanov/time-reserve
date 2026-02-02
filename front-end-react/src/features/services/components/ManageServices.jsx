@@ -1,4 +1,4 @@
-import { GenericForm, GenericList, GenericSkeleton  } from '../../../components/common/ui';
+import { GenericForm, GenericList, SkeletonForm, SkeletonList  } from '../../../components/common/ui';
 import { useEntityManager } from '../../../hooks';
 import * as serviceService from '../services/serviceService.js';
 import { useCategories } from "../../categories";
@@ -7,10 +7,9 @@ import { serviceRules } from "../validations/serviceRules.js";
 const ManageServices = () => {
     const { categories, isLoading: isCategoriesLoading } = useCategories();
 
-
     const {
-        items: jobs,
-        isLoading,
+        items: services,
+        isLoading: isServicesLoading,
         isEditing,
         currentItem,
         handleSubmit,
@@ -92,7 +91,7 @@ const ManageServices = () => {
             <div className="row">
                 <div className="col-md-4">
                     {isCategoriesLoading ? (
-                        <GenericSkeleton fields={8} />
+                        <SkeletonForm fields={8} />
                     ) : (
                         <GenericForm
                             isEditing={isEditing}
@@ -107,15 +106,18 @@ const ManageServices = () => {
                 </div>
 
                 <div className="col-md-8">
-                    <GenericList
-                        items={jobs}
-                        isLoading={isLoading}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        title="Services List"
-                        columns={listColumns}
-                        emptyMessage="No services found. Create one to get started."
-                    />
+                    {isServicesLoading ? (
+                        <SkeletonList rows={5} />
+                    ) : (
+                        <GenericList
+                            items={services}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                            title="Services List"
+                            columns={listColumns}
+                            emptyMessage="No services found. Create one to get started."
+                        />
+                    )}
                 </div>
             </div>
         </div>

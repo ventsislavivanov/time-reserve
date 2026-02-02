@@ -1,8 +1,7 @@
-import { UILoading, UICard, UIRowActions } from '../../index.js';
+import { UICard, UIRowActions } from '../../index.js';
 
-const List = ({
+const GenericList = ({
 	items,
-	isLoading,
 	onEdit,
 	onDelete,
 	title,
@@ -15,9 +14,7 @@ const List = ({
 			title={title}
 			headerIcon="clipboard-list"
 		>
-			{isLoading ? (
-				<UILoading />
-			) : items.length === 0 ? (
+			{items.length === 0 ? (
 				<p className="text-center text-muted py-4">
 					{emptyMessage}
 				</p>
@@ -73,4 +70,4 @@ const List = ({
 	);
 };
 
-export default List;
+export default GenericList;

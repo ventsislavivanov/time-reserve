@@ -1,6 +1,6 @@
-import styles from './Skeleton.module.css';
+import styles from './SkeletonForm.module.css';
 
-const Skeleton = ({ fields = 5 }) => {
+const SkeletonForm = ({ fields = 5 }) => {
 	return (
 		<div className="card p-4">
 			<div className={`${styles.skeleton} ${styles.skeletonLabel} mb-4`} style={{ width: '40%' }}></div>
@@ -17,4 +17,4 @@ const Skeleton = ({ fields = 5 }) => {
 	);
 };
 
-export default Skeleton;
+export default SkeletonForm;
