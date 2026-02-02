@@ -9,20 +9,29 @@ class Service extends Model
 {
 	protected $fillable = [
 		'name',
-		'duration_minutes',
 		'description',
+		'category_id',
+		'duration',
+		'price',
 		'is_active',
+		'image',
+		'preparation_time',
+		'cleanup_time',
 	];
 
 	protected $casts = [
-		'duration_minutes' => 'integer',
+		'category_id' => 'integer',
+		'duration' => 'integer',
+		'price' => 'float',
 		'is_active' => 'boolean',
+		'preparation_time' => 'integer',
+		'cleanup_time' => 'integer',
 	];
 
-	public function appointments()
-	{
-		return $this->hasMany(Appointment::class);
-	}
+//	public function appointments()
+//	{
+//		return $this->hasMany(Appointment::class);
+//	}
 
 	public function workers(): BelongsToMany
 	{

@@ -37,6 +37,5 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 
 	Route::apiResource('categories', CategoryController::class);
 
-	Route::apiResource('services', ServiceController::class)
-		->only(['index', 'store']);
+	Route::apiResource('services', ServiceController::class);
 });
