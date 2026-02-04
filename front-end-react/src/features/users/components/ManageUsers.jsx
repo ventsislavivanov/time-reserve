@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UILoading, UIButton, UIPagination } from "../../../components/common/ui";
+
+import { UIButton, UILoading, UIPagination } from "../../../components/common/ui";
 import { useBootstrapModal } from "../../../hooks";
-import UserFilters from "./UserFilters.jsx";
+
 import UserRow from "./UserRow.jsx";
 import { UserDetailsModal, UserFormModal } from "./modals";
 import useUsers from "../hooks/useUsers";
+import { toggleUserActive } from '../services/userService.js'; // НОВО
+import { notify } from "../../../services";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UserFilters from "./UserFilters.jsx";
 
 export default function ManageUsers() {
 	const {
@@ -19,7 +23,6 @@ export default function ManageUsers() {
 		setFilters,
 		setCurrentPage,
 		setItemsPerPage,
-		toggleActive,
 		fetchUsers
 	} = useUsers();
 
@@ -52,6 +55,16 @@ export default function ManageUsers() {
 	const handleFormSuccess = () => {
 		hideModal('userFormModal');
 		fetchUsers();
+	};
+
+	const handleToggleActive = async (userId) => {
+		try {
+			await toggleUserActive(userId);
+			notify.success('User status updated');
+			fetchUsers(); // Refresh списъка
+		} catch (error) {
+			notify.error('Failed to update user status');
+		}
 	};
 
 	if (isLoading) {
@@ -96,11 +109,8 @@ export default function ManageUsers() {
 
 			<div className="card shadow-sm border-0 rounded-3 overflow-hidden bg-white">
 				<div className="table-responsive">
-					<table className="table table-hover table-striped align-middle mb-0"
-						   style={{ fontSize: '0.875rem' }}>
-						<thead className="bg-light text-secondary text-uppercase"
-							   style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}
-						>
+					<table className="table table-hover table-striped align-middle mb-0">
+						<thead className="bg-light text-secondary text-uppercase">
 						<tr>
 							<th className="ps-4 py-3">User info</th>
 							<th className="py-3">Contacts</th>
@@ -116,7 +126,7 @@ export default function ManageUsers() {
 									key={`user-${user.id}`}
 									user={user}
 									roleBadgeMap={roleBadgeMap}
-									onToggleActive={toggleActive}
+									onToggleActive={handleToggleActive}
 									onViewDetails={openDetails}
 									onEdit={handleEdit}
 								/>

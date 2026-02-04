@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { getServices } from '../services/serviceService.js';
+import { getAll as getServices } from '../../services';
 import { getUserServices, syncUserServices } from '../';
 import { UILoading } from "../../../components/common/ui";
 import { notify } from "../../../services";

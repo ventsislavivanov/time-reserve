@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 		Route::post('services', [UserServiceController::class, 'syncServices']);
 
 		Route::patch('toggle-active', [UserManagementController::class, 'toggleActive']);
-		Route::put('role', [UserManagementController::class, 'updateRole']);
+		Route::patch('role', [UserManagementController::class, 'updateRole']);
 	});
 
 	Route::apiResource('job-positions', JobPositionController::class);

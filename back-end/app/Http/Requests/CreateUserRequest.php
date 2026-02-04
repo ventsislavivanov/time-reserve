@@ -29,7 +29,7 @@ class CreateUserRequest extends FormRequest
 			'phone'      => 'required|string',
 			'birth_date' => 'required|date',
 			'gender'     => 'required|in:male,female',
-			'role'       => 'required|in:admin,worker',
+			'role'       => 'required|in:admin,worker,client',
 			'job_position_id' => 'nullable|exists:job_positions,id',
         ];
     }

@@ -10,7 +10,7 @@ import {
 } from '../../../../components/common/ui';
 import { useAppForm } from '../../../../hooks';
 import { notify } from "../../../../services";
-import { createUser, updateUser } from '../../services/userService.js';
+import { createUser, updateUser, updateUserRole } from '../../services/userService.js';
 import { getAll as getJobPostions } from '../../../jobs';
 import { userFormRules } from '../../validations/userFormRules.js';
 
@@ -54,13 +54,19 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
 
     useEffect(() => {
         if (user) {
+            console.log('user.birth_date RAW:', user.birth_date);
             const birthDateValue = user.birth_date && user.birth_date !== 'null'
                 ? new Date(user.birth_date)
                 : null;
 
+            console.log('birthDateValue:', birthDateValue);
+            console.log('Is valid date?', birthDateValue instanceof Date && !isNaN(birthDateValue));
+
             const validBirthDate = birthDateValue instanceof Date && !isNaN(birthDateValue)
                 ? birthDateValue
                 : null;
+
+            console.log('Final validBirthDate:', validBirthDate);
 
             reset({
                 name: user.name || '',
@@ -85,14 +91,23 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                 : null
         };
 
-        if (user) {
-            await updateUser(user.id, formattedData);
-        } else {
-            await createUser(formattedData);
-        }
+        try {
+            if (user) {
+                const { role, ...updateData } = formattedData;
+                await updateUser(user.id, updateData);
 
-        onSuccess();
-        notify.success('User saved successfully');
+                if (role !== user.role) {
+                    await updateUserRole(user.id, role);
+                }
+            } else {
+                await createUser(formattedData);
+            }
+
+            onSuccess();
+            notify.success('User saved successfully');
+        } catch (error) {
+            notify.error('Failed to save user');
+        }
     };
 
     const rules = userFormRules({ user });

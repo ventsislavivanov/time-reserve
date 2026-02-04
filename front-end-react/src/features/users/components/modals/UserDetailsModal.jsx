@@ -1,86 +1,201 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UIModal, UIStatusBadge } from '../../../../components/common/ui';
-import WorkerServicesManager from '../WorkerServicesManager.jsx';
+import { useState } from 'react';
+import { UIModal, UIButton, UIStatusBadge } from '../../../../components/common/ui';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import WorkerServicesManager from '../WorkerServicesManager';
 
-export default function UserDetailsModal({ user }) {
+const UserDetailsModal = ({ user }) => {
+	const [activeTab, setActiveTab] = useState('info');
+
 	if (!user) return null;
 
-	const genderIconMap = {
-		male: { icon: 'mars', color: 'text-info' },
-		female: { icon: 'venus', color: 'text-danger' },
-		other: { icon: 'genderless', color: 'text-secondary' },
+	const roleBadgeMap = {
+		admin: 'bg-primary',
+		worker: 'bg-info',
+		client: 'bg-secondary'
 	};
 
 	return (
 		<UIModal
 			id="userDetailsModal"
 			title="User Details"
-			icon="id-card"
-			size={user.role === 'worker' ? 'modal-lg' : 'modal-md'}
-			centered={true}
+			icon="user"
+			size="modal-lg"
 		>
-			<div className="text-center">
-				<div className="bg-primary bg-opacity-10 text-primary rounded-circl"
-					 style={{width: '80px', height: '80px', fontSize: '2rem'}}
-				>
-					<FontAwesomeIcon icon="user" />
-				</div>
-				<h4 className="fw-bold mb-1">{user.name}</h4>
-				<p className="text-muted mb-4">{user.role.toUpperCase()}</p>
+			{/* Табове */}
+			<ul className="nav nav-tabs mb-3">
+				<li className="nav-item">
+					<button
+						className={`nav-link ${activeTab === 'info' ? 'active' : ''}`}
+						onClick={() => setActiveTab('info')}
+					>
+						<FontAwesomeIcon icon="info-circle" className="me-2" />
+						Information
+					</button>
+				</li>
+				{user.role === 'worker' && (
+					<li className="nav-item">
+						<button
+							className={`nav-link ${activeTab === 'services' ? 'active' : ''}`}
+							onClick={() => setActiveTab('services')}
+						>
+							<FontAwesomeIcon icon="concierge-bell" className="me-2" />
+							Services
+						</button>
+					</li>
+				)}
+			</ul>
 
-				<div className="row text-start g-3">
-					<div className="col-6">
-						<label className="small text-muted d-block">Email</label>
-						<span className="fw-medium text-truncate d-block">{user.email}</span>
-					</div>
-					<div className="col-6">
-						<label className="small text-muted d-block">Phone</label>
-						<span className="fw-medium">{user.phone || 'N/A'}</span>
-					</div>
-					<div className="col-6">
-						<label className="small text-muted d-block">Gender</label>
-						<span className="fw-medium text-capitalize">
-							<FontAwesomeIcon icon={genderIconMap[user.gender]?.icon || 'genderless'}
-											 className="me-2 opacity-50"
-							/>
-							{user.gender}
-						</span>
-					</div>
-					<div className="col-6">
-						<label className="small text-muted d-block">Birth Date</label>
-						<span className="fw-medium">{user.birth_date || 'N/A'}</span>
-					</div>
-					<div className="col-12 mt-3 pt-3 border-top">
-						<div className="d-flex justify-content-between align-items-center mb-2">
-							<span className="small text-muted">Verified email</span>
-							<UIStatusBadge condition={user.email_verified_at !== null}
-										 trueText="Yes"
-										 falseText="No"
-							/>
+			{/* Съдържание */}
+			<div className="tab-content">
+				{activeTab === 'info' && (
+					<div>
+						{/* User Avatar & Name Header */}
+						<div className="text-center mb-4 pb-3 border-bottom">
+							<div className={`rounded-circle bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3 ${user.is_active ? 'bg-primary text-primary' : 'bg-secondary text-secondary'}`}
+								 style={{ width: '80px', height: '80px', fontSize: '2rem' }}
+							>
+								<FontAwesomeIcon icon="user" />
+							</div>
+							<h4 className="mb-2 fw-bold">{user.name}</h4>
+							<div className="d-flex gap-2 justify-content-center mb-2">
+                                <span className={`badge ${roleBadgeMap[user.role] || 'bg-secondary'}`}>
+                                    {user.role}
+                                </span>
+								<UIStatusBadge
+									condition={user.is_active}
+									trueText="Active"
+									falseText="Blocked"
+								/>
+								<UIStatusBadge
+									condition={user.is_approved}
+									trueText="Approved"
+									falseText="Pending"
+								/>
+							</div>
 						</div>
-						<div className="d-flex justify-content-between align-items-center mb-2">
-							<span className="small text-muted">Approved account</span>
-							<UIStatusBadge condition={user.is_approved}
-										 trueText="Yes"
-										 falseText="No"
-							/>
-						</div>
-						<div className="d-flex justify-content-between align-items-center">
-							<span className="small text-muted">Account status</span>
-							<UIStatusBadge condition={user.is_active}
-										 trueText="Active"
-										 falseText="Blocked"
-							/>
+
+						{/* User Information */}
+						<div className="row g-3">
+							<div className="col-md-6">
+								<div className="card border-0 bg-light h-100">
+									<div className="card-body">
+										<h6 className="text-muted mb-3">
+											<FontAwesomeIcon icon="address-card" className="me-2" />
+											Personal Info
+										</h6>
+										<div className="mb-2">
+											<small className="text-muted d-block">Full Name</small>
+											<strong>{user.name}</strong>
+										</div>
+										<div className="mb-2">
+											<small className="text-muted d-block">Gender</small>
+											<strong className="text-capitalize">{user.gender}</strong>
+										</div>
+										<div className="mb-2">
+											<small className="text-muted d-block">Birth Date</small>
+											<strong>{user.birth_date || 'Not provided'}</strong>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div className="col-md-6">
+								<div className="card border-0 bg-light h-100">
+									<div className="card-body">
+										<h6 className="text-muted mb-3">
+											<FontAwesomeIcon icon="envelope" className="me-2" />
+											Contact Info
+										</h6>
+										<div className="mb-2">
+											<small className="text-muted d-block">Email</small>
+											<strong>{user.email}</strong>
+										</div>
+										<div className="mb-2">
+											<small className="text-muted d-block">Phone</small>
+											<strong>{user.phone || 'Not provided'}</strong>
+										</div>
+										<div className="mb-2">
+											<small className="text-muted d-block">User ID</small>
+											<strong>#{user.id}</strong>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{user.role === 'worker' && user.job_position && (
+								<div className="col-12">
+									<div className="card border-0 bg-light">
+										<div className="card-body">
+											<h6 className="text-muted mb-3">
+												<FontAwesomeIcon icon="briefcase" className="me-2" />
+												Job Position
+											</h6>
+											<div className="d-flex align-items-center">
+												<div className="badge bg-info bg-opacity-10 text-info p-3 me-3">
+													<FontAwesomeIcon icon="briefcase" size="2x" />
+												</div>
+												<div>
+													<strong className="d-block">{user.job_position.name}</strong>
+													<small className="text-muted">Position ID: #{user.job_position.id}</small>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							)}
+
+							<div className="col-12">
+								<div className="card border-0 bg-light">
+									<div className="card-body">
+										<h6 className="text-muted mb-3">
+											<FontAwesomeIcon icon="clock" className="me-2" />
+											Account Info
+										</h6>
+										<div className="row">
+											<div className="col-md-4">
+												<small className="text-muted d-block">Created At</small>
+												<strong>{new Date(user.created_at).toLocaleDateString()}</strong>
+											</div>
+											<div className="col-md-4">
+												<small className="text-muted d-block">Email Verified</small>
+												<strong>
+													{user.email_verified_at ? (
+														<span className="text-success">
+                                                            <FontAwesomeIcon icon="check-circle" className="me-1" />
+                                                            Verified
+                                                        </span>
+													) : (
+														<span className="text-warning">
+                                                            <FontAwesomeIcon icon="exclamation-circle" className="me-1" />
+                                                            Not Verified
+                                                        </span>
+													)}
+												</strong>
+											</div>
+											<div className="col-md-4">
+												<small className="text-muted d-block">Status</small>
+												<strong>
+													<UIStatusBadge
+														condition={user.is_active}
+														trueText="Active"
+														falseText="Inactive"
+													/>
+												</strong>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					{user.role === 'worker' && (
-						<div className="col-12 mt-2">
-							<WorkerServicesManager workerId={user.id} />
-						</div>
-					)}
-				</div>
+				)}
+
+				{activeTab === 'services' && user.role === 'worker' && (
+					<WorkerServicesManager workerId={user.id} />
+				)}
 			</div>
 		</UIModal>
 	);
-}
+};
+
+export default UserDetailsModal;

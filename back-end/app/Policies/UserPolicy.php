@@ -49,7 +49,7 @@ class UserPolicy
 			return false;
 		}
 
-		return $targetUser-isWorker();
+		return $targetUser->isWorker();
 	}
 
 	public function updateRole(User $user): bool

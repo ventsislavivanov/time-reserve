@@ -1,83 +1,56 @@
-import { useEffect, useState } from "react";
-import { getUsers, toggleUserActive } from "../services/userService";
-import { notify } from "../../../services";
+import { useState, useEffect, useCallback } from 'react';
+import { getUsers } from '../services/userService.js';
 
 export default function useUsers() {
 	const [users, setUsers] = useState([]);
-	const [isLoading, setLoading] = useState(true);
-
+	const [isLoading, setIsLoading] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
-
+	const [totalItems, setTotalItems] = useState(0);
 	const [filters, setFilters] = useState({
-		search: "",
-		role: "",
-		gender: ""
+		search: '',
+		role: '',
+		gender: ''
 	});
 
-	const [totalItems, setTotalItems] = useState(0);
-	const [totalPages, setTotalPages] = useState(1);
-
-	const fetchUsers = async () => {
-		setLoading(true);
+	const fetchUsers = useCallback(async () => {
+		setIsLoading(true);
 		try {
-			const response = await getUsers(currentPage, itemsPerPage, filters);
-			const { data, meta } = response;
+			const params = {
+				page: currentPage,
+				limit: itemsPerPage,
+				...filters
+			};
 
-			setUsers(data);
+			const response = await getUsers(params);
+			const { data: usersData, meta } = response.data;
+
+			setUsers(usersData);
 			setTotalItems(meta.total);
-			setTotalPages(meta.last_page);
 		} catch (error) {
-			console.error("Error loading users", error);
+			console.error('Error fetching users:', error);
 		} finally {
-			setLoading(false);
+			setIsLoading(false);
 		}
-	};
-
-	useEffect(() => {
-		fetchUsers();
 	}, [currentPage, itemsPerPage, filters]);
 
 	useEffect(() => {
-		setCurrentPage(1);
-	}, [filters, itemsPerPage]);
+		fetchUsers();
+	}, [fetchUsers]);
 
-	const toggleActive = async (id) => {
-		try {
-			const response = await toggleUserActive(id);
-			const updatedUser = response.data;
-
-			setUsers(prev =>
-				prev.map(u => (u.id === id ? updatedUser : u))
-			);
-
-			notify.success(
-				updatedUser.is_active ? 'User is active' : 'User is blocked'
-			);
-		} catch (error) {
-			notify.error("Failed to update status");
-		}
-	};
+	const totalPages = Math.ceil(totalItems / itemsPerPage);
 
 	return {
-		// data
 		users,
 		isLoading,
-
-		// pagination
 		currentPage,
 		itemsPerPage,
 		totalItems,
 		totalPages,
-		setCurrentPage,
-		setItemsPerPage,
-
-		// filters
 		filters,
 		setFilters,
-
-		// actions
-		fetchUsers,
-		toggleActive
+		setCurrentPage,
+		setItemsPerPage,
+		fetchUsers
 	};
 }

@@ -1,37 +1,22 @@
 import { api } from "../../../services";
 
-export async function getUsers(page = 1, limit = 10, filters = {}) {
-	const params = new URLSearchParams({
-		page,
-		limit,
-		...filters
-	}).toString();
+export const getUsers = (params) =>
+	api.get('/staff/users', { params });
 
-	const response = await api.get(`/staff/users?${params}`);
-	return response.data;
-}
+export const createUser = (data) =>
+	api.post('/staff/users', data);
 
-export async function createUser(userData) {
-	const response = await api.post('/staff/users', userData);
-	return response.data;
-}
+export const updateUser = (id, data) =>
+	api.put(`/staff/users/${id}`, data);
 
-export async function updateUser(id, userData) {
-	const response = await api.put(`/staff/users/${id}`, userData);
-	return response.data;
-}
+export const toggleUserActive = (userId) =>
+	api.patch(`/staff/users/${userId}/toggle-active`);
 
-export async function toggleUserActive(id) {
-	const response = await api.patch(`/staff/users/${id}/toggle-active`);
-	return response.data;
-}
+export const updateUserRole = (userId, role) =>
+	api.patch(`/staff/users/${userId}/role`, { role });
 
-export async function getUserServices(id) {
-	const response = await api.get(`/staff/users/${id}/services`);
-	return response.data;
-}
+export const getUserServices = (userId) =>
+	api.get(`/staff/users/${userId}/services`);
 
-export async function syncUserServices(id, serviceIds) {
-	const response = await api.post(`/staff/users/${id}/services`, { service_ids: serviceIds });
-	return response.data;
-}
+export const syncUserServices = (userId, serviceIds) =>
+	api.post(`/staff/users/${userId}/services`, { service_ids: serviceIds });
