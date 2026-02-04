@@ -45,6 +45,15 @@ class UserPolicy
 
 	public function syncServices(User $user, User $targetUser): bool
 	{
-		return $user->isAdmin() || $user->isWorker();
+		if (!$user->isAdmin()) {
+			return false;
+		}
+
+		return $targetUser-isWorker();
+	}
+
+	public function updateRole(User $user): bool
+	{
+		return $user->isAdmin();
 	}
 }

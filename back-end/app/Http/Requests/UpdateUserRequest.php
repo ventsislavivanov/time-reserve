@@ -30,7 +30,6 @@ class UpdateUserRequest extends FormRequest
 			'phone' => 'required|string',
 			'birth_date' => 'required|date',
 			'gender' => 'required|in:male,female,other',
-			'role' => 'required|in:admin,worker,client',
 			'password' => 'nullable|min:6',
 			'job_position_id' => 'nullable|exists:job_positions,id',
 		];
