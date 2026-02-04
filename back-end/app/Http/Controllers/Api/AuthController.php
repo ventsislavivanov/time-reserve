@@ -184,7 +184,9 @@ class AuthController extends Controller
 			event(new Verified($user));
 		}
 
-		return redirect("{$frontendUrl}/login?verified=1&email=" . urlencode($user->email));
+		$token = encrypt(['email' => $user->email, 'expires' => now()->addMinutes(5)]);
+
+		return redirect("{$frontendUrl}/login?verified=1&token={$token}");
 	}
 
 }
