@@ -14,6 +14,8 @@ const UserDetailsModal = ({ user }) => {
 		client: 'bg-secondary'
 	};
 
+	console.log(user)
+
 	return (
 		<UIModal
 			id="userDetailsModal"
@@ -157,7 +159,7 @@ const UserDetailsModal = ({ user }) => {
 											<div className="col-md-4">
 												<small className="text-muted d-block">Email Verified</small>
 												<strong>
-													{user.email_verified_at ? (
+													{user.verified ? (
 														<span className="text-success">
                                                             <FontAwesomeIcon icon="check-circle" className="me-1" />
                                                             Verified
