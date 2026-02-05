@@ -79,12 +79,12 @@ const WorkerServicesManager = ({ workerId }) => {
                                             className="form-check-input"
                                             type="checkbox"
                                             checked={selectedServiceIds.includes(service.id)}
-                                            onChange={() => {}} // Handled by card click
+                                            onChange={() => {}}
                                         />
                                     </div>
                                     <div className="ms-2">
                                         <div className="fw-bold small">{service.name}</div>
-                                        <div className="text-muted" style={{ fontSize: '0.75rem' }}>{service.duration_minutes} min</div>
+                                        <div className="text-muted" style={{ fontSize: '0.75rem' }}>{service.duration} min</div>
                                     </div>
                                 </div>
                             </div>

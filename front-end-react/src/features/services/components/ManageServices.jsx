@@ -69,7 +69,7 @@ const ManageServices = () => {
             type: 'number'
         },
         {
-            name: 'cleaning_time',
+            name: 'cleanup_time',
             label: 'Cleaning time (minutes)',
             placeholder: 'e.g. 5',
             type: 'number'
