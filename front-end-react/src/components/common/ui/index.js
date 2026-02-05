@@ -31,3 +31,4 @@ export { default as SkeletonList } from './display/skeleton-list/SkeletonList.js
 
 //Navigation
 export { default as UINavLink } from './navigation/nav-link/NavLink.jsx';
+export { default as UINavTabLink } from './navigation/nav-tab-link/NavTabLink.jsx';

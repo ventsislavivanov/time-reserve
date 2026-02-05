@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UIModal, UIButton, UIStatusBadge } from '../../../../components/common/ui';
+import { UIModal, UIButton, UIStatusBadge, UINavTabLink } from '../../../../components/common/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import WorkerServicesManager from '../WorkerServicesManager';
 
@@ -14,8 +14,6 @@ const UserDetailsModal = ({ user }) => {
 		client: 'bg-secondary'
 	};
 
-	console.log(user)
-
 	return (
 		<UIModal
 			id="userDetailsModal"
@@ -25,25 +23,23 @@ const UserDetailsModal = ({ user }) => {
 			key={user?.id}
 		>
 			<ul className="nav nav-tabs mb-3">
-				<li className="nav-item">
-					<button
-						className={`nav-link ${activeTab === 'info' ? 'active' : ''}`}
-						onClick={() => setActiveTab('info')}
-					>
-						<FontAwesomeIcon icon="info-circle" className="me-2" />
-						Information
-					</button>
-				</li>
+				<UINavTabLink
+					tabKey="info"
+					activeTab={activeTab}
+					onClick={setActiveTab}
+					icon="info-circle"
+				>
+					Information
+				</UINavTabLink>
 				{user.role === 'worker' && (
-					<li className="nav-item">
-						<button
-							className={`nav-link ${activeTab === 'services' ? 'active' : ''}`}
-							onClick={() => setActiveTab('services')}
-						>
-							<FontAwesomeIcon icon="concierge-bell" className="me-2" />
-							Services
-						</button>
-					</li>
+					<UINavTabLink
+						tabKey="services"
+						activeTab={activeTab}
+						onClick={setActiveTab}
+						icon="concierge-bell"
+					>
+						Services
+					</UINavTabLink>
 				)}
 			</ul>
 
