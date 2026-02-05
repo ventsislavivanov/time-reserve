@@ -54,19 +54,13 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
 
     useEffect(() => {
         if (user) {
-            console.log('user.birth_date RAW:', user.birth_date);
             const birthDateValue = user.birth_date && user.birth_date !== 'null'
                 ? new Date(user.birth_date)
                 : null;
 
-            console.log('birthDateValue:', birthDateValue);
-            console.log('Is valid date?', birthDateValue instanceof Date && !isNaN(birthDateValue));
-
             const validBirthDate = birthDateValue instanceof Date && !isNaN(birthDateValue)
                 ? birthDateValue
                 : null;
-
-            console.log('Final validBirthDate:', validBirthDate);
 
             reset({
                 name: user.name || '',

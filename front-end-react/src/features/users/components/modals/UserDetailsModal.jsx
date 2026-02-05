@@ -20,8 +20,8 @@ const UserDetailsModal = ({ user }) => {
 			title="User Details"
 			icon="user"
 			size="modal-lg"
+			key={user?.id}
 		>
-			{/* Табове */}
 			<ul className="nav nav-tabs mb-3">
 				<li className="nav-item">
 					<button
@@ -45,11 +45,9 @@ const UserDetailsModal = ({ user }) => {
 				)}
 			</ul>
 
-			{/* Съдържание */}
 			<div className="tab-content">
 				{activeTab === 'info' && (
 					<div>
-						{/* User Avatar & Name Header */}
 						<div className="text-center mb-4 pb-3 border-bottom">
 							<div className={`rounded-circle bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3 ${user.is_active ? 'bg-primary text-primary' : 'bg-secondary text-secondary'}`}
 								 style={{ width: '80px', height: '80px', fontSize: '2rem' }}

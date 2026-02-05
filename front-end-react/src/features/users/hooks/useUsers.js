@@ -23,7 +23,7 @@ export default function useUsers() {
 			};
 
 			const response = await getUsers(params);
-			const { data: usersData, meta } = response.data;
+			const { data: usersData, meta } = response;
 
 			setUsers(usersData);
 			setTotalItems(meta.total);

@@ -1,15 +1,15 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UIButton, UILoading, UIPagination } from "../../../components/common/ui";
 import { useBootstrapModal } from "../../../hooks";
+import { notify } from "../../../services";
 
+import UserFilters from "./UserFilters.jsx";
 import UserRow from "./UserRow.jsx";
 import { UserDetailsModal, UserFormModal } from "./modals";
 import useUsers from "../hooks/useUsers";
-import { toggleUserActive } from '../services/userService.js'; // НОВО
-import { notify } from "../../../services";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserFilters from "./UserFilters.jsx";
+import { toggleUserActive } from '../services/userService.js';
 
 export default function ManageUsers() {
 	const {
@@ -61,7 +61,7 @@ export default function ManageUsers() {
 		try {
 			await toggleUserActive(userId);
 			notify.success('User status updated');
-			fetchUsers(); // Refresh списъка
+			fetchUsers();
 		} catch (error) {
 			notify.error('Failed to update user status');
 		}
