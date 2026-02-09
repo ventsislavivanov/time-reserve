@@ -49,4 +49,11 @@ class ServiceController extends Controller
 
 		return response()->json(null, 204);
 	}
+
+	public function active()
+	{
+		return Service::where('is_active', true)
+			->with('category')
+			->get();
+	}
 }

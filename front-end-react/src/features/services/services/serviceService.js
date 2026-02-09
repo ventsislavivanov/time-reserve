@@ -1,7 +1,7 @@
 import { api } from "../../../services";
 
 export async function getAll() {
-    const response = await api.get('/staff/services');
+    const response = await api.get('/services');
     return response.data;
 }
 
@@ -22,5 +22,10 @@ export async function update(id, data) {
 
 export async function remove(id) {
     const response = await api.delete(`/staff/services/${id}`);
+    return response.data;
+}
+
+export async function getActive()  {
+    const response = await api.get('/services/active');
     return response.data;
 }

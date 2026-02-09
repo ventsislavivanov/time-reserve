@@ -11,7 +11,7 @@ import { Login, SignUp, RoleGuard, getMe } from "./features/auth";
 import { ManageUsers } from "./features/users";
 import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
-import { ManageServices } from "./features/services";
+import { ManageServices, ServicesCatalog } from "./features/services";
 
 import Dashboard from "./components/dashboard/Dashboard.jsx";
 import Home from "./components/Home/Home.jsx";
@@ -54,6 +54,7 @@ function App() {
 			<Routes>
 				<Route element={<ClientLayout />}>
 					<Route path="/" element={<Home/>} />
+					<Route path="/services" element={<ServicesCatalog/>} />
 					<Route path="/login" element={<Login isClient={true} guard="client" />} />
 					<Route path="/sign-up" element={<SignUp />} />
 				</Route>

@@ -4,6 +4,7 @@ import { logout as logoutUser } from "../features/auth";
 import { logout } from "../store/authSlice.js";
 import Header from "../components/layout/header/Header.jsx";
 import Footer from "../components/layout/footer/Footer.jsx";
+import { UINavLink } from "../components/common/ui/index.js";
 
 export default function ClientLayout() {
 	const dispatch = useDispatch();
@@ -23,12 +24,11 @@ export default function ClientLayout() {
 	};
 
 	return (
-		<div className="d-flex flex-column min-vh-100">
+		<div className="d-flex flex-column min-vh-100 bg-light">
 			<Header>
 				<ul className="navbar-nav me-auto">
-					<li className="nav-item">
-						<Link to="/" className="nav-link">Home</Link>
-					</li>
+					<UINavLink to="/">Home</UINavLink>
+					<UINavLink to="/services">Services</UINavLink>
 				</ul>
 
 				<ul className="navbar-nav">

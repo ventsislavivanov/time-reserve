@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'registerClient']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('categories', [CategoryController::class, 'index']);
+Route::get('services/active', [ServiceController::class, 'active']);
+
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
     ->middleware(['signed'])
     ->name('verification.verify');
@@ -37,7 +40,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 
 	Route::apiResource('job-positions', JobPositionController::class);
 
-	Route::apiResource('categories', CategoryController::class);
+	Route::apiResource('categories', CategoryController::class)
+		->except(['index']);
 
 	Route::apiResource('services', ServiceController::class);
 });
