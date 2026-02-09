@@ -1,9 +1,16 @@
 import { GenericForm, GenericList, SkeletonList } from '../../../components/common/ui';
 import { useEntityManager } from '../../../hooks';
 import * as jobService from '../services/jobService.js';
-import { jobRules } from "../validations/jobRules.js";
+import { useJobForm } from '../hooks/useJobForm';
 
 const ManageJobs = () => {
+    const {
+        formFields,
+        listColumns,
+        rules,
+        initialFormState
+    } = useJobForm();
+
     const {
         items: jobs,
         isLoading,
@@ -13,33 +20,7 @@ const ManageJobs = () => {
         handleEdit,
         handleDelete,
         resetForm
-    } = useEntityManager(jobService, 'Job position', {
-        name: '',
-        description: ''
-    });
-
-    const rules = jobRules();
-
-    const formFields = [
-        {
-            name: 'name',
-            label: 'Name',
-            placeholder: 'e.g. Job position',
-            type: 'input'
-        },
-        {
-            name: 'description',
-            label: 'Description',
-            placeholder: 'Brief description of the role...',
-            type: 'textarea',
-            rows: 3
-        }
-    ];
-
-    const listColumns = [
-        { key: 'name', label: 'Name', className: 'fw-bold' },
-        { key: 'description', label: 'Description', className: 'text-muted small' }
-    ];
+    } = useEntityManager(jobService, 'Job position', initialFormState);
 
     return (
         <div className="container mt-4 pb-5">

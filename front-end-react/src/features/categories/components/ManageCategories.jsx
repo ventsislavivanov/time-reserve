@@ -1,9 +1,16 @@
 import { GenericForm, GenericList, SkeletonList } from '../../../components/common/ui';
 import { useEntityManager } from '../../../hooks';
 import * as categoryService from '../services/categoryService.js';
-import { categoryRules } from "../validations/categoryRules.js";
+import { useCategoryForm } from '../hooks/useCategoryForm';
 
 const ManageCategories = () => {
+    const {
+        formFields,
+        listColumns,
+        rules,
+        initialFormState
+    } = useCategoryForm();
+
     const {
         items: categories,
         isLoading,
@@ -13,22 +20,7 @@ const ManageCategories = () => {
         handleEdit,
         handleDelete,
         resetForm
-    } = useEntityManager(categoryService, 'Category', { name: '' });
-
-    const rules = categoryRules();
-
-    const formFields = [
-        {
-            name: 'name',
-            label: 'Name',
-            placeholder: 'e.g. Category name',
-            type: 'input'
-        }
-    ];
-
-    const listColumns = [
-        { key: 'name', label: 'Name', className: 'fw-bold' }
-    ];
+    } = useEntityManager(categoryService, 'Category', initialFormState);
 
     return (
         <div className="container mt-4 pb-5">

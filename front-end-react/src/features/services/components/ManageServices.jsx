@@ -1,11 +1,16 @@
-import { GenericForm, GenericList, SkeletonForm, SkeletonList  } from '../../../components/common/ui';
+import { GenericForm, GenericList, SkeletonForm, SkeletonList } from '../../../components/common/ui';
 import { useEntityManager } from '../../../hooks';
-import * as serviceService from '../services/serviceService.js';
-import { useCategories } from "../../categories";
-import { serviceRules } from "../validations/serviceRules.js";
+import * as serviceService from '../services/serviceService';
+import { useServiceForm } from '../hooks/useServiceForm';
 
 const ManageServices = () => {
-    const { categories, isLoading: isCategoriesLoading } = useCategories();
+    const {
+        formFields,
+        listColumns,
+        rules,
+        initialFormState,
+        isCategoriesLoading
+    } = useServiceForm();
 
     const {
         items: services,
@@ -16,75 +21,7 @@ const ManageServices = () => {
         handleEdit,
         handleDelete,
         resetForm
-    } = useEntityManager(serviceService, 'Service', {
-        name: '',
-        description: '',
-        category_id: '',
-        duration: '',
-        price: '',
-        preparation_time: '',
-        cleaning_time: '',
-        is_active: true
-    });
-
-    const rules = serviceRules();
-
-    const formFields = [
-        {
-            name: 'name',
-            label: 'Name',
-            placeholder: 'e.g. Service',
-            type: 'input'
-        },
-        {
-            name: 'description',
-            label: 'Description',
-            placeholder: 'Brief description of the service...',
-            type: 'textarea',
-            rows: 3
-        },
-        {
-            name: 'category_id',
-            label: 'Category',
-            placeholder: 'Select a category...',
-            type: 'select',
-            options: categories,
-        },
-        {
-            name: 'duration',
-            label: 'Duration (minutes)',
-            placeholder: 'e.g. 15',
-            type: 'number'
-        },
-        {
-            name: 'price',
-            label: 'Price',
-            placeholder: 'e.g. 30 €',
-            type: 'number'
-        },
-        {
-            name: 'preparation_time',
-            label: 'Preparation time (minutes)',
-            placeholder: 'e.g. 5',
-            type: 'number'
-        },
-        {
-            name: 'cleanup_time',
-            label: 'Cleaning time (minutes)',
-            placeholder: 'e.g. 5',
-            type: 'number'
-        },
-        {
-            name: 'is_active',
-            label: 'Is active',
-            type: 'checkbox'
-        },
-    ];
-
-    const listColumns = [
-        { key: 'name', label: 'Name', className: 'fw-bold' },
-        { key: 'description', label: 'Description', className: 'text-muted small' }
-    ];
+    } = useEntityManager(serviceService, 'Service', initialFormState);
 
     return (
         <div className="container mt-4 pb-5">
