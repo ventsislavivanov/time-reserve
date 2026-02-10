@@ -11,120 +11,6 @@
         }
     ],
     "paths": {
-        "/api/login": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Login user",
-                "operationId": "222b2625838e3c57e017987f73598fda",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "guard"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "admin@test.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password"
-                                    },
-                                    "guard": {
-                                        "type": "string",
-                                        "example": "staff"
-                                    },
-                                    "remember": {
-                                        "type": "boolean",
-                                        "example": "false"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful login",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "token": {
-                                            "type": "string"
-                                        },
-                                        "user": {
-                                            "$ref": "#/components/schemas/UserAuth"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid credentials"
-                    }
-                }
-            }
-        },
-        "/api/logout": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Logout user",
-                "description": "Revokes the current access token and logs out the authenticated user",
-                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
-                "responses": {
-                    "200": {
-                        "description": "Successfully logged out",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Logged out"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated - no valid token provided",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
         "/api/register": {
             "post": {
                 "tags": [
@@ -138,54 +24,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "password",
-                                    "password_confirmation",
-                                    "phone",
-                                    "birth_date",
-                                    "gender"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "example": "John Doe"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "john@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "minLength": 6,
-                                        "example": "password"
-                                    },
-                                    "phone": {
-                                        "type": "string",
-                                        "maxLength": 14,
-                                        "minLength": 6,
-                                        "example": "+359888123456"
-                                    },
-                                    "birth_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "1990-01-15"
-                                    },
-                                    "gender": {
-                                        "type": "string",
-                                        "enum": [
-                                            "male",
-                                            "female",
-                                            "other"
-                                        ],
-                                        "example": "male"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/RegisterClientRequest"
                             }
                         }
                     }
@@ -314,6 +153,97 @@
                 }
             }
         },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserAuth"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout user",
+                "description": "Revokes the current access token and logs out the authenticated user",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated - no valid token provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -328,33 +258,54 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Haircut"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
+                                    "$ref": "#/components/schemas/CategoryCollection"
                                 }
                             }
                         }
                     }
                 }
+            }
+        },
+        "/api/staff/categories": {
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create a new category",
+                "operationId": "44a61b7e6677e655b0da3dc2f60946c9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryResource"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/staff/categories/{id}": {
@@ -381,25 +332,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Haircut"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CategoryResource"
                                 }
                             }
                         }
@@ -446,7 +379,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Category updated"
+                        "description": "Category updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryResource"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Unauthorized"
@@ -499,66 +439,6 @@
                 ]
             }
         },
-        "/api/staff/categories": {
-            "post": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Create a new category",
-                "operationId": "44a61b7e6677e655b0da3dc2f60946c9",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CategoryRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Category created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Haircut"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Unauthorized"
-                    },
-                    "422": {
-                        "description": "Validation error"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
         "/api/staff/job-positions": {
             "get": {
                 "tags": [
@@ -572,33 +452,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Hair Stylist"
-                                            },
-                                            "description": {
-                                                "type": "string",
-                                                "example": "Responsible for hair styling and cutting",
-                                                "nullable": true
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
+                                    "$ref": "#/components/schemas/JobPositionCollection"
                                 }
                             }
                         }
@@ -631,7 +485,14 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Job position created"
+                        "description": "Job position created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobPositionResource"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Unauthorized"
@@ -671,30 +532,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Hair Stylist"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Responsible for hair styling and cutting",
-                                            "nullable": true
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/JobPositionResource"
                                 }
                             }
                         }
@@ -741,7 +579,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Job position updated"
+                        "description": "Job position updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobPositionResource"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Unauthorized"
@@ -806,30 +651,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "guard"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "admin@test.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password"
-                                    },
-                                    "guard": {
-                                        "type": "string",
-                                        "example": "staff"
-                                    },
-                                    "remember": {
-                                        "type": "boolean",
-                                        "example": "false"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/LoginRequest"
                             }
                         }
                     }
@@ -870,71 +692,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Haircut"
-                                            },
-                                            "description": {
-                                                "type": "string",
-                                                "example": "Basic haircut service",
-                                                "nullable": true
-                                            },
-                                            "category_id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "duration": {
-                                                "type": "integer",
-                                                "example": 30
-                                            },
-                                            "price": {
-                                                "type": "number",
-                                                "format": "float",
-                                                "example": 25
-                                            },
-                                            "is_active": {
-                                                "type": "boolean",
-                                                "example": true
-                                            },
-                                            "preparation_time": {
-                                                "type": "integer",
-                                                "example": 5
-                                            },
-                                            "cleanup_time": {
-                                                "type": "integer",
-                                                "example": 5
-                                            },
-                                            "category": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Hair"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
+                                    "$ref": "#/components/schemas/ServiceCollection"
                                 }
                             }
                         }
@@ -956,58 +714,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Haircut"
-                                            },
-                                            "description": {
-                                                "type": "string",
-                                                "example": "Basic haircut service",
-                                                "nullable": true
-                                            },
-                                            "category_id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "duration": {
-                                                "type": "integer",
-                                                "example": 30
-                                            },
-                                            "price": {
-                                                "type": "number",
-                                                "format": "float",
-                                                "example": 25
-                                            },
-                                            "is_active": {
-                                                "type": "boolean",
-                                                "example": true
-                                            },
-                                            "preparation_time": {
-                                                "type": "integer",
-                                                "example": 5
-                                            },
-                                            "cleanup_time": {
-                                                "type": "integer",
-                                                "example": 5
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
+                                    "$ref": "#/components/schemas/ServiceCollection"
                                 }
                             }
                         }
@@ -1040,7 +747,14 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Service created"
+                        "description": "Service created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServiceResource"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Unauthorized"
@@ -1080,55 +794,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Haircut"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Basic haircut service",
-                                            "nullable": true
-                                        },
-                                        "category_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "duration": {
-                                            "type": "integer",
-                                            "example": 30
-                                        },
-                                        "price": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 25
-                                        },
-                                        "is_active": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "preparation_time": {
-                                            "type": "integer",
-                                            "example": 5
-                                        },
-                                        "cleanup_time": {
-                                            "type": "integer",
-                                            "example": 5
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/ServiceResource"
                                 }
                             }
                         }
@@ -1175,7 +841,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Service updated"
+                        "description": "Service updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServiceResource"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Unauthorized"
@@ -1287,84 +960,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "John Doe"
-                                                    },
-                                                    "email": {
-                                                        "type": "string",
-                                                        "example": "john@example.com"
-                                                    },
-                                                    "phone": {
-                                                        "type": "string",
-                                                        "example": "+359888123456"
-                                                    },
-                                                    "gender": {
-                                                        "type": "string",
-                                                        "example": "male"
-                                                    },
-                                                    "birth_date": {
-                                                        "type": "string",
-                                                        "format": "date",
-                                                        "example": "1990-01-15"
-                                                    },
-                                                    "role": {
-                                                        "type": "string",
-                                                        "example": "worker"
-                                                    },
-                                                    "is_active": {
-                                                        "type": "boolean",
-                                                        "example": true
-                                                    },
-                                                    "is_approved": {
-                                                        "type": "boolean",
-                                                        "example": true
-                                                    },
-                                                    "email_verified": {
-                                                        "type": "boolean",
-                                                        "example": true
-                                                    },
-                                                    "job_position_id": {
-                                                        "type": "integer",
-                                                        "example": 1,
-                                                        "nullable": true
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        },
-                                        "meta": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "last_page": {
-                                                    "type": "integer",
-                                                    "example": 5
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 50
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/UserCollection"
                                 }
                             }
                         }
@@ -1775,6 +1371,82 @@
                 },
                 "type": "object"
             },
+            "LoginRequest": {
+                "required": [
+                    "email",
+                    "password",
+                    "guard"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john@doe.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    },
+                    "guard": {
+                        "type": "string",
+                        "example": "staff"
+                    },
+                    "remember": {
+                        "type": "boolean",
+                        "example": "false"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterClientRequest": {
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "password_confirmation",
+                    "phone",
+                    "birth_date",
+                    "gender"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 6,
+                        "example": "password"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 14,
+                        "minLength": 6,
+                        "example": "+359888123456"
+                    },
+                    "birth_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "1990-01-15"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [
+                            "male",
+                            "female",
+                            "other"
+                        ],
+                        "example": "male"
+                    }
+                },
+                "type": "object"
+            },
             "ServiceRequest": {
                 "required": [
                     "name",
@@ -1917,6 +1589,156 @@
                 },
                 "type": "object"
             },
+            "CategoryCollection": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryResource"
+                        }
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryResource": {
+                "allOf": [
+                    {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Haircut"
+                            },
+                            "description": {
+                                "type": "string",
+                                "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                            }
+                        },
+                        "type": "object"
+                    },
+                    {
+                        "$ref": "#/components/schemas/Timestamps"
+                    }
+                ]
+            },
+            "JobPositionCollection": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobPositionResource"
+                        }
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                },
+                "type": "object"
+            },
+            "JobPositionResource": {
+                "allOf": [
+                    {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Hair Stylist"
+                            },
+                            "description": {
+                                "type": "string",
+                                "example": "Responsible for hair styling and cutting",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    },
+                    {
+                        "$ref": "#/components/schemas/Timestamps"
+                    }
+                ]
+            },
+            "ServiceCollection": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ServiceResource"
+                        }
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                },
+                "type": "object"
+            },
+            "ServiceResource": {
+                "allOf": [
+                    {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Haircut"
+                            },
+                            "description": {
+                                "type": "string",
+                                "example": "Basic haircut service",
+                                "nullable": true
+                            },
+                            "category_id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "duration": {
+                                "type": "integer",
+                                "example": 30
+                            },
+                            "price": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 25
+                            },
+                            "is_active": {
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "preparation_time": {
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "cleanup_time": {
+                                "type": "integer",
+                                "example": 5
+                            }
+                        },
+                        "type": "object"
+                    },
+                    {
+                        "$ref": "#/components/schemas/Timestamps"
+                    }
+                ]
+            },
             "UserAuth": {
                 "properties": {
                     "id": {
@@ -1942,74 +1764,22 @@
                 },
                 "type": "object"
             },
-            "UserListResource": {
-                "allOf": [
-                    {
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "name": {
-                                "type": "string",
-                                "example": "John Doe"
-                            },
-                            "email": {
-                                "type": "string",
-                                "format": "email",
-                                "example": "john@example.com"
-                            },
-                            "phone": {
-                                "type": "string",
-                                "example": "+359888123456"
-                            },
-                            "gender": {
-                                "type": "string",
-                                "enum": [
-                                    "male",
-                                    "female",
-                                    "other"
-                                ],
-                                "example": "male"
-                            },
-                            "birth_date": {
-                                "type": "string",
-                                "format": "date",
-                                "example": "1990-01-15"
-                            },
-                            "role": {
-                                "type": "string",
-                                "enum": [
-                                    "admin",
-                                    "worker",
-                                    "client"
-                                ],
-                                "example": "worker"
-                            },
-                            "is_active": {
-                                "type": "boolean",
-                                "example": true
-                            },
-                            "is_approved": {
-                                "type": "boolean",
-                                "example": true
-                            },
-                            "email_verified": {
-                                "type": "boolean",
-                                "example": true
-                            },
-                            "job_pos\tition_id": {
-                                "type": "integer",
-                                "example": 1,
-                                "nullable": true
-                            }
-                        },
-                        "type": "object"
+            "UserCollection": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserResource"
+                        }
                     },
-                    {
-                        "$ref": "#/components/schemas/Timestamps"
+                    "links": {
+                        "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
                     }
-                ]
+                },
+                "type": "object"
             },
             "UserResource": {
                 "allOf": [
@@ -2079,6 +1849,44 @@
                         "$ref": "#/components/schemas/Timestamps"
                     }
                 ]
+            },
+            "PaginationLinks": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "last": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "prev": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "PaginationMeta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer"
+                    },
+                    "last_page": {
+                        "type": "integer"
+                    },
+                    "per_page": {
+                        "type": "integer"
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
             },
             "Timestamps": {
                 "properties": {

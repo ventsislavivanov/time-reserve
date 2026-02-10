@@ -14,7 +14,9 @@ export const useEntityManager = (service, entityName, initialState = {}) => {
 	const loadItems = async () => {
 		try {
 			setIsLoading(true);
-			const data = await service.getAll();
+			const response = await service.getAll();
+			const { data } = response;
+
 			setItems(data);
 		} catch {
 			console.error(`Failed to load ${entityName}`);

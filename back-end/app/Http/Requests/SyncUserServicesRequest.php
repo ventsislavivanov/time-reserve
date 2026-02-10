@@ -20,19 +20,11 @@ use OpenApi\Attributes as OA;
 )]
 class SyncUserServicesRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
 		return auth()->user()?->isAdmin() ?? false;
     }
 
-    /**
-     * Get the validations rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [

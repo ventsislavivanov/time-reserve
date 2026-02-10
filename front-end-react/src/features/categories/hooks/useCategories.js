@@ -10,7 +10,9 @@ export const useCategories = () => {
 		const fetchCategories = async () => {
 			try {
 				setIsLoading(true);
-				const data = await getAllCategory();
+				const response = await getAllCategory();
+				const { data } = response;
+
 				setCategories(data);
 				setError(null);
 			} catch (err) {

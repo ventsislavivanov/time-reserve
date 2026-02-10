@@ -43,7 +43,9 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
     useEffect(() => {
         const fetchJobPositions = async () => {
             try {
-                const data = await getJobPostions();
+                const response = await getJobPostions();
+                const { data } = response;
+
                 setJobPositions(data);
             } catch (error) {
                 console.error('Error fetching job positions:', error);

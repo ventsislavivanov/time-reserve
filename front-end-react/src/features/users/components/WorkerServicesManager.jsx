@@ -20,7 +20,7 @@ const WorkerServicesManager = ({ workerId }) => {
                     getServices(),
                     getUserServices(workerId)
                 ]);
-                setAllServices(servicesData);
+                setAllServices(servicesData.data);
                 setSelectedServiceIds(workerServicesData.map(s => s.id));
             } catch (error) {
                 notify.error('Failed to load services');

@@ -23,80 +23,6 @@ class AuthController extends Controller
 	) {}
 
 	#[OA\Post(
-		path: '/api/login',
-		summary: 'Login user',
-		tags: ['Auth']
-	)]
-	#[OA\RequestBody(
-		required: true,
-		content: new OA\JsonContent(
-			required: ['email', 'password', 'guard'],
-			properties: [
-				new OA\Property(property: 'email', type: 'string', example: 'admin@test.com'),
-				new OA\Property(property: 'password', type: 'string', example: 'password'),
-				new OA\Property(property: 'guard', type: 'string', example: 'staff'),
-				new OA\Property(property: 'remember', type: 'boolean', example: 'false'),
-			]
-		)
-	)]
-	#[OA\Response(
-		response: 200,
-		description: 'Successful login',
-		content: new OA\JsonContent(
-			properties: [
-				new OA\Property(property: 'token', type: 'string'),
-				new OA\Property(property: 'user', ref: '#/components/schemas/UserAuth')
-			]
-		)
-	)]
-	#[OA\Response(response: 401, description: 'Invalid credentials')]
-	public function login(LoginRequest $request): JsonResponse
-	{
-		$result = $this->authService->login(
-			email: $request->email,
-			password: $request->password,
-			guard: $request->guard,
-			remember: $request->remember ?? false
-		);
-
-		return response()->json([
-			'token' => $result['token'],
-			'user' => new UserAuthResource($result['user']),
-		]);
-	}
-
-	#[OA\Post(
-		path: '/api/logout',
-		description: 'Revokes the current access token and logs out the authenticated user',
-		summary: 'Logout user',
-		security: [['sanctum' => []]],
-		tags: ['Auth']
-	)]
-	#[OA\Response(
-		response: 200,
-		description: 'Successfully logged out',
-		content: new OA\JsonContent(
-			properties: [
-				new OA\Property(property: 'message', type: 'string', example: 'Logged out')
-			]
-		)
-	)]
-	#[OA\Response(
-		response: 401,
-		description: 'Unauthenticated - no valid token provided',
-		content: new OA\JsonContent(
-			properties: [
-				new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.')
-			]
-		)
-	)]
-	public function logout(Request $request): JsonResponse
-	{
-		$request->user()->currentAccessToken()->delete();
-		return response()->json(['message' => 'Logged out']);
-	}
-
-	#[OA\Post(
 		path: '/api/register',
 		description: 'Registers a new client account and sends email verification link',
 		summary: 'Register new client',
@@ -104,21 +30,9 @@ class AuthController extends Controller
 	)]
 	#[OA\RequestBody(
 		required: true,
-		content: new OA\JsonContent(
-			required: ['name', 'email', 'password', 'password_confirmation', 'phone', 'birth_date', 'gender'],
-			properties: [
-				new OA\Property(property: 'name', type: 'string', maxLength: 255, example: 'John Doe'),
-				new OA\Property(property: 'email', type: 'string', format: 'email', example: 'john@example.com'),
-				new OA\Property(property: 'password', type: 'string', format: 'password', minLength: 6, example: 'password'),
-				new OA\Property(property: 'phone', type: 'string', maxLength: 14, minLength: 6, example: '+359888123456'),
-				new OA\Property(property: 'birth_date', type: 'string', format: 'date', example: '1990-01-15'),
-				new OA\Property(property: 'gender', type: 'string', enum: ['male', 'female', 'other'], example: 'male'),
-			]
-		)
+		content: new OA\JsonContent(ref: '#/components/schemas/RegisterClientRequest')
 	)]
-	#[OA\Response(
-		response: 200,
-		description: 'Registration successful - verification email sent',
+	#[OA\Response(response: 200, description: 'Registration successful - verification email sent',
 		content: new OA\JsonContent(
 			properties: [
 				new OA\Property(
@@ -129,9 +43,7 @@ class AuthController extends Controller
 			]
 		)
 	)]
-	#[OA\Response(
-		response: 422,
-		description: 'Validation error',
+	#[OA\Response(response: 422, description: 'Validation error',
 		content: new OA\JsonContent(
 			properties: [
 				new OA\Property(property: 'message', type: 'string', example: 'The email has already been taken.'),
@@ -232,4 +144,63 @@ class AuthController extends Controller
 		return redirect("{$frontendUrl}/login?verified=1&email=" . urlencode($user->email));
 	}
 
+	#[OA\Post(
+		path: '/api/login',
+		summary: 'Login user',
+		tags: ['Auth']
+	)]
+	#[OA\RequestBody(
+		required: true,
+		content: new OA\JsonContent(ref: '#/components/schemas/LoginRequest')
+	)]
+	#[OA\Response(response: 200, description: 'Successful login',
+		content: new OA\JsonContent(
+			properties: [
+				new OA\Property(property: 'token', type: 'string'),
+				new OA\Property(property: 'user', ref: '#/components/schemas/UserAuth')
+			]
+		)
+	)]
+	#[OA\Response(response: 401, description: 'Invalid credentials')]
+	public function login(LoginRequest $request): JsonResponse
+	{
+		$result = $this->authService->login(
+			email: $request->email,
+			password: $request->password,
+			guard: $request->guard,
+			remember: $request->remember ?? false
+		);
+
+		return response()->json([
+			'token' => $result['token'],
+			'user' => new UserAuthResource($result['user']),
+		]);
+	}
+
+	#[OA\Post(
+		path: '/api/logout',
+		description: 'Revokes the current access token and logs out the authenticated user',
+		summary: 'Logout user',
+		security: [['sanctum' => []]],
+		tags: ['Auth']
+	)]
+	#[OA\Response(response: 200, description: 'Successfully logged out',
+		content: new OA\JsonContent(
+			properties: [
+				new OA\Property(property: 'message', type: 'string', example: 'Logged out')
+			]
+		)
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated - no valid token provided',
+		content: new OA\JsonContent(
+			properties: [
+				new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated.')
+			]
+		)
+	)]
+	public function logout(Request $request): JsonResponse
+	{
+		$request->user()->currentAccessToken()->delete();
+		return response()->json(['message' => 'Logged out']);
+	}
 }

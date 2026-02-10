@@ -29,11 +29,6 @@ use OpenApi\Attributes as OA;
 )]
 class UserResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
 		return [
@@ -50,9 +45,6 @@ class UserResource extends JsonResource
 			'job_position_id' => $this->job_position_id,
 			'created_at'      => $this->created_at?->format('Y-m-d H:i:s'),
 			'updated_at'      => $this->updated_at?->format('Y-m-d H:i:s'),
-//			'services'        => ServiceResource::collection(
-//				$this->whenLoaded('services')
-//			),
 		];
     }
 }

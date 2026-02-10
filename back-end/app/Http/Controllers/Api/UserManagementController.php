@@ -21,9 +21,7 @@ class UserManagementController extends Controller
 		name: 'id', in: 'path', required: true,
 		schema: new OA\Schema(type: 'integer', example: 1)
 	)]
-	#[OA\Response(
-		response: 200,
-		description: 'User active status toggled',
+	#[OA\Response(response: 200, description: 'User active status toggled',
 		content: new OA\JsonContent(ref: '#/components/schemas/UserResource')
 	)]
 	#[OA\Response(response: 403, description: 'Unauthorized')]
@@ -53,9 +51,7 @@ class UserManagementController extends Controller
 		required: true,
 		content: new OA\JsonContent(ref: '#/components/schemas/UpdateUserRoleRequest')
 	)]
-	#[OA\Response(
-		response: 200,
-		description: 'User role updated',
+	#[OA\Response(response: 200, description: 'User role updated',
 		content: new OA\JsonContent(ref: '#/components/schemas/UserResource')
 	)]
 	#[OA\Response(response: 403, description: 'Unauthorized')]

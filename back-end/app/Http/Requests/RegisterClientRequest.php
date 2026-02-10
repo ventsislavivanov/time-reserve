@@ -4,22 +4,27 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+	schema: 'RegisterClientRequest',
+	required: ['name', 'email', 'password', 'password_confirmation', 'phone', 'birth_date', 'gender'],
+	properties: [
+		new OA\Property(property: 'name', type: 'string', maxLength: 255, example: 'John Doe'),
+		new OA\Property(property: 'email', type: 'string', format: 'email', example: 'john@example.com'),
+		new OA\Property(property: 'password', type: 'string', format: 'password', minLength: 6, example: 'password'),
+		new OA\Property(property: 'phone', type: 'string', maxLength: 14, minLength: 6, example: '+359888123456'),
+		new OA\Property(property: 'birth_date', type: 'string', format: 'date', example: '1990-01-15'),
+		new OA\Property(property: 'gender', type: 'string', enum: ['male', 'female', 'other'], example: 'male'),
+	]
+)]
 class RegisterClientRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validations rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
