@@ -9,14 +9,16 @@ use App\Http\Resources\User\UserAuthResource;
 use App\Models\User;
 use App\Services\AuthService;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
 
 	public function __construct(
-		// auto-resolve
 		protected AuthService $authService
 	) {}
 
@@ -48,7 +50,7 @@ class AuthController extends Controller
 		)
 	)]
 	#[OA\Response(response: 401, description: 'Invalid credentials')]
-	public function login(LoginRequest $request)
+	public function login(LoginRequest $request): JsonResponse
 	{
 		$result = $this->authService->login(
 			email: $request->email,
@@ -88,13 +90,56 @@ class AuthController extends Controller
 			]
 		)
 	)]
-	public function logout(Request $request)
+	public function logout(Request $request): JsonResponse
 	{
 		$request->user()->currentAccessToken()->delete();
 		return response()->json(['message' => 'Logged out']);
 	}
 
-	public function registerClient(RegisterClientRequest  $request)
+	#[OA\Post(
+		path: '/api/register',
+		description: 'Registers a new client account and sends email verification link',
+		summary: 'Register new client',
+		tags: ['Auth']
+	)]
+	#[OA\RequestBody(
+		required: true,
+		content: new OA\JsonContent(
+			required: ['name', 'email', 'password', 'password_confirmation', 'phone', 'birth_date', 'gender'],
+			properties: [
+				new OA\Property(property: 'name', type: 'string', maxLength: 255, example: 'John Doe'),
+				new OA\Property(property: 'email', type: 'string', format: 'email', example: 'john@example.com'),
+				new OA\Property(property: 'password', type: 'string', format: 'password', minLength: 6, example: 'password'),
+				new OA\Property(property: 'phone', type: 'string', maxLength: 14, minLength: 6, example: '+359888123456'),
+				new OA\Property(property: 'birth_date', type: 'string', format: 'date', example: '1990-01-15'),
+				new OA\Property(property: 'gender', type: 'string', enum: ['male', 'female', 'other'], example: 'male'),
+			]
+		)
+	)]
+	#[OA\Response(
+		response: 200,
+		description: 'Registration successful - verification email sent',
+		content: new OA\JsonContent(
+			properties: [
+				new OA\Property(
+					property: 'message',
+					type: 'string',
+					example: 'Please check your email for a confirmation link.'
+				)
+			]
+		)
+	)]
+	#[OA\Response(
+		response: 422,
+		description: 'Validation error',
+		content: new OA\JsonContent(
+			properties: [
+				new OA\Property(property: 'message', type: 'string', example: 'The email has already been taken.'),
+				new OA\Property(property: 'errors', type: 'object')
+			]
+		)
+	)]
+	public function registerClient(RegisterClientRequest  $request): JsonResponse
 	{
 		$user = User::create([
 			...$request->validated(),
@@ -167,7 +212,7 @@ class AuthController extends Controller
 			new OA\Response(response: 404, description: 'User not found'),
 		]
 	)]
-	public function verifyEmail(Request $request, $id, $hash)
+	public function verifyEmail(Request $request, $id, $hash): JsonResponse|Redirector|RedirectResponse
 	{
 		$user = User::findOrFail($id);
 		$frontendUrl = config('app.frontend_url');

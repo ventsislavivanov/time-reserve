@@ -19,6 +19,13 @@ use OpenApi\Attributes as OA;
 	bearerFormat: "JWT",
 	scheme: "bearer"
 )]
+#[OA\Schema(
+	schema: 'Timestamps',
+	properties: [
+		new OA\Property(property: 'created_at', type: 'string', format: 'date-time'),
+		new OA\Property(property: 'updated_at', type: 'string', format: 'date-time'),
+	]
+)]
 class OpenApi
 {
 

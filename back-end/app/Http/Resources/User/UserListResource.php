@@ -4,7 +4,29 @@ namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+	schema: 'UserListResource',
+	allOf: [
+		new OA\Schema(
+			properties: [
+				new OA\Property(property: 'id', type: 'integer', example: 1),
+				new OA\Property(property: 'name', type: 'string', example: 'John Doe'),
+				new OA\Property(property: 'email', type: 'string', format: 'email', example: 'john@example.com'),
+				new OA\Property(property: 'phone', type: 'string', example: '+359888123456'),
+				new OA\Property(property: 'gender', type: 'string', enum: ['male', 'female', 'other'], example: 'male'),
+				new OA\Property(property: 'birth_date', type: 'string', format: 'date', example: '1990-01-15'),
+				new OA\Property(property: 'role', type: 'string', enum: ['admin', 'worker', 'client'], example: 'worker'),
+				new OA\Property(property: 'is_active', type: 'boolean', example: true),
+				new OA\Property(property: 'is_approved', type: 'boolean', example: true),
+				new OA\Property(property: 'email_verified', type: 'boolean', example: true),
+				new OA\Property(property: 'job_pos	ition_id', type: 'integer', example: 1, nullable: true),
+			]
+		),
+		new OA\Schema(ref: '#/components/schemas/Timestamps'),
+	]
+)]
 class UserListResource extends JsonResource
 {
     /**

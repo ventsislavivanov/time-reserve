@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class WorkerAppointmentController extends Controller
@@ -24,7 +25,7 @@ class WorkerAppointmentController extends Controller
 			->get();
 	}
 
-	public function approve(Request $request, Appointment $appointment)
+	public function approve(Request $request, Appointment $appointment): JsonResponse
 	{
 		$this->authorizeWorker($request->user(), $appointment);
 
@@ -39,7 +40,7 @@ class WorkerAppointmentController extends Controller
 		return response()->json(['message' => 'Appointment approved']);
 	}
 
-	public function reject(Request $request, Appointment $appointment)
+	public function reject(Request $request, Appointment $appointment): JsonResponse
 	{
 		$this->authorizeWorker($request->user(), $appointment);
 
@@ -55,7 +56,7 @@ class WorkerAppointmentController extends Controller
 		return response()->json(['message' => 'Appointment rejected']);
 	}
 
-	private function authorizeWorker(User $user, Appointment $appointment)
+	private function authorizeWorker(User $user, Appointment $appointment): void
 	{
 		if (
 			$user->role !== 'worker' ||
