@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -16,11 +17,6 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens,  Notifiable, HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -35,21 +31,11 @@ class User extends Authenticatable implements MustVerifyEmail
 		'job_position_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -64,12 +50,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	/* ---------- RELATIONS ---------- */
 
-	public function appointments()
+	public function appointments(): HasMany
 	{
 		return $this->hasMany(Appointment::class, 'client_id');
 	}
 
-	public function workerAppointments()
+	public function workerAppointments(): HasMany
 	{
 		return $this->hasMany(Appointment::class, 'worker_id');
 	}
@@ -81,7 +67,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	public function services(): BelongsToMany
 	{
-		return $this->belongsToMany(Service::class, 'worker_service', 'user_id', 'service_id');
+		return $this->belongsToMany(
+			Service::class,
+			'worker_service',
+			'user_id',
+			'service_id'
+		);
 	}
 
 	/* ---------- HELPERS ---------- */

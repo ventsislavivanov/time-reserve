@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SyncUserServicesRequest;
+use App\Http\Resources\Service\ServiceCollection;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
@@ -55,18 +56,18 @@ class UserServiceController extends Controller
 		description: 'Services synced successfully',
 		content: new OA\JsonContent(
 			type: 'array',
-			items: new OA\Items(ref: '#/components/schemas/UserResource')
+			items: new OA\Items(ref: '#/components/schemas/ServiceResource')
 		)
 	)]
 	#[OA\Response(response: 403, description: 'Unauthorized')]
 	#[OA\Response(response: 404, description: 'User not found')]
 	#[OA\Response(response: 422, description: 'Validation error')]
-	public function syncServices(SyncUserServicesRequest $request, User $user): JsonResponse
+	public function syncServices(SyncUserServicesRequest $request, User $user): ServiceCollection
 	{
 		$this->authorize('syncServices', $user);
 
 		$user->services()->sync($request->service_ids);
 
-		return response()->json($user->fresh()->services);
+		return new ServiceCollection($user->fresh()->services);
 	}
 }
