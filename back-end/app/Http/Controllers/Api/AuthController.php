@@ -56,6 +56,7 @@ class AuthController extends Controller
 		$user = User::create([
 			...$request->validated(),
 			'is_approved' => false,
+			'can_book_appointments' => true,
 		]);
 
 		$user->sendEmailVerificationNotification();

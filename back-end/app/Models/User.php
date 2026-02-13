@@ -48,7 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-	/* ---------- RELATIONS ---------- */
+	// ───── Relationships ─────
 
 	public function appointments(): HasMany
 	{
@@ -75,7 +75,7 @@ class User extends Authenticatable implements MustVerifyEmail
 		);
 	}
 
-	/* ---------- HELPERS ---------- */
+	// ───── Helpers ─────
 
 	public function isAdmin(): bool
 	{
@@ -120,7 +120,7 @@ class User extends Authenticatable implements MustVerifyEmail
 		return $this->is_active && $this->is_approved;
 	}
 
-	/* ---------- SCOPES ---------- */
+	// ───── Scopes ─────
 	public function scopeRole($query, $role)
 	{
 		return $query->when($role, fn ($q) => $q->where('role', $role));
@@ -140,7 +140,7 @@ class User extends Authenticatable implements MustVerifyEmail
 		});
 	}
 
-	/* ---------- ACCESSORS ---------- */
+	// ───── Accessors ─────
 	public function getIsVerifiedAttribute(): bool
 	{
 		return !is_null($this->email_verified_at);
@@ -161,5 +161,10 @@ class User extends Authenticatable implements MustVerifyEmail
 		}
 
 		return 'active';
+	}
+
+	public function canBookAppointments(): bool
+	{
+		return $this->role === 'client' && $this->can_book_appointments;
 	}
 }

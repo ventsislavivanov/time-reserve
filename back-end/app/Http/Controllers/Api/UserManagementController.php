@@ -67,4 +67,13 @@ class UserManagementController extends Controller
 
 		return new UserResource($user);
 	}
+
+	public function toggleCanBookAppointments (User $user): UserResource
+	{
+		$this->authorize('update', $user);
+
+		$user->update(['can_book_appointments' => !$user->can_book_appointments]);
+
+		return new UserResource($user);
+	}
 }

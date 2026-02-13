@@ -73,6 +73,10 @@ class UserController extends Controller
 			'is_approved' 		=> true,
 		]);
 
+		if ($request->role === 'client') {
+			$user['can_book_appointments'] = true;
+		}
+
 		return new UserResource($user);
 	}
 

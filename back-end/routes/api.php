@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\JobPositionController;
 use App\Http\Controllers\Api\ServiceController;
@@ -21,9 +23,15 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
     ->middleware(['signed'])
     ->name('verification.verify');
 
+Route::get('availability/slots', [AvailabilityController::class, 'getSlots']);
+
 Route::middleware('auth:sanctum')->group(function () {
 	Route::post('/logout', [AuthController::class, 'logout']);
 	Route::get('/me', fn (Request $r) => $r->user());
+
+	Route::get('appointments', [AppointmentController::class, 'index']);
+	Route::post('appointments', [AppointmentController::class, 'store']);
+	Route::patch('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel']);
 });
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(function () {
@@ -36,6 +44,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 
 		Route::patch('toggle-active', [UserManagementController::class, 'toggleActive']);
 		Route::patch('role', [UserManagementController::class, 'updateRole']);
+		Route::patch('users/{user}/can-book-appointments', [UserManagementController::class, 'toggleCanBookAppointments']);
 	});
 
 	Route::apiResource('job-positions', JobPositionController::class);
@@ -44,4 +53,12 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 		->except(['index']);
 
 	Route::apiResource('services', ServiceController::class);
+});
+
+Route::middleware(['auth:sanctum', 'role:admin,worker'])->prefix('staff')->group(function () {
+	Route::get('appointments', [AppointmentController::class, 'staffIndex']);
+	Route::patch('appointments/{appointment}/confirm', [AppointmentController::class, 'confirm']);
+	Route::patch('appointments/{appointment}/reject', [AppointmentController::class, 'reject']);
+	Route::patch('appointments/{appointment}/decline', [AppointmentController::class, 'decline']);
+	Route::patch('appointments/{appointment}/complete', [AppointmentController::class, 'complete']);
 });
