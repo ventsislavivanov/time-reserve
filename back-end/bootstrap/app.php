@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
 			'role' => \App\Http\Middleware\CheckRole::class,
 		]);
     })
+	->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule): void {
+		$schedule->command('appointments:mark-no-show')->hourly();
+	})
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

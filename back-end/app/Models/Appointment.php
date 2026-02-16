@@ -15,8 +15,9 @@ class Appointment extends Model
 		'starts_at',
 		'ends_at',
 		'status',
-		'cancelled_by',
+		'changed_by',
 		'notes',
+		'reason',
 	];
 
 	protected $casts = [
@@ -39,6 +40,11 @@ class Appointment extends Model
 	public function client(): BelongsTo
 	{
 		return $this->belongsTo(User::class, 'client_id');
+	}
+
+	public function changedBy(): BelongsTo
+	{
+		return $this->belongsTo(User::class, 'changed_by');
 	}
 
 	// ───── Scopes ─────
@@ -85,8 +91,33 @@ class Appointment extends Model
 		return $this->status === 'cancelled';
 	}
 
+	public function isRejected(): bool
+	{
+		return $this->status === 'rejected';
+	}
+
+	public function isDeclined(): bool
+	{
+		return $this->status === 'declined';
+	}
+
 	public function isCompleted(): bool
 	{
 		return $this->status === 'completed';
+	}
+
+	public function isNoShow(): bool
+	{
+		return $this->status === 'no_show';
+	}
+
+	public function changeStatus(string $status, ?string $reason = null): self
+	{
+		$this->update([
+			'status' => $status,
+			'reason' => $reason,
+		]);
+
+		return $this;
 	}
 }

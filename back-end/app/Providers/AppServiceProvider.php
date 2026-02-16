@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Appointment;
+use App\Observers\AppointmentObserver;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -24,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
 		Event::listen(Verified::class, function ($event) {
 			$event->user->update(['is_approved' => true]);
 		});
+
+		Appointment::observe(AppointmentObserver::class);
     }
 }

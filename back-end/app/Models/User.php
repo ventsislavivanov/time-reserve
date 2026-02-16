@@ -29,6 +29,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_approved',
 		'is_active',
 		'job_position_id',
+		'can_book_appointments',
+    	'no_show_count',
+    	'no_show_total_count',
+    	'cancelled_count',
+    	'completed_count',
     ];
 
     protected $hidden = [
@@ -45,6 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
 			'is_active' => 'boolean',
 			'birth_date' => 'date',
 			'job_position_id' => 'integer',
+			'can_book_appointments' => 'boolean',
         ];
     }
 
@@ -120,6 +126,28 @@ class User extends Authenticatable implements MustVerifyEmail
 		return $this->is_active && $this->is_approved;
 	}
 
+	public function hasConsecutiveNoShows(): bool
+	{
+		return $this->no_show_count >= 3;
+	}
+
+	public function getReliabilityScore(): float
+	{
+		$total = $this->completed_count + $this->no_show_total_count + $this->cancelled_count;
+
+		if ($total === 0) {
+			return 100; // New client
+		}
+
+		return ($this->completed_count / $total) * 100;
+	}
+
+	public function canReceivePromotions(): bool
+	{
+		return $this->can_book_appointments
+			&& $this->getReliabilityScore() >= 70;
+	}
+
 	// ───── Scopes ─────
 	public function scopeRole($query, $role)
 	{
@@ -163,7 +191,7 @@ class User extends Authenticatable implements MustVerifyEmail
 		return 'active';
 	}
 
-	public function canBookAppointments(): bool
+	public function isAllowedToBook(): bool
 	{
 		return $this->role === 'client' && $this->can_book_appointments;
 	}

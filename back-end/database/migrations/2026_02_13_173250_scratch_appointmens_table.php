@@ -22,11 +22,12 @@ return new class extends Migration
 			$table->dateTime('starts_at');
 			$table->dateTime('ends_at');
 
-			$table->enum('status', ['pending', 'confirmed', 'cancelled', 'rejected', 'declined', 'completed'])
+			$table->enum('status', ['pending', 'confirmed', 'cancelled', 'rejected', 'declined', 'completed', 'no_show'])
 				->default('pending');
 
-			$table->foreignId('cancelled_by')->nullable()->constrained('users')->nullOnDelete();
+			$table->foreignId('changed_by')->nullable()->constrained('users')->nullOnDelete();
 			$table->text('notes')->nullable();
+			$table->text('reason')->nullable();
 
 			$table->timestamps();
 

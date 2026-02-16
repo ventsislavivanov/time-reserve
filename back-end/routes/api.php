@@ -44,7 +44,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 
 		Route::patch('toggle-active', [UserManagementController::class, 'toggleActive']);
 		Route::patch('role', [UserManagementController::class, 'updateRole']);
-		Route::patch('users/{user}/can-book-appointments', [UserManagementController::class, 'toggleCanBookAppointments']);
+		Route::patch('can-book-appointments', [UserManagementController::class, 'toggleCanBookAppointments']);
 	});
 
 	Route::apiResource('job-positions', JobPositionController::class);
@@ -60,5 +60,6 @@ Route::middleware(['auth:sanctum', 'role:admin,worker'])->prefix('staff')->group
 	Route::patch('appointments/{appointment}/confirm', [AppointmentController::class, 'confirm']);
 	Route::patch('appointments/{appointment}/reject', [AppointmentController::class, 'reject']);
 	Route::patch('appointments/{appointment}/decline', [AppointmentController::class, 'decline']);
+	Route::patch('appointments/{appointment}/no-show', [AppointmentController::class, 'markNoShow']);
 	Route::patch('appointments/{appointment}/complete', [AppointmentController::class, 'complete']);
 });

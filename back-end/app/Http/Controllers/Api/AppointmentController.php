@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAppointmentRequest;
+use App\Http\Requests\RejectAppointmentRequest;
+use App\Http\Resources\Appointment\AppointmentCollection;
+use App\Http\Resources\Appointment\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\Service;
 use App\Services\AvailabilityService;
@@ -20,27 +23,26 @@ class AppointmentController extends Controller
 	/**
 	 * All customer hours
 	 */
-	public function index(Request $request): JsonResponse
+	public function index(): AppointmentCollection
 	{
 		$appointments = Appointment::where('client_id', auth()->id())
-			->with(['service', 'worker'])
+			->with([
+				'service:id,name,duration,price',
+				'worker:id,name'
+			])
+			->select(['id', 'service_id', 'worker_id', 'client_id', 'starts_at', 'ends_at', 'status', 'notes', 'cancelled_by'])
 			->orderBy('starts_at', 'desc')
 			->paginate(10);
 
-		return response()->json($appointments);
+		return new AppointmentCollection($appointments);
 	}
 
 	/**
 	 * Booking an appointment
 	 */
-	public function store(CreateAppointmentRequest $request): JsonResponse
+	public function store(CreateAppointmentRequest $request): JsonResponse|AppointmentResource
 	{
-		$client = auth()->user();
-		if (!$client->canBookAppointments()) {
-			return response()->json([
-				'message' => 'You are not allowed to book appointments'
-			], 403);
-		}
+		$this->authorize('create', Appointment::class);
 
 		$service = Service::findOrFail($request->service_id);
 		$startsAt = Carbon::parse($request->starts_at);
@@ -65,97 +67,85 @@ class AppointmentController extends Controller
 			'status' => 'pending',
 		]);
 
-		return response()->json($appointment->load(['service', 'worker']), 201);
+		return new AppointmentResource($appointment->load(['service', 'worker']));
 	}
 
-	public function cancel(Appointment $appointment): JsonResponse
+	public function cancel(Request $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('cancel', $appointment);
 
-		if ($appointment->isCancelled()) {
-			return response()->json(['message' => 'Already cancelled'], 400);
-		}
+		$appointment->changeStatus('cancelled', $request->reason);
 
-		$appointment->update(['status' => 'cancelled']);
-
-		return response()->json($appointment);
+		return new AppointmentResource($appointment);
 	}
 
-	public function confirm(Appointment $appointment): JsonResponse
+	public function confirm(Request $request, Appointment $appointment): AppointmentResource
 	{
-		$this->authorize('update', $appointment);
+		$this->authorize('confirm', $appointment);
 
-		if (!$appointment->isPending()) {
-			return response()->json(['message' => 'Only pending appointments can be confirmed'], 400);
-		}
+		$appointment->changeStatus('confirmed');
 
-		$appointment->update(['status' => 'confirmed']);
-
-		return response()->json($appointment);
+		return new AppointmentResource($appointment);
 	}
 
-	public function reject(Appointment $appointment): JsonResponse
+	public function reject(RejectAppointmentRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('reject', $appointment);
 
-		if (!$appointment->isPending()) {
-			return response()->json(['message' => 'Only pending appointments can be rejected'], 400);
-		}
+		$appointment->changeStatus('rejected', $request->reason);
 
-		$appointment->update([
-			'status' => 'rejected',
-			'cancelled_by' => auth()->user()->id
-		]);
-
-		return response()->json($appointment);
+		return new AppointmentResource($appointment);
 	}
 
 	/**
 	 * Admin/Worker declines CONFIRMED appointment
 	 * Reason: illness, emergency, force majeure
 	 */
-	public function decline(Appointment $appointment): JsonResponse
+	public function decline(Request $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('decline', $appointment);
 
-		if (!$appointment->isConfirmed()) {
-			return response()->json(['message' => 'Only confirmed appointments can be declined'], 400);
-		}
+		$appointment->changeStatus('declined', $request->reason);
 
-		$appointment->update([
-			'status' => 'declined',
-			'cancelled_by' => auth()->user()->id
-		]);
-
-		return response()->json($appointment);
+		return new AppointmentResource($appointment);
 	}
 
-	public function complete(Appointment $appointment): JsonResponse
+	public function complete(Request $request, Appointment $appointment): AppointmentResource
 	{
-		$this->authorize('update', $appointment);
+		$this->authorize('complete', $appointment);
 
-		if (!$appointment->isConfirmed()) {
-			return response()->json(['message' => 'Only confirmed appointments can be completed'], 400);
-		}
+		$appointment->changeStatus('completed', $request->reason);
 
-		$appointment->update(['status' => 'completed']);
-
-		return response()->json($appointment);
+		return new AppointmentResource($appointment);
 	}
 
-	public function staffIndex(Request $request): JsonResponse
+	public function markNoShow(Request $request, Appointment $appointment): AppointmentResource
+	{
+		$this->authorize('noShow', $appointment);
+
+		$appointment->changeStatus('no_show', $request->reason);
+
+		return new AppointmentResource($appointment);
+	}
+
+	public function staffIndex(Request $request): AppointmentCollection
 	{
 		$this->authorize('viewAny', Appointment::class);
 
 		$user = auth()->user();
 
-		$appointments = Appointment::with(['service', 'worker', 'client'])
+		$appointments = Appointment::with([
+			'service:id,name,duration,price',
+			'worker:id,name',
+			'client:id,name',
+			'changedBy:id,name' // Eager load changed_by relation
+		])
 			->when($user->isWorker(), fn($q) => $q->where('worker_id', $user->id))
 			->when($request->status, fn($q) => $q->where('status', $request->status))
 			->when($request->worker_id && $user->isAdmin(), fn($q) => $q->where('worker_id', $request->worker_id))
 			->orderBy('starts_at', 'desc')
 			->paginate(20);
 
-		return response()->json($appointments);
+		return new AppointmentCollection($appointments);
 	}
 }
