@@ -29,12 +29,18 @@ class ServiceResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
-			'id'              => $this->id,
-			'name'            => $this->name,
-			'description'     => $this->description,
-			'created_at'      => $this->created_at?->format('Y-m-d H:i:s'),
-			'updated_at'      => $this->updated_at?->format('Y-m-d H:i:s'),
+		return [
+			'id'               => $this->id,
+			'name'             => $this->name,
+			'description'      => $this->description,
+			'category_id'      => $this->category_id,
+			'duration'         => $this->duration,
+			'price'            => $this->price,
+			'is_active'        => $this->is_active,
+			'preparation_time' => $this->preparation_time,
+			'cleanup_time'     => $this->cleanup_time,
+			'created_at'       => $this->created_at?->format('Y-m-d H:i:s'),
+			'updated_at'       => $this->updated_at?->format('Y-m-d H:i:s'),
 		];
     }
 }
