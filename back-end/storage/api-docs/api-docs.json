@@ -4,12 +4,6 @@
         "title": "My API Documentation",
         "version": "1.0.0"
     },
-    "servers": [
-        {
-            "url": "http://10.66.4.47:8989",
-            "description": "Local development server"
-        }
-    ],
     "paths": {
         "/api/register": {
             "post": {
