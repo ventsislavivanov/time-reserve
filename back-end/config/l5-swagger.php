@@ -6,6 +6,12 @@ return [
         'default' => [
             'api' => [
                 'title' => 'L5 Swagger UI',
+				'servers' => [
+					[
+						'url' => env('L5_SWAGGER_CONST_HOST'),
+						'description' => 'Production server'
+					]
+				],
             ],
 
             'routes' => [
