@@ -13,6 +13,7 @@ export default function StaffLayout() {
 	const { isAuthenticated, user } = useSelector((s) => s.auth);
 	const role = user?.role;
 
+
 	const isLoginPage = location.pathname === "/staff/login";
 
 	if (!isAuthenticated && !isLoginPage) {
