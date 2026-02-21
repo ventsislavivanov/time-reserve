@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
 		$middleware->alias([
 			'role' => \App\Http\Middleware\CheckRole::class,
+			'trust-proxies' => \App\Http\Middleware\TrustProxies::class,
 		]);
     })
 	->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule): void {
