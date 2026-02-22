@@ -24,6 +24,7 @@ export { default as UILoading } from './display/loading/Loading.jsx';
 export { default as UIToast } from './display/toast/Toast.jsx';
 export { default as UIStatusBadge } from './display/status-badge/StatusBadge.jsx';
 export { default as UIRowActions } from './display/row-actions/RowActions.jsx';
+export { default as UIStepper } from './display/stepper/Stepper.jsx';
 export { default as GenericForm } from './display/generic-form/GenericForm.jsx';
 export { default as GenericList } from './display/generic-list/GenericList.jsx';
 //Sceletons

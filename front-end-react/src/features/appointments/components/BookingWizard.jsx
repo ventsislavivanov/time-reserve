@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import {
 	UICard,
 	UIButton,
+	UIStepper,
 	SkeletonTimeSlots,
 	SkeletonWizardServiceCard
 } from '../../../components/common/ui';
@@ -12,6 +13,11 @@ import ServiceSelector from './ServiceSelector';
 import DateSelector from './DateSelector';
 import TimeSlotsSelector from './TimeSlotsSelector.jsx';
 
+const STEPS = [
+	{ id: 1, label: 'Service' },
+	{ id: 2, label: 'Date & Time' },
+	{ id: 3, label: 'Confirm' }
+];
 
 const BookingWizard = () => {
 	const { workerId } = useParams();
@@ -103,35 +109,7 @@ const BookingWizard = () => {
 						)}
 					</div>
 
-					<div className="mb-4">
-						<div className="d-flex justify-content-between align-items-center">
-							{[1, 2, 3].map((s) => (
-								<div key={s} className="d-flex align-items-center flex-grow-1">
-									<div
-										className={`rounded-circle d-flex align-items-center justify-content-center ${
-											step >= s ? 'bg-primary text-white' : 'bg-light text-muted'
-										}`}
-										style={{ width: '40px', height: '40px' }}
-									>
-										{s}
-									</div>
-									{s < 3 && (
-										<div
-											className={`flex-grow-1 mx-2 ${
-												step > s ? 'bg-primary' : 'bg-light'
-											}`}
-											style={{ height: '2px' }}
-										/>
-									)}
-								</div>
-							))}
-						</div>
-						<div className="d-flex justify-content-between mt-2">
-							<small className="text-muted">Service</small>
-							<small className="text-muted">Date &amp; Time</small>
-							<small className="text-muted">Confirm</small>
-						</div>
-					</div>
+					<UIStepper steps={STEPS} currentStep={step} />
 
 					<UICard>
 						{step === 1 && (
