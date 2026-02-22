@@ -1,7 +1,7 @@
-import ServiceCard from './ServiceCard';
-import ServiceFilters from './ServiceFilters';
-import { UILoading } from '../../../components/common/ui';
-import { useServicesCatalog } from '../hooks/useServicesCatalog';
+import ServiceCard from "./ServiceCard";
+import ServiceFilters from "./ServiceFilters";
+import { SkeletonServiceCard } from "../../../components/common/ui";
+import { useServicesCatalog } from "../hooks/useServicesCatalog";
 
 const ServicesCatalog = () => {
 	const {
@@ -11,8 +11,6 @@ const ServicesCatalog = () => {
 		setSelectedCategory,
 		isLoading
 	} = useServicesCatalog();
-
-	if (isLoading) return <UILoading />;
 
 	return (
 		<div className="container py-5">
@@ -28,7 +26,13 @@ const ServicesCatalog = () => {
 			/>
 
 			<div className="row g-4">
-				{services.length === 0 ? (
+				{isLoading ? (
+						[...Array(6)].map((_, index) => (
+							<div key={`skeleton-${index}`} className="col-md-6 col-lg-4">
+								<SkeletonServiceCard />
+							</div>
+						))
+					) : services.length === 0 ? (
 					<div className="col-12 text-center py-5">
 						<p className="text-muted">No services available in this category.</p>
 					</div>

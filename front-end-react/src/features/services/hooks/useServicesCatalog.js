@@ -12,10 +12,13 @@ export const useServicesCatalog = () => {
 		const fetchServices = async () => {
 			try {
 				setIsLoading(true);
-				const data = await getActive();
+				const response = await getActive();
+				const { data } = response;
+
 				setServices(data);
 			} catch (error) {
 				console.error('Error fetching services:', error);
+				setServices([]);
 			} finally {
 				setIsLoading(false);
 			}

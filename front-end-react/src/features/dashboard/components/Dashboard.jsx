@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import AdminDashboard from "./AdminDashboard";
+import AdminDashboard from "./AdminDashboard.jsx";
 import WorkerDashboard from "./WorkerDashboard.jsx";
 
 const StaffDashboard = () => {

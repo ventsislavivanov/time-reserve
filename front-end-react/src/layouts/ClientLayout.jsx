@@ -28,7 +28,10 @@ export default function ClientLayout() {
 			<Header>
 				<ul className="navbar-nav me-auto">
 					<UINavLink to="/">Home</UINavLink>
+					<UINavLink to="/our-team">Our team</UINavLink>
 					<UINavLink to="/services">Services</UINavLink>
+					<UINavLink to="/about-us">About us</UINavLink>
+					<UINavLink to="/contact-us">Contact</UINavLink>
 				</ul>
 
 				<ul className="navbar-nav">

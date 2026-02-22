@@ -26,8 +26,13 @@ export { default as UIStatusBadge } from './display/status-badge/StatusBadge.jsx
 export { default as UIRowActions } from './display/row-actions/RowActions.jsx';
 export { default as GenericForm } from './display/generic-form/GenericForm.jsx';
 export { default as GenericList } from './display/generic-list/GenericList.jsx';
-export { default as SkeletonForm } from './display/skeleton-form/SkeletonForm.jsx';
-export { default as SkeletonList } from './display/skeleton-list/SkeletonList.jsx';
+//Sceletons
+export { default as SkeletonForm } from './display/skeletons/skeleton-form/SkeletonForm.jsx';
+export { default as SkeletonList } from './display/skeletons/skeleton-list/SkeletonList.jsx';
+export { default as SkeletonServiceCard } from './display/skeletons/service-card/ServiceCard.jsx'
+export { default as SkeletonWorkerCard } from './display/skeletons/worker-card/WorkerCard.jsx'
+export { default as SkeletonTimeSlots } from './display/skeletons/time-slots/TimeSlots.jsx'
+export { default as SkeletonWizardServiceCard } from './display/skeletons/wizard-service-card/WizardServiceCard.jsx'
 
 //Navigation
 export { default as UINavLink } from './navigation/nav-link/NavLink.jsx';

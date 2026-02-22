@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -12,12 +12,14 @@ import { ManageUsers } from "./features/users";
 import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
 import { ManageServices, ServicesCatalog } from "./features/services";
+import { WorkersList } from './features/workers';
+import { BookingWizard } from './features/appointments';
 
-import Dashboard from "./components/dashboard/Dashboard.jsx";
-import Home from "./components/Home/Home.jsx";
+import Dashboard from "./features/dashboard/components/Dashboard.jsx";
 import { UILoading, UIToast } from "./components/common/ui";
 
 function App() {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [isLoading, setLoading] = useState(true);
 
@@ -33,6 +35,7 @@ function App() {
 						email: user.email,
 						role: user.role
 					}));
+					user.role === 'client' ? navigate('/') : navigate('/staff/dashboard');
 				} catch (error) {
 					console.error("Session expired or invalid token");
 					localStorage.removeItem("token");
@@ -53,8 +56,12 @@ function App() {
 		<>
 			<Routes>
 				<Route element={<ClientLayout />}>
-					<Route path="/" element={<Home/>} />
+					<Route path="/" element={<h1>Welcome to our website!</h1>} />
+					<Route path="/about-us" element={<h1>About us page</h1>} />
+					<Route path="/contact-us" element={<h1>Contact us page</h1>} />
 					<Route path="/services" element={<ServicesCatalog/>} />
+					<Route path="/our-team" element={<WorkersList />} />
+					<Route path="/book/:workerId" element={<BookingWizard />} />
 					<Route path="/login" element={<Login isClient={true} guard="client" />} />
 					<Route path="/sign-up" element={<SignUp />} />
 				</Route>
@@ -84,7 +91,7 @@ function App() {
 			<UIToast/>
 		</>
 
-	)
+	);
 }
 
-export default App
+export default App;
