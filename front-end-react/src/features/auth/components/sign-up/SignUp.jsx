@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 
-import { useAppForm } from "../../../../hooks";
-import { UIAppForm, UIInput, UIRadio, UIDatePicker, UIButton, UILoading } from "../../../../components/common/ui";
+import { useAppForm, useRecaptcha } from "../../../../hooks";
+import { UIAppForm, UIInput, UIRadio, UIDatePicker, UIButton } from "../../../../components/common/ui";
 import { signUpRules } from "../../validations/signUpRules.js";
 import { register as registerUser } from "../../services/authService.js";
 
@@ -17,6 +17,7 @@ const initialValues = {
 
 const SignUp = () => {
 	const navigate = useNavigate();
+	const { getToken } = useRecaptcha();
 
 	const methods = useAppForm({
 		defaultValues: initialValues,
@@ -29,7 +30,11 @@ const SignUp = () => {
 	} = methods;
 
 	const registerHandler = async (data) => {
+		const token = await getToken("register");
+
 		const { confirm_password, ...submitData } = data;
+
+		submitData.recaptcha = token;
 
 		const response = await registerUser(submitData);
 

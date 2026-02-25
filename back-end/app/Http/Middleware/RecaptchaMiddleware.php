@@ -7,10 +7,15 @@ use Closure;
 
 class RecaptchaMiddleware
 {
-	public function handle($request, Closure $next, RecaptchaService $recaptcha)
+	protected RecaptchaService $recaptcha;
+
+	public function __construct(RecaptchaService $recaptcha) {
+		$this->recaptcha = $recaptcha;
+	}
+	public function handle($request, Closure $next)
 	{
 		if (!app()->environment('local')) {
-			if (!$recaptcha->validate($request->input('recaptcha'))) {
+			if (!$this->recaptcha->validate($request->input('recaptcha'))) {
 				return response()->json(['error' => 'Invalid reCAPTCHA'], 422);
 			}
 		}

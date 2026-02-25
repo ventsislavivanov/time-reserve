@@ -7,9 +7,8 @@ import {
 	UIInput,
 	UICheckbox,
 	UIButton,
-	UILoading,
 } from "../../../../components/common/ui";
-import { useAppForm } from "../../../../hooks";
+import { useAppForm, useRecaptcha } from "../../../../hooks";
 import { loginRules } from "../../validations/loginRules.js";
 import { login as loginUser } from "../../services/authService.js";
 import { login } from "../../../../store/authSlice.js";
@@ -24,6 +23,7 @@ const Login = ({ isClient, guard }) => {
 	const [searchParams] = useSearchParams()
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const { getToken } = useRecaptcha();
 
 	const methods = useAppForm({
 		defaultValues: initialValues
@@ -43,9 +43,17 @@ const Login = ({ isClient, guard }) => {
 	}, [searchParams, setValue]);
 
 	const loginHandler = async (data) => {
+		const token = await getToken("login");
+
 		const { email, password, remember  } = data;
 
-		const response = await loginUser(email, password, guard, remember);
+		const response = await loginUser({
+			email,
+			password,
+			guard,
+			remember,
+			recaptcha: token
+		});
 		notify.success('Login successful');
 
 		localStorage.setItem("token", response.token);

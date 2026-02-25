@@ -51,7 +51,7 @@ class AuthController extends Controller
 			]
 		)
 	)]
-	public function registerClient(RegisterClientRequest  $request): JsonResponse
+	public function registerClient(RegisterClientRequest $request): JsonResponse
 	{
 		$user = User::create([
 			...$request->validated(),

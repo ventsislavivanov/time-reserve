@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { BrowserRouter } from "react-router";
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
@@ -17,7 +18,12 @@ createRoot(document.getElementById('root')).render(
 	//<StrictMode>
 		<Provider store={store}>
 			<BrowserRouter>
-				<App/>
+				<GoogleReCaptchaProvider
+					reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+					scriptProps={{ async: true, defer: true, appendTo: 'head', }}
+				>
+					<App/>
+				</GoogleReCaptchaProvider>
 			</BrowserRouter>
 		</Provider>
 	//</StrictMode>,
