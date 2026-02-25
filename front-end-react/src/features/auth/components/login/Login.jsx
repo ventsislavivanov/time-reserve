@@ -52,7 +52,7 @@ const Login = ({ isClient, guard }) => {
 			password,
 			guard,
 			remember,
-			recaptcha: token
+			recaptcha: token,
 		});
 		notify.success('Login successful');
 
