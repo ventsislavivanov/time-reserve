@@ -14,8 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/register', [AuthController::class, 'registerClient']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'registerClient'])->middleware('recaptcha');
+Route::post('/login', [AuthController::class, 'login'])->middleware('recaptcha');
 
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('services/active', [ServiceController::class, 'active']);
