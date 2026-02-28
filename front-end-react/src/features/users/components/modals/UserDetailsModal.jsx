@@ -155,7 +155,7 @@ const UserDetailsModal = ({ user }) => {
 											<div className="col-md-4">
 												<small className="text-muted d-block">Email Verified</small>
 												<strong>
-													{user.verified ? (
+													{user.email_verified ? (
 														<span className="text-success">
                                                             <FontAwesomeIcon icon="check-circle" className="me-1" />
                                                             Verified
