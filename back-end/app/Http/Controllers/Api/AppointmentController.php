@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateAppointmentRequest;
-use App\Http\Requests\RejectAppointmentRequest;
+use App\Http\Requests\Appointment\AppointmentReasonRequest;
+use App\Http\Requests\Appointment\AppointmentStoreRequest;
 use App\Http\Resources\Appointment\AppointmentCollection;
 use App\Http\Resources\Appointment\AppointmentResource;
 use App\Models\Appointment;
@@ -13,6 +13,7 @@ use App\Services\AvailabilityService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class AppointmentController extends Controller
 {
@@ -20,9 +21,21 @@ class AppointmentController extends Controller
 		protected AvailabilityService $availabilityService
 	) {}
 
-	/**
-	 * All customer hours
-	 */
+	#[OA\Get(
+		path: '/api/appointments',
+		operationId: 'appointmentsIndex',
+		description: 'Returns a paginated list of appointments for the authenticated client, ordered by date descending.',
+		summary: 'Get client appointments',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'page', in: 'query', required: false, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\Response(
+		response: 200,
+		description: 'Paginated list of appointments',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentCollection')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
 	public function index(): AppointmentCollection
 	{
 		$appointments = Appointment::where('client_id', auth()->id())
@@ -37,10 +50,26 @@ class AppointmentController extends Controller
 		return new AppointmentCollection($appointments);
 	}
 
-	/**
-	 * Booking an appointment
-	 */
-	public function store(CreateAppointmentRequest $request): JsonResponse|AppointmentResource
+	#[OA\Post(
+		path: '/api/appointments',
+		operationId: 'appointmentsStore',
+		description: 'Books a new appointment for the authenticated client.',
+		summary: 'Create a new appointment',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\RequestBody(
+		required: true,
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentStoreRequest')
+	)]
+	#[OA\Response(
+		response: 201,
+		description: 'Appointment created',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentResource')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 422, description: 'Validation error')]
+	public function store(AppointmentStoreRequest $request): JsonResponse|AppointmentResource
 	{
 		$this->authorize('create', Appointment::class);
 
@@ -70,7 +99,29 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment->load(['service', 'worker']));
 	}
 
-	public function cancel(Request $request, Appointment $appointment): AppointmentResource
+	#[OA\Patch(
+		path: '/api/appointments/{appointment}/cancel',
+		operationId: 'appointmentsCancel',
+		description: 'Allows the authenticated client to cancel their own appointment.',
+		summary: 'Cancel an appointment',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\RequestBody(
+		required: false,
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
+	)]
+	#[OA\Response(
+		response: 200,
+		description: 'Appointment cancelled',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentResource')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 403, description: 'Unauthorized')]
+	#[OA\Response(response: 404, description: 'Appointment not found')]
+	#[OA\Response(response: 422, description: 'Cannot cancel appointment in current status')]
+	public function cancel(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('cancel', $appointment);
 
@@ -79,7 +130,7 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment);
 	}
 
-	public function confirm(Request $request, Appointment $appointment): AppointmentResource
+	public function confirm(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('confirm', $appointment);
 
@@ -88,7 +139,28 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment);
 	}
 
-	public function reject(RejectAppointmentRequest $request, Appointment $appointment): AppointmentResource
+	#[OA\Patch(
+		path: '/api/staff/appointments/{appointment}/reject',
+		operationId: 'appointmentsReject',
+		summary: 'Reject an appointment',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\RequestBody(
+		required: false,
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
+	)]
+	#[OA\Response(
+		response: 200,
+		description: 'Appointment rejected',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentResource')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 403, description: 'Unauthorized')]
+	#[OA\Response(response: 404, description: 'Appointment not found')]
+	#[OA\Response(response: 422, description: 'Cannot reject appointment in current status')]
+	public function reject(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('reject', $appointment);
 
@@ -97,11 +169,28 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment);
 	}
 
-	/**
-	 * Admin/Worker declines CONFIRMED appointment
-	 * Reason: illness, emergency, force majeure
-	 */
-	public function decline(Request $request, Appointment $appointment): AppointmentResource
+	#[OA\Patch(
+		path: '/api/staff/appointments/{appointment}/decline',
+		operationId: 'appointmentsDecline',
+		summary: 'Decline an appointment',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\RequestBody(
+		required: false,
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
+	)]
+	#[OA\Response(
+		response: 200,
+		description: 'Appointment declined',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentResource')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 403, description: 'Unauthorized')]
+	#[OA\Response(response: 404, description: 'Appointment not found')]
+	#[OA\Response(response: 422, description: 'Cannot decline appointment in current status')]
+	public function decline(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('decline', $appointment);
 
@@ -110,7 +199,28 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment);
 	}
 
-	public function complete(Request $request, Appointment $appointment): AppointmentResource
+	#[OA\Patch(
+		path: '/api/staff/appointments/{appointment}/complete',
+		operationId: 'appointmentsComplete',
+		summary: 'Complete an appointment',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\RequestBody(
+		required: false,
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
+	)]
+	#[OA\Response(
+		response: 200,
+		description: 'Appointment completed',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentResource')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 403, description: 'Unauthorized')]
+	#[OA\Response(response: 404, description: 'Appointment not found')]
+	#[OA\Response(response: 422, description: 'Cannot complete appointment in current status')]
+	public function complete(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('complete', $appointment);
 
@@ -119,7 +229,28 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment);
 	}
 
-	public function markNoShow(Request $request, Appointment $appointment): AppointmentResource
+	#[OA\Patch(
+		path: '/api/staff/appointments/{appointment}/no-show',
+		operationId: 'appointmentsNoShow',
+		summary: 'Mark appointment as no-show',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\RequestBody(
+		required: false,
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
+	)]
+	#[OA\Response(
+		response: 200,
+		description: 'Appointment marked as no-show',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentResource')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 403, description: 'Unauthorized')]
+	#[OA\Response(response: 404, description: 'Appointment not found')]
+	#[OA\Response(response: 422, description: 'Cannot mark as no-show in current status')]
+	public function markNoShow(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('noShow', $appointment);
 
@@ -128,6 +259,34 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment);
 	}
 
+	#[OA\Get(
+		path: '/api/staff/appointments',
+		operationId: 'appointmentsStaffIndex',
+		description: 'Returns a paginated list of all appointments. Accessible by admin and worker roles.',
+		summary: 'Get all appointments (staff)',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'page', in: 'query', required: false, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\Parameter(
+		name: 'status',
+		in: 'query',
+		required: false,
+		schema: new OA\Schema(
+			type: 'string',
+			enum: ['pending', 'confirmed', 'cancelled', 'rejected', 'declined', 'no_show', 'completed'],
+			example: 'pending'
+		)
+	)]
+	#[OA\Parameter(name: 'worker_id', in: 'query', required: false, schema: new OA\Schema(type: 'integer', example: 2))]
+	#[OA\Parameter(name: 'date', in: 'query', required: false, schema: new OA\Schema(type: 'string', format: 'date', example: '2026-03-15'))]
+	#[OA\Response(
+		response: 200,
+		description: 'Paginated list of appointments',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentCollection')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 403, description: 'Unauthorized')]
 	public function staffIndex(Request $request): AppointmentCollection
 	{
 		$this->authorize('viewAny', Appointment::class);
