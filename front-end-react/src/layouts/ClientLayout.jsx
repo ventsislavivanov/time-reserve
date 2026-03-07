@@ -30,6 +30,7 @@ export default function ClientLayout() {
 					<UINavLink to="/">Home</UINavLink>
 					<UINavLink to="/our-team">Our team</UINavLink>
 					<UINavLink to="/services">Services</UINavLink>
+					<UINavLink to="/my-appointments">My appointments</UINavLink>
 					<UINavLink to="/about-us">About us</UINavLink>
 					<UINavLink to="/contact-us">Contact</UINavLink>
 				</ul>

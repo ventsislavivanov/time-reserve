@@ -23,6 +23,7 @@ export { default as UITextarea } from './controlled/textarea/Textarea.jsx';
 export { default as UILoading } from './display/loading/Loading.jsx';
 export { default as UIToast } from './display/toast/Toast.jsx';
 export { default as UIStatusBadge } from './display/status-badge/StatusBadge.jsx';
+export { default as UIAppointmentBadge  } from './display/appointment-badge/AppointmentBadge.jsx';
 export { default as UIRowActions } from './display/row-actions/RowActions.jsx';
 export { default as UIStepper } from './display/stepper/Stepper.jsx';
 export { default as GenericForm } from './display/generic-form/GenericForm.jsx';

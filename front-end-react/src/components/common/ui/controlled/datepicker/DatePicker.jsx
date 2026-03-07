@@ -37,6 +37,7 @@ const DatePicker = ({
 					rules={rules}
 					render={({ field: { onChange, onBlur, value } }) => (
 						<ReactDatePicker
+							portalId="root-portal"
 							onChange={onChange}
 							onBlur={onBlur}
 							selected={value}

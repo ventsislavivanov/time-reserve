@@ -1,16 +1,17 @@
+import { forwardRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const UIModal = ({
-   id,
-   title,
-   icon,
-   children,
-   footer,
-   size = "modal-md",
-   centered = false,
-   staticBackdrop = false,
-   onClose
-}) => {
+const UIModal = forwardRef(({
+	id,
+	title,
+	icon,
+	children,
+	footer,
+	size = "modal-md",
+	centered = false,
+	staticBackdrop = false,
+	onClose
+}, ref) => {
 	return (
 		<div
 			className="modal fade"
@@ -19,6 +20,7 @@ const UIModal = ({
 			aria-hidden="true"
 			data-bs-backdrop={staticBackdrop ? "static" : "true"}
 			data-bs-keyboard={staticBackdrop ? "false" : "true"}
+			ref={ref}
 		>
 			<div className={`modal-dialog ${size} ${centered ? 'modal-dialog-centered' : ''}`}>
 				<div className="modal-content border-0 shadow">
@@ -49,6 +51,6 @@ const UIModal = ({
 			</div>
 		</div>
 	);
-};
+});
 
 export default UIModal;

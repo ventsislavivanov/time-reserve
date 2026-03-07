@@ -1,5 +1,11 @@
 .datepickerWrapper {
 	flex-grow: 1;
+	position: relative;
+	z-index: 3;
+}
+
+:global(.react-datepicker-popper) {
+	z-index: 9999 !important;
 }
 
 .datepickerWrapper :global(.react-datepicker-wrapper),

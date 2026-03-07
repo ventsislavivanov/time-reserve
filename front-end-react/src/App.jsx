@@ -13,7 +13,7 @@ import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
 import { ManageServices, ServicesCatalog } from "./features/services";
 import { WorkersList } from './features/workers';
-import { BookingWizard } from './features/appointments';
+import { BookingWizard, MyAppointments } from './features/appointments';
 
 import Dashboard from "./features/dashboard/components/Dashboard.jsx";
 import { UILoading, UIToast } from "./components/common/ui";
@@ -62,6 +62,7 @@ function App() {
 					<Route path="/services" element={<ServicesCatalog/>} />
 					<Route path="/our-team" element={<WorkersList />} />
 					<Route path="/book/:workerId" element={<BookingWizard />} />
+					<Route path="/my-appointments" element={<MyAppointments />} />
 					<Route path="/login" element={<Login isClient={true} guard="client" />} />
 					<Route path="/sign-up" element={<SignUp />} />
 				</Route>

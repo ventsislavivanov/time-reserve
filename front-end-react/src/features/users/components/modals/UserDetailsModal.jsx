@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UIModal, UIButton, UIStatusBadge, UINavTabLink } from '../../../../components/common/ui';
+import { UIModal, UIStatusBadge, UINavTabLink } from '../../../../components/common/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import WorkerServicesManager from '../WorkerServicesManager';
 
