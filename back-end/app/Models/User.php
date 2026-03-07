@@ -148,6 +148,11 @@ class User extends Authenticatable implements MustVerifyEmail
 			&& $this->getReliabilityScore() >= 70;
 	}
 
+	public function isAllowedToBook(): bool
+	{
+		return $this->role === 'client' && $this->can_book_appointments;
+	}
+
 	// ───── Scopes ─────
 	public function scopeRole($query, $role)
 	{
@@ -191,8 +196,4 @@ class User extends Authenticatable implements MustVerifyEmail
 		return 'active';
 	}
 
-	public function isAllowedToBook(): bool
-	{
-		return $this->role === 'client' && $this->can_book_appointments;
-	}
 }

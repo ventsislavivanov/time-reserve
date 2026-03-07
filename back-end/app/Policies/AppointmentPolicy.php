@@ -13,9 +13,9 @@ class AppointmentPolicy
 		if (!$user->isAdmin() && !$user->isWorker()) {
 			return Response::deny('You are not authorized to view appointments');
 		}
-//		if (!$user->canBookAppointments()) {
-//			return Response::deny('You are not allowed to view any appointments');
-//		}
+		if (!$user->can_book_appointments) {
+			return Response::deny('You are not allowed to view any appointments');
+		}
 
 		return Response::allow();
 	}
@@ -71,7 +71,6 @@ class AppointmentPolicy
 		return Response::allow();
 	}
 
-
 	public function decline(User $user, Appointment $appointment): Response
 	{
 		if (!$user->isAdmin() && $appointment->worker_id !== $user->id) {
@@ -118,4 +117,13 @@ class AppointmentPolicy
 
 		return Response::allow();
 	}
+
+//	public function expire(User $user, Appointment $appointment): Response
+//	{
+//		if ($appointment->ends_at->isFuture()) {
+//			return Response::deny('Cannot mark future appointment as expired');
+//		}
+//
+//		return Response::allow();
+//	}
 }
