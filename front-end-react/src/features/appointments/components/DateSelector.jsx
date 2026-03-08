@@ -13,7 +13,7 @@ const DateSelector = ({ selectedDate, onSelect }) => {
 	const handleDateChange = (date) => {
 		setStartDate(date);
 		// Format as YYYY-MM-DD
-		const formatted = date.toISOString().split('T')[0];
+		const formatted = date.toLocaleDateString('en-CA');
 		onSelect(formatted);
 	};
 
