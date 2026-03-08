@@ -63,7 +63,7 @@ function App() {
 					<Route path="/our-team" element={<WorkersList />} />
 
 					<Route element={<RoleGuard allowedRoles={['client']} redirectTo="/login" />}>
-						<Route path="/book/:workerId" element={<BookingWizard />} />
+						<Route path="/our-team/book/:workerId" element={<BookingWizard />} />
 						<Route path="/my-appointments" element={<MyAppointments />} />
 					</Route>
 

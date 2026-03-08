@@ -5,7 +5,7 @@ const WorkerCard = ({ worker, user }) => {
 	const navigate = useNavigate();
 
 	const handleBooking = () => {
-		navigate(`/book/${worker.id}`);
+		navigate(`/our-team/book/${worker.id}`);
 	};
 
 	return (

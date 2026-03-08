@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router";
 
 const UINavLink = ({ to, children }) => {
 	const location = useLocation();
-	const isActive = location.pathname === to;
+	const isActive = location.pathname === to || location.pathname.startsWith(to + '/');
 
 	return (
 		<li className="nav-item">
