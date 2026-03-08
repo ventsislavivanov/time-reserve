@@ -13,9 +13,9 @@ class AppointmentPolicy
 		if (!$user->isAdmin() && !$user->isWorker()) {
 			return Response::deny('You are not authorized to view appointments');
 		}
-		if (!$user->can_book_appointments) {
-			return Response::deny('You are not allowed to view any appointments');
-		}
+//		if (!$user->can_book_appointments) {
+//			return Response::deny('You are not allowed to view any appointments');
+//		}
 
 		return Response::allow();
 	}
