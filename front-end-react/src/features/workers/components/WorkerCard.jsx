@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router";
-
 import { UICard } from '../../../components/common/ui';
 
 const WorkerCard = ({ worker, user }) => {
 	const navigate = useNavigate();
 
 	const handleBooking = () => {
-		navigate(user?.role === 'client' ? `/book/${worker.id}` : '/login');
+		navigate(`/book/${worker.id}`);
 	};
 
 	return (

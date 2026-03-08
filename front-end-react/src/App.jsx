@@ -61,8 +61,12 @@ function App() {
 					<Route path="/contact-us" element={<h1>Contact us page</h1>} />
 					<Route path="/services" element={<ServicesCatalog/>} />
 					<Route path="/our-team" element={<WorkersList />} />
-					<Route path="/book/:workerId" element={<BookingWizard />} />
-					<Route path="/my-appointments" element={<MyAppointments />} />
+
+					<Route element={<RoleGuard allowedRoles={['client']} redirectTo="/login" />}>
+						<Route path="/book/:workerId" element={<BookingWizard />} />
+						<Route path="/my-appointments" element={<MyAppointments />} />
+					</Route>
+
 					<Route path="/login" element={<Login isClient={true} guard="client" />} />
 					<Route path="/sign-up" element={<SignUp />} />
 				</Route>

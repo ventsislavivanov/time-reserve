@@ -1,12 +1,9 @@
-import { useSelector } from "react-redux";
-
 import WorkerCard from './WorkerCard';
 import { SkeletonWorkerCard } from '../../../components/common/ui';
 import { useWorkers } from '../hooks/useWorkers';
 
 const WorkersList = () => {
 	const { workers, isLoading, error } = useWorkers();
-	const user = useSelector((s) => s.auth.user);
 
 	if (error) {
 		return (
@@ -41,7 +38,7 @@ const WorkersList = () => {
 				) : (
 					workers.map(worker => (
 						<div key={worker.id} className="col-md-6 col-lg-4">
-							<WorkerCard worker={worker} user={user} />
+							<WorkerCard worker={worker} />
 						</div>
 					))
 				)}
