@@ -147,7 +147,7 @@
                 ]
             }
         },
-        "/api/appointments/{appointment}/confirm": {
+        "/api/staff/appointments/{appointment}/confirm": {
             "patch": {
                 "tags": [
                     "Appointments"
@@ -167,7 +167,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Appointment cancelled",
+                        "description": "Appointment confirm",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -186,7 +186,7 @@
                         "description": "Appointment not found"
                     },
                     "422": {
-                        "description": "Cannot cancel appointment in current status"
+                        "description": "Cannot confirm appointment in current status"
                     }
                 },
                 "security": [

@@ -131,7 +131,7 @@ class AppointmentController extends Controller
 	}
 
 	#[OA\Patch(
-		path: '/api/appointments/{appointment}/confirm',
+		path: '/api/staff/appointments/{appointment}/confirm',
 		operationId: 'appointmentsConfirm',
 		summary: 'Confirm an appointment',
 		security: [['sanctum' => []]],
