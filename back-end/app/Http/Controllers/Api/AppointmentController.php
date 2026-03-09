@@ -130,6 +130,23 @@ class AppointmentController extends Controller
 		return new AppointmentResource($appointment);
 	}
 
+	#[OA\Patch(
+		path: '/api/appointments/{appointment}/confirm',
+		operationId: 'appointmentsConfirm',
+		summary: 'Confirm an appointment',
+		security: [['sanctum' => []]],
+		tags: ['Appointments']
+	)]
+	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
+	#[OA\Response(
+		response: 200,
+		description: 'Appointment confirm',
+		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentResource')
+	)]
+	#[OA\Response(response: 401, description: 'Unauthenticated')]
+	#[OA\Response(response: 403, description: 'Unauthorized')]
+	#[OA\Response(response: 404, description: 'Appointment not found')]
+	#[OA\Response(response: 422, description: 'Cannot confirm appointment in current status')]
 	public function confirm(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('confirm', $appointment);
