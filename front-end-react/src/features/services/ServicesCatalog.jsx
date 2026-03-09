@@ -1,7 +1,7 @@
-import ServiceCard from "./ServiceCard";
-import ServiceFilters from "./ServiceFilters";
-import { SkeletonServiceCard } from "../../../components/common/ui";
-import { useServicesCatalog } from "../hooks/useServicesCatalog";
+import ServiceCard from "./components/ServiceCard.jsx";
+import ServiceFilters from "./components/ServiceFilters.jsx";
+import { SkeletonServiceCard } from "../../components/common/ui/index.js";
+import { useServicesCatalog } from "./hooks/useServicesCatalog.js";
 
 const ServicesCatalog = () => {
 	const {

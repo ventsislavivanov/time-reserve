@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import * as appointmentService from '../services/appointmentService';
-import { notify } from "../../../services";
+import * as appointmentService from '../services/appointmentService.js';
+import { notify } from "../../../../services/index.js";
 
 export const useBooking = (workerId) => {
 	const [selectedService, setSelectedService] = useState(null);

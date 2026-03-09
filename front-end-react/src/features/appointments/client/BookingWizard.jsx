@@ -6,12 +6,12 @@ import {
 	UIStepper,
 	SkeletonTimeSlots,
 	SkeletonWizardServiceCard
-} from '../../../components/common/ui';
-import { useWorkers } from '../../workers';
-import { useBooking } from '../hooks/useBooking';
-import ServiceSelector from './ServiceSelector';
-import DateSelector from './DateSelector';
-import TimeSlotsSelector from './TimeSlotsSelector.jsx';
+} from '../../../components/common/ui/index.js';
+import { useWorkers } from '../../workers/index.js';
+import { useBooking } from './hooks/useBooking.js';
+import ServiceSelector from './components/ServiceSelector.jsx';
+import DateSelector from './components/DateSelector.jsx';
+import TimeSlotsSelector from './components/TimeSlotsSelector.jsx';
 
 const STEPS = [
 	{ id: 1, label: 'Service' },

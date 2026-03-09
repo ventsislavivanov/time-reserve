@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import * as appointmentService from '../services/appointmentService';
-import { notify } from '../../../services';
+import * as appointmentService from '../services/appointmentService.js';
+import { notify } from '../../../../services/index.js';
 
-export const useMyAppointments = () => {
+export const useClientAppointments = () => {
 	const [appointments, setAppointments] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isCancelling, setIsCancelling] = useState(false);

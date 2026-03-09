@@ -13,15 +13,16 @@ import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
 import { ManageServices, ServicesCatalog } from "./features/services";
 import { WorkersList } from './features/workers';
-import { BookingWizard, MyAppointments } from './features/appointments';
+import { BookingWizard, ClientAppointments, WorkerAppointments, PendingRequests } from './features/appointments';
 
-import Dashboard from "./features/dashboard/components/Dashboard.jsx";
+import { AdminDashboard, WorkerDashboard } from "./features/dashboard";
 import { UILoading, UIToast } from "./components/common/ui";
 
 function App() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [isLoading, setLoading] = useState(true);
+	const [role, setRole] = useState(null);
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -30,6 +31,7 @@ function App() {
 			if (token) {
 				try {
 					const user = await getMe();
+					setRole(user.role);
 					dispatch(login({
 						uid: user.id,
 						email: user.email,
@@ -64,7 +66,7 @@ function App() {
 
 					<Route element={<RoleGuard allowedRoles={['client']} redirectTo="/login" />}>
 						<Route path="/our-team/book/:workerId" element={<BookingWizard />} />
-						<Route path="/my-appointments" element={<MyAppointments />} />
+						<Route path="/my-appointments" element={<ClientAppointments />} />
 					</Route>
 
 					<Route path="/login" element={<Login isClient={true} guard="client" />} />
@@ -75,9 +77,8 @@ function App() {
 					<Route element={<StaffLayout />}>
 						<Route path="login" element={<Login isClient={false} guard="staff" />} />
 
-						<Route index element={<Dashboard />} />
-						<Route path="dashboard" element={<Dashboard />} />
-
+						<Route index element={ role === 'admin' ? <AdminDashboard /> : <WorkerDashboard /> } />
+						<Route path="dashboard" element={ role === 'admin' ? <AdminDashboard /> : <WorkerDashboard /> } />
 						<Route element={<RoleGuard allowedRoles={['admin']} />}>
 							<Route path="users" element={<ManageUsers />} />
 							<Route path="jobs" element={<ManageJobs />} />
@@ -87,7 +88,8 @@ function App() {
 						</Route>
 
 						<Route element={<RoleGuard allowedRoles={['worker']} />}>
-							<Route path="appointments" element={<h1>My Appointments</h1>} />
+							<Route path="appointments" element={<WorkerAppointments />} />
+							<Route path="pending" element={<PendingRequests />} />
 						</Route>
 					</Route>
 				</Route>

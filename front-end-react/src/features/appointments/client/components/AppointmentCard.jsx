@@ -1,4 +1,4 @@
-import { UICard, UIButton, UIAppointmentBadge } from '../../../components/common/ui';
+import { UICard, UIButton, UIAppointmentBadge } from '../../../../components/common/ui/index.js';
 
 const AppointmentCard = ({ appointment, onCancel }) => {
 	const {

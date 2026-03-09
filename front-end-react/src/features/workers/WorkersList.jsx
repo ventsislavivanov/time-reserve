@@ -1,6 +1,6 @@
-import WorkerCard from './WorkerCard';
-import { SkeletonWorkerCard } from '../../../components/common/ui';
-import { useWorkers } from '../hooks/useWorkers';
+import WorkerCard from './components/WorkerCard.jsx';
+import { SkeletonWorkerCard } from '../../components/common/ui/index.js';
+import { useWorkers } from './hooks/useWorkers.js';
 
 const WorkersList = () => {
 	const { workers, isLoading, error } = useWorkers();

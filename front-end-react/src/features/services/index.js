@@ -1,3 +1,3 @@
-export { default as ManageServices } from './components/ManageServices.jsx';
-export { default as ServicesCatalog } from './components/ServicesCatalog.jsx';
+export { default as ManageServices } from './ManageServices.jsx';
+export { default as ServicesCatalog } from './ServicesCatalog.jsx';
 export { getAll } from './services/serviceService';

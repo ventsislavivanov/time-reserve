@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { UICard, UIButton } from '../../../components/common/ui';
-import AppointmentCard from './AppointmentCard';
-import CancelAppointmentModal from './CancelAppointmentModal';
-import { useMyAppointments } from '../hooks/useMyAppointments';
+import { UICard, UIButton } from '../../../components/common/ui/index.js';
+import AppointmentCard from './components/AppointmentCard.jsx';
+import CancelAppointmentModal from './components/CancelAppointmentModal.jsx';
+import { useClientAppointments } from './hooks/useClientAppointments.js';
 
 const TABS = [
 	{ id: 'upcoming', label: 'Upcoming' },
 	{ id: 'past', label: 'Past' },
 ];
 
-const MyAppointments = () => {
+const ClientAppointments = () => {
 	const navigate = useNavigate();
-	const { appointments, isLoading, cancelAppointment, isCancelling } = useMyAppointments();
+	const { appointments, isLoading, cancelAppointment, isCancelling } = useClientAppointments();
 	const [activeTab, setActiveTab] = useState('upcoming');
 	const [cancelId, setCancelId] = useState(null);
 
@@ -133,4 +133,4 @@ const MyAppointments = () => {
 	);
 };
 
-export default MyAppointments;
+export default ClientAppointments;

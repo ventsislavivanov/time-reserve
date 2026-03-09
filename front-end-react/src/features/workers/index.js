@@ -1,3 +1,2 @@
-export { default as WorkersList } from './components/WorkersList';
-export { default as WorkerCard } from './components/WorkerCard';
+export { default as WorkersList } from './WorkersList.jsx';
 export { useWorkers } from './hooks/useWorkers';

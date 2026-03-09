@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { UIButton, UILoading, UIPagination } from "../../../components/common/ui";
-import { useBootstrapModal } from "../../../hooks";
-import { notify } from "../../../services";
+import { UIButton, UILoading, UIPagination } from "../../components/common/ui/index.js";
+import { useBootstrapModal } from "../../hooks/index.js";
+import { notify } from "../../services/index.js";
 
-import UserFilters from "./UserFilters.jsx";
-import UserRow from "./UserRow.jsx";
-import { UserDetailsModal, UserFormModal } from "./modals";
-import useUsers from "../hooks/useUsers";
-import { toggleUserActive } from '../services/userService.js';
+import UserFilters from "./components/UserFilters.jsx";
+import UserRow from "./components/UserRow.jsx";
+import { UserDetailsModal, UserFormModal } from "./components/modals/index.js";
+import useUsers from "./hooks/useUsers.js";
+import { toggleUserActive } from './services/userService.js';
 
 export default function ManageUsers() {
 	const {

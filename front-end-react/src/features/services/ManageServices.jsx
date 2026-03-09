@@ -1,7 +1,7 @@
-import { GenericForm, GenericList, SkeletonForm, SkeletonList } from '../../../components/common/ui';
-import { useEntityManager } from '../../../hooks';
-import * as serviceService from '../services/serviceService';
-import { useServiceForm } from '../hooks/useServiceForm';
+import { GenericForm, GenericList, SkeletonForm, SkeletonList } from '../../components/common/ui/index.js';
+import { useEntityManager } from '../../hooks/index.js';
+import * as serviceService from './services/serviceService.js';
+import { useServiceForm } from './hooks/useServiceForm.js';
 
 const ManageServices = () => {
     const {

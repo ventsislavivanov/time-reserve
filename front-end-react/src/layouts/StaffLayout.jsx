@@ -54,9 +54,10 @@ export default function StaffLayout() {
 						)}
 
 						{role === 'worker' && (
-							<li className="nav-item">
-								<UINavLink to="/staff/appointments">My Calendar</UINavLink>
-							</li>
+							<>
+								<UINavLink to="/staff/appointments">My Appointments</UINavLink>
+								<UINavLink to="/staff/pending">Pending Requests</UINavLink>
+							</>
 						)}
 					</ul>
 					<ul className="navbar-nav">

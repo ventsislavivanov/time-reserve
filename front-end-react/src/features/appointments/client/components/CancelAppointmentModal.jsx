@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Modal } from 'bootstrap';
-import { UIModal, UIButton } from '../../../components/common/ui';
+import { UIModal, UIButton } from '../../../../components/common/ui/index.js';
 
 const CancelAppointmentModal = ({ appointmentId, onClose, cancelAppointment, isCancelling }) => {
 	const modalRef = useRef(null);

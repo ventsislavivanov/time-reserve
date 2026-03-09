@@ -1,18 +1,18 @@
-import { GenericForm, GenericList, SkeletonList } from '../../../components/common/ui';
-import { useEntityManager } from '../../../hooks';
-import * as jobService from '../services/jobService.js';
-import { useJobForm } from '../hooks/useJobForm';
+import { GenericForm, GenericList, SkeletonList } from '../../components/common/ui/index.js';
+import { useEntityManager } from '../../hooks/index.js';
+import * as categoryService from './services/categoryService.js';
+import { useCategoryForm } from './hooks/useCategoryForm.js';
 
-const ManageJobs = () => {
+const ManageCategories = () => {
     const {
         formFields,
         listColumns,
         rules,
         initialFormState
-    } = useJobForm();
+    } = useCategoryForm();
 
     const {
-        items: jobs,
+        items: categories,
         isLoading,
         isEditing,
         currentItem,
@@ -20,7 +20,7 @@ const ManageJobs = () => {
         handleEdit,
         handleDelete,
         resetForm
-    } = useEntityManager(jobService, 'Job position', initialFormState);
+    } = useEntityManager(categoryService, 'Category', initialFormState);
 
     return (
         <div className="container mt-4 pb-5">
@@ -31,7 +31,7 @@ const ManageJobs = () => {
                         item={currentItem}
                         onSubmit={handleSubmit}
                         onCancel={resetForm}
-                        title="Job Position"
+                        title="Category"
                         fields={formFields}
                         rules={rules}
                     />
@@ -42,12 +42,12 @@ const ManageJobs = () => {
                         <SkeletonList rows={5} />
                     ) : (
                         <GenericList
-                            items={jobs}
+                            items={categories}
                             onEdit={handleEdit}
                             onDelete={handleDelete}
-                            title="Job Positions List"
+                            title="Categories List"
                             columns={listColumns}
-                            emptyMessage="No job positions found. Create one to get started."
+                            emptyMessage="No categories found. Create one to get started."
                         />
                     )}
                 </div>
@@ -56,4 +56,4 @@ const ManageJobs = () => {
     );
 };
 
-export default ManageJobs;
+export default ManageCategories;

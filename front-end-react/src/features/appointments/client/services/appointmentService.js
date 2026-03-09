@@ -1,4 +1,4 @@
-import { api } from '../../../services';
+import { api } from '../../../../services/index.js';
 
 export const getAvailableSlots = async (workerId, serviceId, date) => {
 	const response = await api.get('/availability/slots', {
