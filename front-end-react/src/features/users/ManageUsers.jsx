@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { UIButton, UILoading, UIPagination } from "../../components/common/ui/index.js";
+import { UIButton, UIPagination, SkeletonTable } from "../../components/common/ui/index.js";
 import { useBootstrapModal } from "../../hooks/index.js";
 import { notify } from "../../services/index.js";
 
@@ -68,7 +68,12 @@ export default function ManageUsers() {
 	};
 
 	if (isLoading) {
-		return <UILoading fullscreen={true} color="#436d9a" size={60}/>;
+		return (
+			<div className="container py-5">
+				<SkeletonTable rows={15} columns={6} />
+			</div>
+		);
+
 	}
 
 	return (

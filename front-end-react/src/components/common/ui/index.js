@@ -31,6 +31,8 @@ export { default as GenericList } from './display/generic-list/GenericList.jsx';
 //Sceletons
 export { default as SkeletonForm } from './display/skeletons/skeleton-form/SkeletonForm.jsx';
 export { default as SkeletonList } from './display/skeletons/skeleton-list/SkeletonList.jsx';
+export { default as SkeletonTable } from './display/skeletons/skeleton-table/SkeletonTable.jsx';
+export { default as SkeletonTableCompact } from './display/skeletons/skeleton-table-compact/SkeletonTableCompact.jsx';
 export { default as SkeletonServiceCard } from './display/skeletons/service-card/ServiceCard.jsx'
 export { default as SkeletonWorkerCard } from './display/skeletons/worker-card/WorkerCard.jsx'
 export { default as SkeletonTimeSlots } from './display/skeletons/time-slots/TimeSlots.jsx'

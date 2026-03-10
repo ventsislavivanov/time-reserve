@@ -8,5 +8,17 @@
 'completed'		час който е завършен преди това е бил потвърден
 'expired'		час който не е бил одобрен или отказан от работник в рамките на 24 часа
 
+ Преходи:
+```
+pending → confirmed  (админ/работник потвърждава)
+pending → cancelled  (клиент отменя)
+pending → declined   (админ/работник отказва pending час !!! ПРИЧИНА !!!)
+
+confirmed → cancelled (клиент отменя)
+confirmed → declined  (админ/работник отказва pending час !!! ПРИЧИНА !!! работник се разболя)
+confirmed → completed (успешно)
+
+rejected → КРАЙ (автоматично при създаване за блокирани клиенти)
+
 #shows all files and folders
 tree /F -

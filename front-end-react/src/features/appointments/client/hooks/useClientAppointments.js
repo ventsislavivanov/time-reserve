@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import * as appointmentService from '../services/appointmentService.js';
+import * as appointmentService from '../../services/appointmentService.js';
 import { notify } from '../../../../services/index.js';
+import { getClientAppointments } from "../../services/appointmentService.js";
 
 export const useClientAppointments = () => {
 	const [appointments, setAppointments] = useState([]);
@@ -14,7 +15,7 @@ export const useClientAppointments = () => {
 	const fetchAppointments = async () => {
 		try {
 			setIsLoading(true);
-			const response = await appointmentService.getMyAppointments();
+			const response = await appointmentService.getClientAppointments();
 			setAppointments(response.data);
 		} catch (error) {
 			notify.error('Failed to load appointments');
