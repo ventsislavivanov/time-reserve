@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\AppointmentStatus;
 use App\Models\Appointment;
 
 class AppointmentObserver
@@ -13,6 +14,16 @@ class AppointmentObserver
 		}
 	}
 
+	public function created(Appointment $appointment): void
+	{
+		$appointment->history()->create([
+			'old_status' => null,
+			'new_status' => $appointment->status,
+			'changed_by' => $appointment->changed_by,
+			'reason'     => $appointment->reason,
+		]);
+	}
+
 	public function updating(Appointment $appointment): void
 	{
 		if ($appointment->isDirty('status')) {
@@ -22,15 +33,22 @@ class AppointmentObserver
 
 	public function updated(Appointment $appointment): void
 	{
-		if (!$appointment->isDirty('status')) {
+		if (!$appointment->wasChanged('status')) {
 			return;
 		}
+
+		$appointment->history()->create([
+			'old_status' => $appointment->getOriginal('status'),
+			'new_status' => $appointment->status,
+			'changed_by' => $appointment->changed_by,
+			'reason'     => $appointment->reason,
+		]);
 
 		$client = $appointment->client;
 		if (!$client) return;
 
 		switch ($appointment->status) {
-			case 'no_show':
+			case AppointmentStatus::NoShow->name:
 				$client->increment('no_show_count');
 				$client->increment('no_show_total_count');
 
@@ -42,12 +60,12 @@ class AppointmentObserver
 				}
 				break;
 
-			case 'completed':
+			case AppointmentStatus::Completed->name:
 				$client->update(['no_show_count' => 0]);
 				$client->increment('completed_count');
 				break;
 
-			case 'cancelled':
+			case AppointmentStatus::Cancelled->name:
 				if ($appointment->changed_by === $client->id) {
 					$client->increment('cancelled_count');
 				}

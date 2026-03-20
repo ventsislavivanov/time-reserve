@@ -17,7 +17,7 @@ use OpenApi\Attributes as OA;
 				new OA\Property(
 					property: 'status',
 					type: 'string',
-					enum: ['pending', 'confirmed', 'cancelled', 'rejected', 'declined', 'completed', 'no_show',],
+					enum: ['pending', 'cancelled', 'declined', 'confirmed', 'in_progress', 'completed', 'no_show', 'expired'],
 					example: 'pending'
 				),
 				new OA\Property(property: 'notes', type: 'string', example: 'Please use organic products', nullable: true),

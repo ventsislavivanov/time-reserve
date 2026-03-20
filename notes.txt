@@ -1,24 +1,39 @@
 #STATUSES
-'pending'		нов час
-'confirmed'		от пендинт става потвърден
-'cancelled'		клиент може да откаже час от статус pending или confirmed
-'no_show'		клиент не се е появил
-'rejected'		автоматичен статус за нежелани клиенти (получава се ако клиент направи 3 пъти подред status no_show)
-'declined'		салон/работник е отказал час и е въвел причина
-'completed'		час който е завършен преди това е бил потвърден
-'expired'		час който не е бил одобрен или отказан от работник в рамките на 24 часа
+pending      – нов час, чакащ потвърждение от работник
+cancelled    – клиентът е отменил час (от pending или confirmed)
+declined     – работникът е отказал час и е въвел причина
+confirmed    – часът е потвърден от работник
+in_progress  – услугата е започнала
+completed    – услугата е завършена успешно
+no_show      – клиентът не се е появил
+expired      – часът е изтекъл без потвърждение (24 часа)
+blocked      – клиентът е блокиран след 3 no_show (не е статус на appointment)
 
  Преходи:
 ```
-pending → confirmed  (админ/работник потвърждава)
-pending → cancelled  (клиент отменя)
-pending → declined   (админ/работник отказва pending час !!! ПРИЧИНА !!!)
+pending
+	→ confirmed
+	→ canceled
+	→ declined
+	→ expired
 
-confirmed → cancelled (клиент отменя)
-confirmed → declined  (админ/работник отказва pending час !!! ПРИЧИНА !!! работник се разболя)
-confirmed → completed (успешно)
+confirmed
+	→ canceled
+	→ declined
+	→ in_progress
+	→ no_show
 
-rejected → КРАЙ (автоматично при създаване за блокирани клиенти)
+in_progress
+	→ completed
+
+no_show
+	→ blocked (auto after three times)
+
+blocked → END
+completed → END
+canceled → END
+declined → END
+expired → END
 
 #shows all files and folders
 tree /F -

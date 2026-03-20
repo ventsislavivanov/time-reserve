@@ -101,9 +101,9 @@ const ClientAppointments = () => {
 								{activeTab === 'upcoming' && (
 									<UIButton
 										className="mt-3"
-										onClick={() => navigate('/workers')}
+										onClick={() => navigate('/our-team')}
 									>
-										Book an Appointment
+										Choose our services
 									</UIButton>
 								)}
 							</div>

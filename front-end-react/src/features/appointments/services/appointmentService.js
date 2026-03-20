@@ -36,3 +36,18 @@ export const confirmAppointment = async (id, reason = null) => {
 	const response = await api.patch(`/staff/appointments/${id}/confirm`, { reason });
 	return response.data;
 };
+
+export const complateAppointment = async (id, reason = null) => {
+	const response = await api.patch(`/staff/appointments/${id}/complate`, { reason });
+	return response.data;
+};
+
+export const inProgressAppointment = async (id, reason = null) => {
+	const response = await api.patch(`/staff/appointments/${id}/in-progress`, { reason });
+	return response.data;
+};
+
+export const markNoShowAppointment = async (id, reason = null) => {
+	const response = await api.patch(`/staff/appointments/${id}/no-show`, { reason });
+	return response.data;
+};

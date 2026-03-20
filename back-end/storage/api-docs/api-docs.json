@@ -147,13 +147,14 @@
                 ]
             }
         },
-        "/api/staff/appointments/{appointment}/confirm": {
-            "patch": {
+        "/api/appointments/{appointment}/history": {
+            "get": {
                 "tags": [
                     "Appointments"
                 ],
-                "summary": "Confirm an appointment",
-                "operationId": "appointmentsConfirm",
+                "summary": "Get appointment history timeline",
+                "description": "Returns the full status change history for a specific appointment. Accessible by the appointment owner, assigned worker, or admin.",
+                "operationId": "appointmentsHistory",
                 "parameters": [
                     {
                         "name": "appointment",
@@ -167,11 +168,11 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Appointment confirm",
+                        "description": "Appointment history timeline",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AppointmentResource"
+                                    "$ref": "#/components/schemas/AppointmentHistoryCollection"
                                 }
                             }
                         }
@@ -184,9 +185,6 @@
                     },
                     "404": {
                         "description": "Appointment not found"
-                    },
-                    "422": {
-                        "description": "Cannot confirm appointment in current status"
                     }
                 },
                 "security": [
@@ -196,41 +194,68 @@
                 ]
             }
         },
-        "/api/staff/appointments/{appointment}/reject": {
-            "patch": {
+        "/api/staff/appointments": {
+            "get": {
                 "tags": [
                     "Appointments"
                 ],
-                "summary": "Reject an appointment",
-                "operationId": "appointmentsReject",
+                "summary": "Get all appointments (staff)",
+                "description": "Returns a paginated list of all appointments. Accessible by admin and worker roles.",
+                "operationId": "appointmentsStaffIndex",
                 "parameters": [
                     {
-                        "name": "appointment",
-                        "in": "path",
-                        "required": true,
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
                         "schema": {
                             "type": "integer",
                             "example": 1
                         }
-                    }
-                ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AppointmentReasonRequest"
-                            }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "confirmed",
+                                "cancelled",
+                                "declined",
+                                "no_show",
+                                "completed"
+                            ],
+                            "example": "pending"
+                        }
+                    },
+                    {
+                        "name": "worker_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-03-15"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
-                        "description": "Appointment rejected",
+                        "description": "Paginated list of appointments",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AppointmentResource"
+                                    "$ref": "#/components/schemas/AppointmentCollection"
                                 }
                             }
                         }
@@ -240,12 +265,6 @@
                     },
                     "403": {
                         "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Appointment not found"
-                    },
-                    "422": {
-                        "description": "Cannot reject appointment in current status"
                     }
                 },
                 "security": [
@@ -305,6 +324,55 @@
                     },
                     "422": {
                         "description": "Cannot decline appointment in current status"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/staff/appointments/{appointment}/confirm": {
+            "patch": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Confirm an appointment",
+                "operationId": "appointmentsConfirm",
+                "parameters": [
+                    {
+                        "name": "appointment",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Appointment confirm",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AppointmentResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Appointment not found"
+                    },
+                    "422": {
+                        "description": "Cannot confirm appointment in current status"
                     }
                 },
                 "security": [
@@ -423,87 +491,6 @@
                     },
                     "422": {
                         "description": "Cannot mark as no-show in current status"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/api/staff/appointments": {
-            "get": {
-                "tags": [
-                    "Appointments"
-                ],
-                "summary": "Get all appointments (staff)",
-                "description": "Returns a paginated list of all appointments. Accessible by admin and worker roles.",
-                "operationId": "appointmentsStaffIndex",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "pending",
-                                "confirmed",
-                                "cancelled",
-                                "rejected",
-                                "declined",
-                                "no_show",
-                                "completed"
-                            ],
-                            "example": "pending"
-                        }
-                    },
-                    {
-                        "name": "worker_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 2
-                        }
-                    },
-                    {
-                        "name": "date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date",
-                            "example": "2026-03-15"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Paginated list of appointments",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AppointmentCollection"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Unauthorized"
                     }
                 },
                 "security": [
@@ -2227,6 +2214,67 @@
                     },
                     "meta": {
                         "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                },
+                "type": "object"
+            },
+            "AppointmentHistoryCollection": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AppointmentHistoryResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "AppointmentHistoryResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "old_status": {
+                        "type": "string",
+                        "example": "pending",
+                        "nullable": true
+                    },
+                    "new_status": {
+                        "type": "string",
+                        "example": "confirmed"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "example": "Client confirmed",
+                        "nullable": true
+                    },
+                    "changed_by": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "John Doe"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "user",
+                                    "system"
+                                ],
+                                "example": "user"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-20 10:00:00"
                     }
                 },
                 "type": "object"

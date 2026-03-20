@@ -21,13 +21,20 @@ class AppointmentReasonRequest extends FormRequest
 {
 	public function authorize(): bool
 	{
-		return auth()->user()?->isAdmin() || auth()->user()?->isWorker() ?? false;
+		return auth()->user()?->isAdmin()
+			|| auth()->user()?->isWorker()
+			|| auth()->user()?->isClient()
+			?? false;
 	}
 
 	public function rules(): array
     {
+		$appointment = $this->route('appointment');
+
         return [
-			'reason' => 'nullable|string|max:500',
+			'reason' => $appointment->isConfirmed()
+				? ['required', 'string', 'max:500']
+				: ['nullable', 'string', 'max:500']
         ];
     }
 }

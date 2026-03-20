@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\AppointmentController;
+use App\Http\Controllers\Api\Appointment\ClientAppointmentController;
+use App\Http\Controllers\Api\Appointment\StaffAppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\CategoryController;
@@ -14,13 +15,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/register', [AuthController::class, 'registerClient'])->middleware('recaptcha');
-Route::post('/login', [AuthController::class, 'login'])->middleware('recaptcha');
+Route::post('register', [AuthController::class, 'registerClient'])->middleware('recaptcha');
+Route::post('login', [AuthController::class, 'login'])->middleware('recaptcha');
 
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('services/active', [ServiceController::class, 'active']);
 
-Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
     ->middleware(['signed'])
     ->name('verification.verify');
 
@@ -30,12 +31,13 @@ Route::get('workers', [WorkerController::class, 'index']);
 Route::get('workers/{worker}', [WorkerController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
-	Route::post('/logout', [AuthController::class, 'logout']);
-	Route::get('/me', fn (Request $r) => $r->user());
+	Route::post('logout', [AuthController::class, 'logout']);
+	Route::get('me', fn (Request $r) => $r->user());
 
-	Route::get('appointments', [AppointmentController::class, 'index']);
-	Route::post('appointments', [AppointmentController::class, 'store']);
-	Route::patch('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel']);
+	Route::get('appointments', [ClientAppointmentController::class, 'index']);
+	Route::post('appointments', [ClientAppointmentController::class, 'store']);
+	Route::patch('appointments/{appointment}/cancel', [ClientAppointmentController::class, 'cancel']);
+	Route::get('appointments/{appointment}/history', [ClientAppointmentController::class, 'history']);
 });
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(function () {
@@ -60,10 +62,10 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('staff')->group(functi
 });
 
 Route::middleware(['auth:sanctum', 'role:admin,worker'])->prefix('staff')->group(function () {
-	Route::get('appointments', [AppointmentController::class, 'staffIndex']);
-	Route::patch('appointments/{appointment}/confirm', [AppointmentController::class, 'confirm']);
-	Route::patch('appointments/{appointment}/reject', [AppointmentController::class, 'reject']);
-	Route::patch('appointments/{appointment}/decline', [AppointmentController::class, 'decline']);
-	Route::patch('appointments/{appointment}/no-show', [AppointmentController::class, 'markNoShow']);
-	Route::patch('appointments/{appointment}/complete', [AppointmentController::class, 'complete']);
+	Route::get('appointments', [StaffAppointmentController::class, 'index']);
+	Route::patch('appointments/{appointment}/decline', [StaffAppointmentController::class, 'decline']);
+	Route::patch('appointments/{appointment}/confirm', [StaffAppointmentController::class, 'confirm']);
+	Route::patch('appointments/{appointment}/start', [StaffAppointmentController::class, 'start']);
+	Route::patch('appointments/{appointment}/complete', [StaffAppointmentController::class, 'complete']);
+	Route::patch('appointments/{appointment}/no-show', [StaffAppointmentController::class, 'markNoShow']);
 });
