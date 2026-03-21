@@ -37,3 +37,13 @@ expired → END
 
 #shows all files and folders
 tree /F -
+
+Слагане на нов дб файл
+терминал 1
+fly ssh console
+cd storage/database
+sudo rm -r database.sqlite
+
+терминал 2
+fly ssh sftp shell
+put storage/database/database.sqlite /var/www/storage/database/database.sqlite
