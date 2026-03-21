@@ -16,17 +16,20 @@ class MarkExpiredAppointments extends Command
 	public function handle(): void
 	{
 		$appointments = Appointment::with('client')
-			->where('status', AppointmentStatus::Pending->name)
-			->where('created_at', '<', now()->subHours(24))
+			->where('status', AppointmentStatus::Pending)
 			->get();
 
-		/* @var Appointment $appointment */
+        $count = 0;
+
+        /* @var Appointment $appointment */
 		foreach ($appointments as $index => $appointment) {
 			try {
 				$appointment->ensureCanBeExpired();
 
-				$appointment->update(['status' => AppointmentStatus::Expired->name]);
-				SendAppointmentExpiredNotificationJob::dispatch($appointment)
+				$appointment->update(['status' => AppointmentStatus::Expired]);
+                $count++;
+
+                SendAppointmentExpiredNotificationJob::dispatch($appointment)
 					// This delay for testing purposes in mailtrap
 					->delay(now()->addSeconds($index * 2));
 			}
@@ -36,6 +39,6 @@ class MarkExpiredAppointments extends Command
 			}
 		}
 
-		$this->info("Marked {$appointments->count()} appointments as expired.");
+		$this->info("Marked {$count} appointments as expired.");
 	}
 }

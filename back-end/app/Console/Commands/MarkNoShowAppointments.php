@@ -17,7 +17,7 @@ class MarkNoShowAppointments extends Command
     {
 		$twoHoursAgo = Carbon::now()->subHours(2);
 
-		$appointments = Appointment::where('status', AppointmentStatus::Confirmed->name)
+		$appointments = Appointment::where('status', AppointmentStatus::Confirmed->value)
 			->where('ends_at', '<=', $twoHoursAgo)
 			->get();
 
@@ -27,7 +27,7 @@ class MarkNoShowAppointments extends Command
 		foreach ($appointments as $appointment) {
 			try {
 				$appointment->ensureCanBeNoShow();
-				$appointment->update(['status' => AppointmentStatus::NoShow->name]);
+				$appointment->update(['status' => AppointmentStatus::NoShow->value]);
 				$count++;
 			} catch (\DomainException $e) {
 				Log::warning("Cannot mark appointment {$appointment->id} as no-show: {$e->getMessage()}");

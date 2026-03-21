@@ -48,7 +48,7 @@ class AppointmentObserver
 		if (!$client) return;
 
 		switch ($appointment->status) {
-			case AppointmentStatus::NoShow->name:
+			case AppointmentStatus::NoShow->value:
 				$client->increment('no_show_count');
 				$client->increment('no_show_total_count');
 
@@ -60,12 +60,12 @@ class AppointmentObserver
 				}
 				break;
 
-			case AppointmentStatus::Completed->name:
+			case AppointmentStatus::Completed->value:
 				$client->update(['no_show_count' => 0]);
 				$client->increment('completed_count');
 				break;
 
-			case AppointmentStatus::Cancelled->name:
+			case AppointmentStatus::Cancelled->value:
 				if ($appointment->changed_by === $client->id) {
 					$client->increment('cancelled_count');
 				}

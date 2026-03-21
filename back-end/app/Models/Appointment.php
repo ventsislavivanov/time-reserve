@@ -196,6 +196,10 @@ class Appointment extends Model
 			throw new DomainException('Only pending appointments can be expired.');
 		}
 
+        if ($this->created_at->greaterThan(now()->subHours(24))) {
+            throw new DomainException('Appointment is not old enough to expire.');
+        }
+
 		if ($this->ends_at->isFuture()) {
 			throw new DomainException('Cannot mark future appointment as expired.');
 		}

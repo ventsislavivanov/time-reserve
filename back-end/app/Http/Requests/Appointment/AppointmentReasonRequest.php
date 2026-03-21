@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Appointment;
 
+use App\AppointmentStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Attributes as OA;
 
@@ -32,7 +33,7 @@ class AppointmentReasonRequest extends FormRequest
 		$appointment = $this->route('appointment');
 
         return [
-			'reason' => $appointment->isConfirmed()
+			'reason' => $appointment->status === AppointmentStatus::Confirmed
 				? ['required', 'string', 'max:500']
 				: ['nullable', 'string', 'max:500']
         ];
