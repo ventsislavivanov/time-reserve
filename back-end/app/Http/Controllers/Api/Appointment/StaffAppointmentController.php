@@ -8,6 +8,8 @@ use App\Http\Requests\Appointment\AppointmentReasonRequest;
 use App\Http\Resources\Appointment\AppointmentCollection;
 use App\Http\Resources\Appointment\AppointmentResource;
 use App\Models\Appointment;
+use App\Notifications\AppointmentConfirmedNotification;
+use App\Notifications\AppointmentDeclinedNotification;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
@@ -43,7 +45,7 @@ class StaffAppointmentController extends Controller
 	#[OA\Response(response: 403, description: 'Unauthorized')]
 	public function index(Request $request): AppointmentCollection
 	{
-		$this->authorize('manage', Appointment::class);
+		$this->authorize('staffView', Appointment::class);
 
 		$user = auth()->user();
 
@@ -91,6 +93,10 @@ class StaffAppointmentController extends Controller
 
 		$appointment->changeStatus(AppointmentStatus::Declined, $request->reason);
 
+        $appointment->client->notify(
+            new AppointmentDeclinedNotification($appointment)
+        );
+
 		return new AppointmentResource($appointment);
 	}
 
@@ -118,6 +124,10 @@ class StaffAppointmentController extends Controller
 		$appointment->ensureCanBeConfirmed();
 
 		$appointment->changeStatus(AppointmentStatus::Confirmed);
+
+        $appointment->client->notify(
+            new AppointmentConfirmedNotification($appointment)
+        );
 
 		return new AppointmentResource($appointment);
 	}

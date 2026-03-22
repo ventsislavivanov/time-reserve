@@ -25,6 +25,11 @@ class AppointmentPolicy
 		return $user->isClient() && $appointment->client_id === $user->id;
 	}
 
+    public function staffView(User $user): bool
+    {
+        return $user->isAdmin() || $user->isWorker();
+    }
+
 	public function manage(User $user, Appointment $appointment): bool
 	{
 		return $user->isAdmin() || $appointment->worker_id === $user->id;
