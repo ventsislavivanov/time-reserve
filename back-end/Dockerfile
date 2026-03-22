@@ -17,7 +17,6 @@ FROM php:8.2-fpm-alpine
 RUN apk add --no-cache \
     bash \
     curl \
-    supervisor \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
@@ -38,8 +37,6 @@ RUN mkdir -p /var/www/storage/database \
     && chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
-COPY supervisord.conf /etc/supervisord.conf
-
 EXPOSE 8080
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
