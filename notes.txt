@@ -6,7 +6,8 @@ confirmed    – часът е потвърден от работник
 in_progress  – услугата е започнала
 completed    – услугата е завършена успешно
 no_show      – клиентът не се е появил
-expired      – часът е изтекъл без потвърждение (24 часа)
+expired      – часът е минал без потвърждение
+timed_out      – работникът не реагира навреме (преди часа)
 blocked      – клиентът е блокиран след 3 no_show (не е статус на appointment)
 
  Преходи:
@@ -16,6 +17,7 @@ pending
 	→ canceled
 	→ declined
 	→ expired
+	→ timed_out
 
 confirmed
 	→ canceled
@@ -34,11 +36,13 @@ completed → END
 canceled → END
 declined → END
 expired → END
+timed_out → END
 
 #shows all files and folders
 tree /F -
 
 Слагане на нов дб файл
+fly machine start 
 терминал 1
 fly ssh console
 cd storage/database
@@ -47,3 +51,12 @@ sudo rm -r database.sqlite
 терминал 2
 fly ssh sftp shell
 put storage/database/database.sqlite /var/www/storage/database/database.sqlite
+get /var/www/storage/database/database.sqlite storage/database/database.sqlite
+
+стартира queue work локално
+php artisan queue:work --verbose
+
+старира крона локално // второто е за конкретната команда за тестове
+php artisan schedule:work
+php artisan appointments:mark-expired
+
