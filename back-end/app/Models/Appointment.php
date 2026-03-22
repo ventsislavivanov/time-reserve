@@ -205,13 +205,56 @@ class Appointment extends Model
 		}
 	}
 
+    public function ensureCanBeTimedOut(): void
+    {
+        if ($this->status === AppointmentStatus::TimedOut) {
+            throw new DomainException('Appointment is already timed out.');
+        }
 
-	public function canBeExpired(): bool
+        if ($this->status !== AppointmentStatus::Pending) {
+            throw new DomainException('Only pending appointments can time out.');
+        }
+
+        if ($this->starts_at->isPast()) {
+            throw new DomainException('Cannot time out an appointment that has already started or passed.');
+        }
+
+        $timeUntilStart = now()->diffInMinutes($this->starts_at, false);
+        $timeoutWindow = min(24 * 60, $timeUntilStart);
+        $deadline = $this->created_at->addMinutes($timeoutWindow);
+
+        if (now()->lessThan($deadline)) {
+            throw new DomainException('Appointment is not yet eligible for timeout.');
+        }
+    }
+
+
+
+    public function canBeExpired(): bool
 	{
 		return
 			$this->status !== AppointmentStatus::Expired &&
 			$this->status->canTransitionTo(AppointmentStatus::Expired) &&
+            $this->created_at->lessThan(now()->subHours(24)) &&
 			$this->ends_at->isPast();
 	}
 
+    public function canBeTimedOut(): bool
+    {
+        if ($this->status !== AppointmentStatus::Pending) {
+            return false;
+        }
+
+        if ($this->starts_at->isPast()) {
+            return false;
+        }
+
+        $timeUntilStart = now()->diffInMinutes($this->starts_at, false);
+
+        $timeoutWindow = min(24 * 60, $timeUntilStart);
+
+        $deadline = $this->created_at->addMinutes($timeoutWindow);
+
+        return now()->greaterThan($deadline);
+    }
 }
