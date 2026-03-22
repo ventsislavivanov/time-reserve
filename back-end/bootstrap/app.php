@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
 	->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule): void {
 		$schedule->command('appointments:mark-no-show')->hourly();
 		$schedule->command('appointments:mark-expired')->hourly();
+        $schedule->command('appointments:mark-timed-out')->everyMinute();
 	})
     ->withExceptions(function (Exceptions $exceptions): void {
         //
