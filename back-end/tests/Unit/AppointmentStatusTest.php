@@ -15,6 +15,7 @@ class AppointmentStatusTest extends TestCase
 		$this->assertTrue($status->canTransitionTo(AppointmentStatus::Cancelled));
 		$this->assertTrue($status->canTransitionTo(AppointmentStatus::Declined));
 		$this->assertTrue($status->canTransitionTo(AppointmentStatus::Expired));
+		$this->assertTrue($status->canTransitionTo(AppointmentStatus::TimedOut));
 
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::InProgress));
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::Completed));
@@ -33,6 +34,7 @@ class AppointmentStatusTest extends TestCase
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::Pending));
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::Completed));
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::Expired));
+		$this->assertFalse($status->canTransitionTo(AppointmentStatus::TimedOut));
 	}
 
 	public function test_in_progress_transitions()
@@ -47,6 +49,7 @@ class AppointmentStatusTest extends TestCase
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::Confirmed));
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::NoShow));
 		$this->assertFalse($status->canTransitionTo(AppointmentStatus::Expired));
+		$this->assertFalse($status->canTransitionTo(AppointmentStatus::TimedOut));
 	}
 
 	public function test_final_statuses_cannot_transition()
@@ -64,6 +67,7 @@ class AppointmentStatusTest extends TestCase
 			$this->assertFalse($status->canTransitionTo(AppointmentStatus::Completed));
 			$this->assertFalse($status->canTransitionTo(AppointmentStatus::NoShow));
 			$this->assertFalse($status->canTransitionTo(AppointmentStatus::Expired));
+			$this->assertFalse($status->canTransitionTo(AppointmentStatus::TimedOut));
 		}
 	}
 }

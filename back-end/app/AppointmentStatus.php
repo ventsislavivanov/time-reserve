@@ -12,6 +12,7 @@ enum AppointmentStatus: string
 	case Completed = 'completed';
 	case NoShow = 'no_show';
 	case Expired = 'expired';
+    case TimedOut = 'timed_out';
 
 	public function canTransitionTo(self $new): bool
 	{
@@ -21,6 +22,7 @@ enum AppointmentStatus: string
 				self::Cancelled,
 				self::Declined,
 				self::Expired,
+                self::TimedOut,
 			]),
 
 			self::Confirmed => in_array($new, [
