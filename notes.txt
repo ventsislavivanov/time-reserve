@@ -42,7 +42,7 @@ timed_out → END
 tree /F -
 
 Слагане на нов дб файл
-fly machine start 
+fly machine start 080573dc50e008
 терминал 1
 fly ssh console
 cd storage/database
@@ -60,3 +60,5 @@ php artisan queue:work --verbose
 php artisan schedule:work
 php artisan appointments:mark-expired
 
+Change cpu
+fly machine update 080573dc50e008 --vm-cpus 1 --vm-memory 256
