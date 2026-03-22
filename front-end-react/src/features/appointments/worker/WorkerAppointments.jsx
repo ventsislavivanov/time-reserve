@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useWorkerAppointments } from './hooks/useWorkerAppointments.js';
 import { UIAppointmentBadge, SkeletonTable, UIButton } from '../../../components/common/ui';
+import DeclineAppointmentModal from "./components/DeclineAppointmentModal.jsx";
 
 const WorkerAppointments = () => {
 	const {
@@ -11,6 +13,8 @@ const WorkerAppointments = () => {
 		inProgress,
 		markNoShow,
 	} = useWorkerAppointments();
+
+	const [declineId, setDeclineId] = useState(null);
 
 	if (isLoading) {
 		return (
@@ -73,10 +77,18 @@ const WorkerAppointments = () => {
 									)}
 
 									{(app.status === 'pending' || app.status === 'confirmed') && (
+										// <UIButton
+										// 	className="btn btn-danger btn-sm me-2"
+										// 	disabled={isUpdating}
+										// 	onClick={() => decline(app.id)}
+										// >
+										// 	Decline
+										// </UIButton>
+
 										<UIButton
 											className="btn btn-danger btn-sm me-2"
 											disabled={isUpdating}
-											onClick={() => decline(app.id)}
+											onClick={() => setDeclineId(app.id)}
 										>
 											Decline
 										</UIButton>
@@ -108,6 +120,13 @@ const WorkerAppointments = () => {
 					</tbody>
 				</table>
 			)}
+
+			<DeclineAppointmentModal
+				appointmentId={declineId}
+				onClose={() => setDeclineId(null)}
+				declineAppointment={decline}
+				isDeclining={isUpdating}
+			/>
 		</div>
 	);
 };
