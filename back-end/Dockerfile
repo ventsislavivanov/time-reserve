@@ -24,10 +24,10 @@ RUN apk add --no-cache \
     libxml2-dev \
     zip \
     unzip \
-	sqlite-dev \
-	sqlite-libs
+    postgresql-dev \
+    libpq
 
-RUN docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 WORKDIR /var/www
 
