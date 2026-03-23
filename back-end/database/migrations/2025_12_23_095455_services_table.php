@@ -15,9 +15,25 @@ return new class extends Migration
 			$table->id();
 
 			$table->string('name');
-			$table->unsignedInteger('duration_minutes');
-			$table->text('description')->nullable();
-			$table->boolean('is_active')->default(true);
+            $table->text('description')
+                ->nullable();
+
+            $table->unsignedBigInteger('category_id')
+                ->nullable();
+
+            $table->integer('duration');
+            $table->decimal('price', 8, 2);
+            $table->boolean('is_active')
+                ->default(true);
+
+            $table->string('image')
+                ->nullable();
+
+            $table->integer('preparation_time')
+                ->default(0);
+
+            $table->integer('cleanup_time')
+                ->default(0);
 
 			$table->timestamps();
 		});
