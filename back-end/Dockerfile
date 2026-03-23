@@ -34,8 +34,7 @@ WORKDIR /var/www
 COPY --from=vendor /app /var/www
 
 RUN mkdir -p /var/www/storage/database \
-    && chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
+    && chown -R www-data:www-data /var/www
 
 EXPOSE 8080
 
