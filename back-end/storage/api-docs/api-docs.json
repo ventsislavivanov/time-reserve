@@ -94,7 +94,7 @@
                 ],
                 "summary": "Cancel an appointment",
                 "description": "Allows the authenticated client to cancel their own appointment.",
-                "operationId": "appointmentsCancel",
+                "operationId": "appointmentCancel",
                 "parameters": [
                     {
                         "name": "appointment",
@@ -154,7 +154,7 @@
                 ],
                 "summary": "Get appointment history timeline",
                 "description": "Returns the full status change history for a specific appointment. Accessible by the appointment owner, assigned worker, or admin.",
-                "operationId": "appointmentsHistory",
+                "operationId": "appointmentHistory",
                 "parameters": [
                     {
                         "name": "appointment",
@@ -220,11 +220,13 @@
                             "type": "string",
                             "enum": [
                                 "pending",
-                                "confirmed",
                                 "cancelled",
                                 "declined",
+                                "confirmed",
+                                "in_progress",
+                                "completed",
                                 "no_show",
-                                "completed"
+                                "expired"
                             ],
                             "example": "pending"
                         }
@@ -280,7 +282,7 @@
                     "Appointments"
                 ],
                 "summary": "Decline an appointment",
-                "operationId": "appointmentsDecline",
+                "operationId": "appointmentDecline",
                 "parameters": [
                     {
                         "name": "appointment",
@@ -339,7 +341,7 @@
                     "Appointments"
                 ],
                 "summary": "Confirm an appointment",
-                "operationId": "appointmentsConfirm",
+                "operationId": "appointmentConfirm",
                 "parameters": [
                     {
                         "name": "appointment",
@@ -382,13 +384,70 @@
                 ]
             }
         },
+        "/api/staff/appointments/{appointment}/start": {
+            "patch": {
+                "tags": [
+                    "Staff Appointments"
+                ],
+                "summary": "Mark appointment as in progress",
+                "description": "Used by staff to start the appointment and mark it as in_progress.",
+                "operationId": "appointmentStart",
+                "parameters": [
+                    {
+                        "name": "appointment",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 12
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AppointmentReasonRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Appointment started",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AppointmentResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Appointment not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/staff/appointments/{appointment}/complete": {
             "patch": {
                 "tags": [
                     "Appointments"
                 ],
                 "summary": "Complete an appointment",
-                "operationId": "appointmentsComplete",
+                "operationId": "appointmentComplete",
                 "parameters": [
                     {
                         "name": "appointment",
@@ -447,7 +506,7 @@
                     "Appointments"
                 ],
                 "summary": "Mark appointment as no-show",
-                "operationId": "appointmentsNoShow",
+                "operationId": "appointmentNoShow",
                 "parameters": [
                     {
                         "name": "appointment",
@@ -2300,12 +2359,13 @@
                                 "type": "string",
                                 "enum": [
                                     "pending",
-                                    "confirmed",
                                     "cancelled",
-                                    "rejected",
                                     "declined",
+                                    "confirmed",
+                                    "in_progress",
                                     "completed",
-                                    "no_show"
+                                    "no_show",
+                                    "expired"
                                 ],
                                 "example": "pending"
                             },
@@ -2766,6 +2826,10 @@
         {
             "name": "Appointments",
             "description": "Appointments"
+        },
+        {
+            "name": "Staff Appointments",
+            "description": "Staff Appointments"
         },
         {
             "name": "Auth",
