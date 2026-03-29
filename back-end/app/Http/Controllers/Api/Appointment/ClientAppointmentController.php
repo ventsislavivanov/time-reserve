@@ -45,7 +45,7 @@ class ClientAppointmentController extends Controller
 				'service:id,name,duration,price',
 				'worker:id,name'
 			])
-			->select(['id', 'service_id', 'worker_id', 'client_id', 'starts_at', 'ends_at', 'status', 'notes', 'cancelled_by'])
+			->select(['id', 'service_id', 'worker_id', 'client_id', 'starts_at', 'ends_at', 'status', 'notes'])
 			->orderBy('starts_at', 'desc')
 			->paginate(10);
 
