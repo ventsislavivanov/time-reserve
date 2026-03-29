@@ -1,5 +1,6 @@
 import { usePendingRequests } from './hooks/usePendingRequests.js';
-import { UIAppointmentBadge, SkeletonTable, UILoadingButton } from '../../../components/common/ui';
+import { SkeletonTable } from '../../../components/common/ui';
+import PendingRow from "./components/PendingRow.jsx";
 
 const PendingRequests = () => {
 	const {
@@ -43,48 +44,15 @@ const PendingRequests = () => {
 
 					<tbody>
 					{requests.map(app => (
-						<tr key={app.id}>
-							<td>{app.client.name}</td>
-							<td>{app.service.name}</td>
-							<td>{app.date}</td>
-							<td>{app.time}</td>
-							<td className="text-center">
-								<UIAppointmentBadge status={app.status} />
-							</td>
-							<td className="text-end">
-								<UILoadingButton
-									variant="outline-primary"
-									size="sm"
-									className="me-2"
-									disabled={isUpdating && activeActionId === app.id}
-									loading={
-										isUpdating &&
-										activeActionId === app.id &&
-										activeActionType === "confirm"
-									}
-									loadingLabel="Confirming..."
-									onClick={() => confirm(app.id)}
-								>
-									Confirm
-								</UILoadingButton>
-
-								<UILoadingButton
-									variant="outline-danger"
-									size="sm"
-									className="me-2"
-									disabled={isUpdating && activeActionId === app.id}
-									loading={
-										isUpdating &&
-										activeActionId === app.id &&
-										activeActionType === "decline"
-									}
-									loadingLabel="Declining..."
-									onClick={() => decline(app.id)}
-								>
-									Decline
-								</UILoadingButton>
-							</td>
-						</tr>
+						<PendingRow
+							key={app.id}
+							app={app}
+							isUpdating={isUpdating}
+							activeActionId={activeActionId}
+							activeActionType={activeActionType}
+							confirm={confirm}
+							decline={decline}
+						/>
 					))}
 					</tbody>
 				</table>

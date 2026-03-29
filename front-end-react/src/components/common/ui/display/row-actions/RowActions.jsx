@@ -1,5 +1,5 @@
 ﻿import { useEffect, useRef, useState } from "react";
-import { UIButton } from "../../";
+import {UIButton, UILoadingButton} from "../../";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./RowActions.module.css";
 
@@ -40,21 +40,23 @@ const UIRowActions = ({ actions = [], align = "end" }) => {
 		<div ref={ref}>
 			{/* DESKTOP */}
 			<div className={`d-none d-md-flex justify-content-${align} gap-2`}>
-				{actions.map((action) => (
-					<UIButton
-						key={action.key || action.title}
-						size={action.size || "sm"}
-						variant={action.variant || "light"}
-						className={`${action.className || ''} ${styles.actionButton}`}
-						style={action.style}
-						title={action.title}
-						onClick={action.onClick}
-						icon={action.icon}
-						iconClassName={action.iconClassName}
-					>
-						{action.label}
-					</UIButton>
-				))}
+				{actions.map(action =>
+					action.loading ? (
+						<UILoadingButton
+							key={action.key}
+							{...action}
+						>
+							{action.label}
+						</UILoadingButton>
+					) : (
+						<UIButton
+							key={action.key}
+							{...action}
+						>
+							{action.label}
+						</UIButton>
+					)
+				)}
 			</div>
 
 			{/* MOBILE */}
