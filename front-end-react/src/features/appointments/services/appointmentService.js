@@ -22,6 +22,16 @@ export const cancelAppointment = async (id, reason = null) => {
 	return response.data;
 };
 
+export const getAppointmentHistory = async (id) => {
+	const response = await api.get(`appointments/${id}/history`);
+	return response.data;
+};
+
+export const appointmentStatuses = async () => {
+	const response = await api.get('/appointment-statuses');
+	return response.data;
+};
+
 export const getStaffAppointments = async () => {
 	const response = await api.get('/staff/appointments');
 	return response.data;
@@ -32,22 +42,22 @@ export const declineAppointment = async (id, reason = null) => {
 	return response.data;
 };
 
-export const confirmAppointment = async (id, reason = null) => {
-	const response = await api.patch(`/staff/appointments/${id}/confirm`, { reason });
+export const confirmAppointment = async (id) => {
+	const response = await api.patch(`/staff/appointments/${id}/confirm`);
 	return response.data;
 };
 
-export const complateAppointment = async (id, reason = null) => {
-	const response = await api.patch(`/staff/appointments/${id}/complate`, { reason });
+export const startAppointment = async (id) => {
+	const response = await api.patch(`/staff/appointments/${id}/start`);
 	return response.data;
 };
 
-export const inProgressAppointment = async (id, reason = null) => {
-	const response = await api.patch(`/staff/appointments/${id}/in-progress`, { reason });
+export const completeAppointment = async (id) => {
+	const response = await api.patch(`/staff/appointments/${id}/complete`);
 	return response.data;
 };
 
-export const markNoShowAppointment = async (id, reason = null) => {
-	const response = await api.patch(`/staff/appointments/${id}/no-show`, { reason });
+export const markNoShowAppointment = async (id) => {
+	const response = await api.patch(`/staff/appointments/${id}/no-show`);
 	return response.data;
 };

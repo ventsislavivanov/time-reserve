@@ -1,95 +1,89 @@
-import { useState, useEffect } from 'react';
+import { useFetchList } from '../../hooks/useFetchList.js';
+import { useActionHandler } from '../../hooks/useActionHandler.js';
 import {
 	getStaffAppointments,
-	complateAppointment,
+	completeAppointment,
 	declineAppointment,
-	inProgressAppointment,
+	startAppointment,
 	markNoShowAppointment
 } from '../../services/appointmentService.js';
-import { notify } from '../../../../services/index.js';
 
 export const useWorkerAppointments = () => {
-	const [appointments, setAppointments] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
-	const [isUpdating, setIsUpdating] = useState(false);
+	const {
+		items: appointments,
+		setItems: setAppointments,
+		isLoading,
+		fetchData: fetchAppointments
+	} = useFetchList(
+		getStaffAppointments,
+		items => items.filter(a =>
+			a.status === "confirmed" || a.status === "in_progress"
+		)
+	);
 
-	useEffect(() => {
-		fetchAppointments();
-	}, []);
 
-	const fetchAppointments = async () => {
-		try {
-			setIsLoading(true);
-			const response = await getStaffAppointments();
+	const {
+		isUpdating,
+		activeActionId,
+		activeActionType,
+		handleAction
+	} = useActionHandler();
 
-			const confirmed = response.data.filter(a => a.status === 'confirmed');
-			setAppointments(confirmed);
+	const start = (id) =>
+		handleAction({
+			id,
+			type: "start",
+			requestFn: startAppointment,
+			successMessage: "Appointment in progress",
+			refetchFn: fetchAppointments,
+			optimisticUpdate: (updated) =>
+				setAppointments(prev =>
+					prev.map(a => a.id === id ? updated : a)
+				)
+		});
 
-		} catch (error) {
-			notify.error('Failed to load appointments');
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	const complete = (id) =>
+		handleAction({
+			id,
+			type: "complete",
+			requestFn: completeAppointment,
+			successMessage: "Appointment completed",
+			refetchFn: fetchAppointments,
+			optimisticUpdate: () =>
+				setAppointments(prev => prev.filter(a => a.id !== id))
+		});
 
-	const complate = async (id) => {
-		try {
-			setIsUpdating(true);
-			await complateAppointment(id);
-			setAppointments(prev => prev.filter(r => r.id !== id));
-			notify.success('Appointment complateed');
-		} catch (error) {
-			notify.error('Failed to complate appointment');
-		} finally {
-			setIsUpdating(false);
-		}
-	};
+	const decline = (id, reason) =>
+		handleAction({
+			id,
+			type: "decline",
+			requestFn: () => declineAppointment(id, reason),
+			successMessage: "Appointment declined",
+			refetchFn: fetchAppointments,
+			optimisticUpdate: () =>
+				setAppointments(prev => prev.filter(a => a.id !== id))
+		});
 
-	const decline = async (id, reason = null) => {
-		try {
-			setIsUpdating(true);
-			await declineAppointment(id, reason);
-			setAppointments(prev => prev.filter(r => r.id !== id));
-			notify.success('Appointment declined');
-		} catch (error) {
-			notify.error('Failed to decline appointment');
-		} finally {
-			setIsUpdating(false);
-		}
-	};
-
-	const inProgress = async (id, reason = null) => {
-		try {
-			setIsUpdating(true);
-			await inProgressAppointment(id, reason);
-			setAppointments(prev => prev.filter(r => r.id !== id));
-			notify.success('Appointment in progress');
-		} catch (error) {
-			notify.error('Failed to in progress appointment');
-		} finally {
-			setIsUpdating(false);
-		}
-	};
-	const markNoShow = async (id, reason = null) => {
-		try {
-			setIsUpdating(true);
-			await markNoShowAppointment(id, reason);
-			setAppointments(prev => prev.filter(r => r.id !== id));
-			notify.success('Appointment mark no-show');
-		} catch (error) {
-			notify.error('Failed to mark no-show appointment');
-		} finally {
-			setIsUpdating(false);
-		}
-	};
+	const markNoShow = (id) =>
+		handleAction({
+			id,
+			type: "no_show",
+			requestFn: markNoShowAppointment,
+			successMessage: "Appointment marked no-show",
+			refetchFn: fetchAppointments,
+			optimisticUpdate: () =>
+				setAppointments(prev => prev.filter(a => a.id !== id))
+		});
 
 	return {
 		appointments,
 		isLoading,
 		isUpdating,
-		complate,
+		activeActionId,
+		activeActionType,
+		start,
+		complete,
 		decline,
-		inProgress,
 		markNoShow,
 		refetch: fetchAppointments
 	};

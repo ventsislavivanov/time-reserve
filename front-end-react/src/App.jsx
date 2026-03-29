@@ -13,7 +13,13 @@ import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
 import { ManageServices, ServicesCatalog } from "./features/services";
 import { WorkersList } from './features/workers';
-import { BookingWizard, ClientAppointments, WorkerAppointments, PendingRequests } from './features/appointments';
+import {
+	BookingWizard,
+	ClientAppointments,
+	WorkerAppointments,
+	PendingRequests,
+	HistoryAppointments
+} from './features/appointments';
 
 import { AdminDashboard, WorkerDashboard } from "./features/dashboard";
 import { UILoading, UIToast } from "./components/common/ui";
@@ -90,6 +96,7 @@ function App() {
 						<Route element={<RoleGuard allowedRoles={['worker']} />}>
 							<Route path="appointments" element={<WorkerAppointments />} />
 							<Route path="pending" element={<PendingRequests />} />
+							<Route path="history" element={<HistoryAppointments />} />
 						</Route>
 					</Route>
 				</Route>

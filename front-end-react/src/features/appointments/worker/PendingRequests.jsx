@@ -1,11 +1,13 @@
 import { usePendingRequests } from './hooks/usePendingRequests.js';
-import { UIButton, UIAppointmentBadge, SkeletonTable } from '../../../components/common/ui';
+import { UIAppointmentBadge, SkeletonTable, UILoadingButton } from '../../../components/common/ui';
 
 const PendingRequests = () => {
 	const {
 		requests,
 		isLoading,
 		isUpdating,
+		activeActionId,
+		activeActionType,
 		confirm,
 		decline
 	} = usePendingRequests();
@@ -24,7 +26,7 @@ const PendingRequests = () => {
 
 			{requests.length === 0 ? (
 				<div className="alert alert-info">
-					Нямате чакащи заявки.
+					You have no pending requests.
 				</div>
 			) : (
 				<table className="table table-striped align-middle">
@@ -34,39 +36,53 @@ const PendingRequests = () => {
 						<th>Service</th>
 						<th>Date</th>
 						<th>Time</th>
-						<th>Duration</th>
-						<th>Status</th>
+						<th className="text-center">Status</th>
 						<th className="text-end">Actions</th>
 					</tr>
 					</thead>
 
 					<tbody>
-					{requests.map(req => (
-						<tr key={req.id}>
-							<td>{req.client.name}</td>
-							<td>{req.service.name}</td>
-							<td>{req.date}</td>
-							<td>{req.time}</td>
-							<td>{req.duration} min</td>
-							<td>
-								<UIAppointmentBadge status={req.status} />
+					{requests.map(app => (
+						<tr key={app.id}>
+							<td>{app.client.name}</td>
+							<td>{app.service.name}</td>
+							<td>{app.date}</td>
+							<td>{app.time}</td>
+							<td className="text-center">
+								<UIAppointmentBadge status={app.status} />
 							</td>
 							<td className="text-end">
-								<UIButton
-									className="btn btn-success btn-sm me-2"
-									disabled={isUpdating}
-									onClick={() => confirm(req.id)}
+								<UILoadingButton
+									variant="outline-primary"
+									size="sm"
+									className="me-2"
+									disabled={isUpdating && activeActionId === app.id}
+									loading={
+										isUpdating &&
+										activeActionId === app.id &&
+										activeActionType === "confirm"
+									}
+									loadingLabel="Confirming..."
+									onClick={() => confirm(app.id)}
 								>
 									Confirm
-								</UIButton>
+								</UILoadingButton>
 
-								<UIButton
-									className="btn btn-danger btn-sm"
-									disabled={isUpdating}
-									onClick={() => decline(req.id)}
+								<UILoadingButton
+									variant="outline-danger"
+									size="sm"
+									className="me-2"
+									disabled={isUpdating && activeActionId === app.id}
+									loading={
+										isUpdating &&
+										activeActionId === app.id &&
+										activeActionType === "decline"
+									}
+									loadingLabel="Declining..."
+									onClick={() => decline(app.id)}
 								>
 									Decline
-								</UIButton>
+								</UILoadingButton>
 							</td>
 						</tr>
 					))}

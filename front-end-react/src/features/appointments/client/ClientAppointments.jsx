@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { UICard, UIButton } from '../../../components/common/ui/index.js';
 import AppointmentCard from './components/AppointmentCard.jsx';
-import CancelAppointmentModal from './components/CancelAppointmentModal.jsx';
+import CancelAppointmentModal from './components/modals/CancelAppointmentModal.jsx';
 import { useClientAppointments } from './hooks/useClientAppointments.js';
 import { useBootstrapModal } from "../../../hooks/index.js";
+import AppointmentDetailsModal from "./components/modals/AppointmentDetailsModal.jsx";
 
 const TABS = [
 	{ id: 'upcoming', label: 'Upcoming' },
@@ -17,21 +18,32 @@ const ClientAppointments = () => {
 	const { showModal, hideModal } = useBootstrapModal();
 
 	const [activeTab, setActiveTab] = useState('upcoming');
-	const [selected, setSelected] = useState(null);
+	const [canceling, setCanceling] = useState(null);
+	const [details, setDetails] = useState(null);
 
 	const openCancel = (appointment) => {
-		setSelected(appointment);
+		setCanceling(appointment);
 		setTimeout(() => showModal('cancelAppointmentModal'), 10);
 	};
 
 	const closeCancel = () => {
 		hideModal('cancelAppointmentModal');
-		setSelected(null);
+		setCanceling(null);
 	};
 
 	const confirmCancel = async (reason) => {
-		await cancelAppointment(selected.id, reason);
+		await cancelAppointment(canceling.id, reason);
 		closeCancel();
+	};
+
+	const openDetails = (appointment) => {
+		setDetails(appointment);
+		setTimeout(() => showModal('appointmentDetailsModal'), 10);
+	};
+
+	const closeDetails = () => {
+		hideModal('appointmentDetailsModal');
+		setDetails(null);
 	};
 
 	const now = new Date();
@@ -128,6 +140,7 @@ const ClientAppointments = () => {
 									<AppointmentCard
 										appointment={appointment}
 										onCancel={openCancel}
+										onViewDetails={openDetails}
 									/>
 								</div>
 							))}
@@ -137,10 +150,15 @@ const ClientAppointments = () => {
 			</div>
 
 			<CancelAppointmentModal
-				appointment={selected}
+				appointment={canceling}
 				onClose={closeCancel}
 				onConfirm={confirmCancel}
 				isCancelling={isCancelling}
+			/>
+
+			<AppointmentDetailsModal
+				appointment={details}
+				onClose={closeDetails}
 			/>
 		</div>
 	);

@@ -1,14 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const STATUS_CONFIG = {
-	pending:	 { bg: 'bg-warning-subtle',   text: 'text-warning',   icon: 'clock',         label: 'Pending'     },
-	cancelled:	 { bg: 'bg-danger-subtle',    text: 'text-danger',    icon: 'times-circle',  label: 'Cancelled'   },
-	declined:	 { bg: 'bg-danger-subtle',    text: 'text-danger',    icon: 'times-circle',  label: 'Declined'    },
-	confirmed:	 { bg: 'bg-primary-subtle',   text: 'text-primary',   icon: 'check-circle',  label: 'Confirmed'   },
-	in_progress: { bg: 'bg-danger-subtle',    text: 'text-warning',   icon: 'times-circle',  label: 'In progress' },
-	completed:	 { bg: 'bg-success-subtle',   text: 'text-success',   icon: 'check-circle',  label: 'Completed'   },
-	no_show:	 { bg: 'bg-secondary-subtle', text: 'text-secondary', icon: 'times-circle',  label: 'No Show'     },
-	expired:	 { bg: 'bg-secondary-subtle', text: 'text-secondary', icon: 'hourglass-end', label: 'Expired'     },
+	pending:	 { bg: 'bg-warning-subtle',   text: 'text-warning',   icon: 'clock',          label: 'Pending'     },
+	cancelled:	 { bg: 'bg-danger-subtle',    text: 'text-danger',    icon: 'times-circle',   label: 'Cancelled'   },
+	declined:	 { bg: 'bg-danger-subtle',    text: 'text-danger',    icon: 'times-circle',   label: 'Declined'    },
+	confirmed:	 { bg: 'bg-primary-subtle',   text: 'text-primary',   icon: 'check-circle',   label: 'Confirmed'   },
+	in_progress: { bg: 'bg-danger-subtle',    text: 'text-warning',   icon: 'hourglass-half', label: 'In progress' },
+	completed:	 { bg: 'bg-success-subtle',   text: 'text-success',   icon: 'check-circle',   label: 'Completed'   },
+	no_show:	 { bg: 'bg-secondary-subtle', text: 'text-secondary', icon: 'times-circle',   label: 'No Show'     },
+	expired:	 { bg: 'bg-secondary-subtle', text: 'text-secondary', icon: 'hourglass',      label: 'Expired'     },
+	timed_out:	 { bg: 'bg-secondary-subtle', text: 'text-secondary', icon: 'hourglass',      label: 'Timed out'   },
 };
 
 const AppointmentBadge = ({ status }) => {

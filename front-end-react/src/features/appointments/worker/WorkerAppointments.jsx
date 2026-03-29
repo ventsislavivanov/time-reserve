@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { useWorkerAppointments } from './hooks/useWorkerAppointments.js';
-import { UIAppointmentBadge, SkeletonTable, UIButton } from '../../../components/common/ui';
-import DeclineAppointmentModal from "./components/DeclineAppointmentModal.jsx";
+import {
+	SkeletonTable,
+	UIAppointmentBadge,
+	UILoadingButton
+} from '../../../components/common/ui';
+import DeclineAppointmentModal from "./components/modals/DeclineAppointmentModal.jsx";
 
 const WorkerAppointments = () => {
 	const {
 		appointments,
 		isLoading,
 		isUpdating,
-		complate,
+		activeActionId,
+		activeActionType,
+		complete,
 		decline,
-		inProgress,
+		start,
 		markNoShow,
 	} = useWorkerAppointments();
 
@@ -41,8 +47,7 @@ const WorkerAppointments = () => {
 						<th>Service</th>
 						<th>Date</th>
 						<th>Time</th>
-						<th>Duration</th>
-						<th>Status</th>
+						<th className="text-center">Status</th>
 						<th className="text-end">Actions</th>
 					</tr>
 					</thead>
@@ -60,58 +65,80 @@ const WorkerAppointments = () => {
 								<td>{app.service.name}</td>
 								<td>{app.date}</td>
 								<td>{app.time}</td>
-								<td>{app.duration} min</td>
-								<td>
+								<td className="text-center">
 									<UIAppointmentBadge status={app.status} />
 								</td>
-
 								<td className="text-end">
 									{app.status === 'confirmed' && (
-										<UIButton
-											className="btn btn-warning btn-sm me-2"
-											disabled={isUpdating}
-											onClick={() => inProgress(app.id)}
+										<UILoadingButton
+											variant="outline-warning"
+											size="sm"
+											className="me-2"
+											disabled={isUpdating && activeActionId === app.id}
+											loading={
+												isUpdating &&
+												activeActionId === app.id &&
+												activeActionType === "start"
+											}
+											loadingLabel="Starting..."
+											onClick={() => start(app.id)}
 										>
-											In progress
-										</UIButton>
+											Start
+										</UILoadingButton>
 									)}
 
-									{(app.status === 'pending' || app.status === 'confirmed') && (
-										// <UIButton
-										// 	className="btn btn-danger btn-sm me-2"
-										// 	disabled={isUpdating}
-										// 	onClick={() => decline(app.id)}
-										// >
-										// 	Decline
-										// </UIButton>
-
-										<UIButton
-											className="btn btn-danger btn-sm me-2"
-											disabled={isUpdating}
+									{(app.status === 'confirmed') && (
+										<UILoadingButton
+											variant="outline-danger"
+											size="sm"
+											className="me-2"
+											disabled={isUpdating && activeActionId === app.id}
+											loading={
+												isUpdating &&
+												activeActionId === app.id &&
+												activeActionType === "decline"
+											}
+											loadingLabel="Declining..."
 											onClick={() => setDeclineId(app.id)}
 										>
 											Decline
-										</UIButton>
+										</UILoadingButton>
 									)}
 
 									{app.status === 'confirmed' && now >= twoHoursAfterEnd && (
-										<UIButton
-											className="btn btn-dark btn-sm me-2"
-											disabled={isUpdating}
+										<UILoadingButton
+											variant="outline-dark"
+											size="sm"
+											className="me-2"
+											disabled={isUpdating && activeActionId === app.id}
+											loading={
+												isUpdating &&
+												activeActionId === app.id &&
+												activeActionType === "no_show"
+											}
+											loadingLabel="Marking no-show..."
 											onClick={() => markNoShow(app.id)}
 										>
 											Mark no-show
-										</UIButton>
+										</UILoadingButton>
 									)}
 
-									{app.status === 'in-progress' && (
-										<UIButton
-											className="btn btn-success btn-sm"
-											disabled={isUpdating}
-											onClick={() => complate(app.id)}
+									{app.status === 'in_progress' && (
+										<UILoadingButton
+											variant="outline-success"
+											size="sm"
+											className="me-2"
+											disabled={isUpdating && activeActionId === app.id}
+											loading={
+												isUpdating &&
+												activeActionId === app.id &&
+												activeActionType === "complete"
+											}
+											loadingLabel="Completing..."
+											onClick={() => complete(app.id)}
 										>
 											Complete
-										</UIButton>
+										</UILoadingButton>
 									)}
 								</td>
 							</tr>

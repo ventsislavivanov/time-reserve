@@ -57,6 +57,7 @@ export default function StaffLayout() {
 							<>
 								<UINavLink to="/staff/appointments">My Appointments</UINavLink>
 								<UINavLink to="/staff/pending">Pending Requests</UINavLink>
+								<UINavLink to="/staff/history">History</UINavLink>
 							</>
 						)}
 					</ul>

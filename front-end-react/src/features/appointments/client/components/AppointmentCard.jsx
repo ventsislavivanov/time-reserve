@@ -1,6 +1,6 @@
 import { UICard, UIButton, UIAppointmentBadge } from '../../../../components/common/ui/index.js';
 
-const AppointmentCard = ({ appointment, onCancel }) => {
+const AppointmentCard = ({ appointment, onCancel, onViewDetails }) => {
 	const {
 		worker,
 		service,
@@ -22,6 +22,8 @@ const AppointmentCard = ({ appointment, onCancel }) => {
 			day: 'numeric',
 		});
 	};
+
+	const canViewDetails = status === 'confirmed' || status === 'completed';
 
 	return (
 		<UICard className="h-100">
@@ -60,17 +62,29 @@ const AppointmentCard = ({ appointment, onCancel }) => {
 				</div>
 			)}
 
-			{isCancellable && (
+
 				<div className="d-flex justify-content-end mt-auto">
-					<UIButton
-						variant="outline-danger"
-						size="sm"
-						onClick={() => onCancel(appointment)}
-					>
-						Cancel Appointment
-					</UIButton>
+					{isCancellable && (
+						<UIButton
+							variant="outline-danger"
+							size="sm"
+							className="me-2"
+							onClick={() => onCancel(appointment)}
+						>
+							Cancel Appointment
+						</UIButton>
+					)}
+
+					{canViewDetails && (
+						<UIButton
+							variant="outline-info"
+							size="sm"
+							onClick={() => onViewDetails(appointment)}
+						>
+							View Details
+						</UIButton>
+					)}
 				</div>
-			)}
 		</UICard>
 	);
 };

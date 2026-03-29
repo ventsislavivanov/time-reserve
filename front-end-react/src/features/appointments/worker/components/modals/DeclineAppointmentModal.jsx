@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Modal } from 'bootstrap';
-import { UIModal, UIButton, UITextarea } from '../../../../components/common/ui';
+import {UIModal, UIButton, UITextarea, UILoadingButton} from '../../../../../components/common/ui/index.js';
 
 const DeclineAppointmentModal = ({ appointmentId, onClose, declineAppointment, isDeclining }) => {
     const modalRef = useRef(null);
@@ -51,13 +51,17 @@ const DeclineAppointmentModal = ({ appointmentId, onClose, declineAppointment, i
                     <UIButton variant="outline-secondary" onClick={handleClose}>
                         Cancel
                     </UIButton>
-                    <UIButton
+
+                    <UILoadingButton
                         variant="danger"
-                        onClick={handleConfirm}
+                        loading={isDeclining}
                         disabled={isDeclining || !reason.trim()}
+                        loadingLabel="Declining..."
+                        onClick={handleConfirm}
                     >
-                        {isDeclining ? 'Declining...' : 'Decline'}
-                    </UIButton>
+                        Decline
+                    </UILoadingButton>
+
                 </>
             }
         >

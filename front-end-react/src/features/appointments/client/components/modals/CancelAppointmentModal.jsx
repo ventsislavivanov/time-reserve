@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UIModal, UIButton } from '../../../../components/common/ui/index.js';
+import { UIModal, UIButton } from '../../../../../components/common/ui/index.js';
 
 const CancelAppointmentModal = ({
 	appointment,
