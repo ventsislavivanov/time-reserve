@@ -10,9 +10,9 @@ class AppointmentPolicy
 
 	public function view(User $user, Appointment $appointment): Bool
 	{
-		return !$user->isAdmin() &&
-			$appointment->worker_id !== $user->id &&
-			$appointment->client_id !== $user->id;
+		return $user->isAdmin()
+            || $appointment->worker_id === $user->id
+            || $appointment->client_id === $user->id;
 	}
 
 	public function store(User $user): Bool
