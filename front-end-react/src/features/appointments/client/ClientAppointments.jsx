@@ -4,6 +4,7 @@ import { UICard, UIButton } from '../../../components/common/ui/index.js';
 import AppointmentCard from './components/AppointmentCard.jsx';
 import CancelAppointmentModal from './components/CancelAppointmentModal.jsx';
 import { useClientAppointments } from './hooks/useClientAppointments.js';
+import { useBootstrapModal } from "../../../hooks/index.js";
 
 const TABS = [
 	{ id: 'upcoming', label: 'Upcoming' },
@@ -13,25 +14,40 @@ const TABS = [
 const ClientAppointments = () => {
 	const navigate = useNavigate();
 	const { appointments, isLoading, cancelAppointment, isCancelling } = useClientAppointments();
+	const { showModal, hideModal } = useBootstrapModal();
+
 	const [activeTab, setActiveTab] = useState('upcoming');
-	const [cancelId, setCancelId] = useState(null);
+	const [selected, setSelected] = useState(null);
+
+	const openCancel = (appointment) => {
+		setSelected(appointment);
+		setTimeout(() => showModal('cancelAppointmentModal'), 10);
+	};
+
+	const closeCancel = () => {
+		hideModal('cancelAppointmentModal');
+		setSelected(null);
+	};
+
+	const confirmCancel = async (reason) => {
+		await cancelAppointment(selected.id, reason);
+		closeCancel();
+	};
 
 	const now = new Date();
 
 	const upcoming = appointments.filter(
-		(a) =>
+		a =>
 			new Date(a.date) >= now &&
 			a.status !== 'cancelled' &&
-			a.status !== 'declined' &&
-			a.status !== 'rejected'
+			a.status !== 'declined'
 	);
 
 	const past = appointments.filter(
-		(a) =>
+		a =>
 			new Date(a.date) < now ||
 			a.status === 'cancelled' ||
-			a.status === 'declined' ||
-			a.status === 'rejected'
+			a.status === 'declined'
 	);
 
 	const displayed = activeTab === 'upcoming' ? upcoming : past;
@@ -74,14 +90,14 @@ const ClientAppointments = () => {
 					</div>
 
 					<ul className="nav nav-tabs mb-4">
-						{TABS.map((tab) => (
+						{TABS.map(tab => (
 							<li key={tab.id} className="nav-item">
 								<button
 									className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
 									onClick={() => setActiveTab(tab.id)}
 								>
 									{tab.label}
-									<span className={`badge ms-2 ${activeTab === tab.id ? 'bg-primary' : 'bg-secondary'}`}>
+									<span className="badge ms-2 bg-primary">
                                         {tab.id === 'upcoming' ? upcoming.length : past.length}
                                     </span>
 								</button>
@@ -99,10 +115,7 @@ const ClientAppointments = () => {
 										: 'No past appointments'}
 								</h5>
 								{activeTab === 'upcoming' && (
-									<UIButton
-										className="mt-3"
-										onClick={() => navigate('/our-team')}
-									>
+									<UIButton className="mt-3" onClick={() => navigate('/our-team')}>
 										Choose our services
 									</UIButton>
 								)}
@@ -110,11 +123,11 @@ const ClientAppointments = () => {
 						</UICard>
 					) : (
 						<div className="row g-3">
-							{displayed.map((appointment) => (
+							{displayed.map(appointment => (
 								<div key={appointment.id} className="col-md-6">
 									<AppointmentCard
 										appointment={appointment}
-										onCancel={setCancelId}
+										onCancel={openCancel}
 									/>
 								</div>
 							))}
@@ -124,9 +137,9 @@ const ClientAppointments = () => {
 			</div>
 
 			<CancelAppointmentModal
-				appointmentId={cancelId}
-				onClose={() => setCancelId(null)}
-				cancelAppointment={cancelAppointment}
+				appointment={selected}
+				onClose={closeCancel}
+				onConfirm={confirmCancel}
 				isCancelling={isCancelling}
 			/>
 		</div>

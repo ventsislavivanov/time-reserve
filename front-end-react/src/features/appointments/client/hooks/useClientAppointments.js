@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as appointmentService from '../../services/appointmentService.js';
 import { notify } from '../../../../services/index.js';
-import { getClientAppointments } from "../../services/appointmentService.js";
 
 export const useClientAppointments = () => {
 	const [appointments, setAppointments] = useState([]);
@@ -28,11 +27,13 @@ export const useClientAppointments = () => {
 		try {
 			setIsCancelling(true);
 			await appointmentService.cancelAppointment(id, reason);
-			setAppointments((prev) =>
-				prev.map((a) =>
+
+			setAppointments(prev =>
+				prev.map(a =>
 					a.id === id ? { ...a, status: 'cancelled' } : a
 				)
 			);
+
 			notify.success('Appointment cancelled successfully');
 		} catch (error) {
 			const message = error.response?.data?.message;

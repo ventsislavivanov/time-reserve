@@ -2,7 +2,6 @@ import { UICard, UIButton, UIAppointmentBadge } from '../../../../components/com
 
 const AppointmentCard = ({ appointment, onCancel }) => {
 	const {
-		id,
 		worker,
 		service,
 		date,
@@ -52,22 +51,6 @@ const AppointmentCard = ({ appointment, onCancel }) => {
 						<span className="small">{time}</span>
 					</div>
 				</div>
-				{service?.duration && (
-					<div className="col-12">
-						<div className="d-flex align-items-center gap-2">
-							<i className="bi bi-hourglass-split text-primary"></i>
-							<span className="small">{service.duration} min</span>
-						</div>
-					</div>
-				)}
-				{service?.price && (
-					<div className="col-12">
-						<div className="d-flex align-items-center gap-2">
-							<i className="bi bi-tag text-primary"></i>
-							<span className="small">{service.price} €</span>
-						</div>
-					</div>
-				)}
 			</div>
 
 			{notes && (
@@ -82,7 +65,7 @@ const AppointmentCard = ({ appointment, onCancel }) => {
 					<UIButton
 						variant="outline-danger"
 						size="sm"
-						onClick={() => onCancel(id)}
+						onClick={() => onCancel(appointment)}
 					>
 						Cancel Appointment
 					</UIButton>

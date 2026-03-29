@@ -1,51 +1,34 @@
-import { useEffect, useRef } from 'react';
-import { Modal } from 'bootstrap';
+import { useState } from 'react';
 import { UIModal, UIButton } from '../../../../components/common/ui/index.js';
 
-const CancelAppointmentModal = ({ appointmentId, onClose, cancelAppointment, isCancelling }) => {
-	const modalRef = useRef(null);
-	const bsModalRef = useRef(null);
+const CancelAppointmentModal = ({
+	appointment,
+	onClose,
+	onConfirm,
+	isCancelling
+}) => {
+	if (!appointment) return null;
 
-	useEffect(() => {
-		if (modalRef.current) {
-			bsModalRef.current = new Modal(modalRef.current);
-		}
-		return () => {
-			bsModalRef.current?.dispose();
-		};
-	}, []);
+	const [reason, setReason] = useState('');
 
-	useEffect(() => {
-		if (appointmentId) {
-			bsModalRef.current?.show();
-		} else {
-			bsModalRef.current?.hide();
-		}
-	}, [appointmentId]);
+	const requiresReason = appointment.status === 'confirmed';
 
-	const handleConfirm = async () => {
-		await cancelAppointment(appointmentId);
-		bsModalRef.current?.hide();
-		onClose();
-	};
-
-	const handleClose = () => {
-		bsModalRef.current?.hide();
-		onClose();
+	const handleConfirm = () => {
+		if (requiresReason && !reason.trim()) return;
+		onConfirm(reason);
 	};
 
 	return (
 		<UIModal
-			ref={modalRef}
 			id="cancelAppointmentModal"
 			title="Cancel Appointment"
 			icon="triangle-exclamation"
 			centered
 			staticBackdrop
-			onClose={handleClose}
+			onClose={onClose}
 			footer={
 				<>
-					<UIButton variant="outline-secondary" onClick={handleClose}>
+					<UIButton variant="outline-secondary" onClick={onClose}>
 						Keep it
 					</UIButton>
 					<UIButton
@@ -65,9 +48,22 @@ const CancelAppointmentModal = ({ appointmentId, onClose, cancelAppointment, isC
 				</>
 			}
 		>
-			<p className="mb-0">
-				Are you sure you want to cancel this appointment? This action cannot be undone.
+			<p className="mb-3">
+				Are you sure you want to cancel this appointment?
 			</p>
+
+			{requiresReason && (
+				<div className="mb-3">
+					<label className="form-label">Reason for cancellation</label>
+					<textarea
+						className="form-control"
+						rows="3"
+						value={reason}
+						onChange={(e) => setReason(e.target.value)}
+						placeholder="Please explain why you need to cancel"
+					/>
+				</div>
+			)}
 		</UIModal>
 	);
 };
