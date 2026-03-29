@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Appointment\ClientAppointmentController;
+use App\Http\Controllers\Api\Appointment\MetaAppointmentController;
 use App\Http\Controllers\Api\Appointment\StaffAppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvailabilityController;
@@ -36,7 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::get('appointments', [ClientAppointmentController::class, 'index']);
 	Route::post('appointments', [ClientAppointmentController::class, 'store']);
-	Route::patch('appointments/{appointment}/cancel', [ClientAppointmentController::class, 'cancel']);
+    Route::get('/appointment-statuses', [MetaAppointmentController::class, 'statuses']);
+
+    Route::patch('appointments/{appointment}/cancel', [ClientAppointmentController::class, 'cancel']);
 	Route::get('appointments/{appointment}/history', [ClientAppointmentController::class, 'history']);
 });
 
