@@ -117,7 +117,7 @@ class StaffAppointmentController extends Controller
 	#[OA\Response(response: 403, description: 'Unauthorized')]
 	#[OA\Response(response: 404, description: 'Appointment not found')]
 	#[OA\Response(response: 422, description: 'Cannot confirm appointment in current status')]
-	public function confirm(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
+	public function confirm(Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('manage', $appointment);
 
@@ -146,10 +146,6 @@ class StaffAppointmentController extends Controller
 		required: true,
 		schema: new OA\Schema(type: 'integer', example: 12)
 	)]
-	#[OA\RequestBody(
-		required: false,
-		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
-	)]
 	#[OA\Response(
 		response: 200,
 		description: 'Appointment started',
@@ -159,13 +155,13 @@ class StaffAppointmentController extends Controller
 	#[OA\Response(response: 403, description: 'Unauthorized')]
 	#[OA\Response(response: 404, description: 'Appointment not found')]
 
-	public function start(Appointment $appointment, AppointmentReasonRequest $request)
+	public function start(Appointment $appointment)
 	{
 		$this->authorize('manage', $appointment);
 
 		$appointment->ensureCanBeStarted();
 
-		$appointment->changeStatus(AppointmentStatus::InProgress, $request->reason);
+		$appointment->changeStatus(AppointmentStatus::InProgress);
 
 		return new AppointmentResource($appointment);
 	}
@@ -178,10 +174,6 @@ class StaffAppointmentController extends Controller
 		tags: ['Appointments']
 	)]
 	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
-	#[OA\RequestBody(
-		required: false,
-		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
-	)]
 	#[OA\Response(
 		response: 200,
 		description: 'Appointment completed',
@@ -191,13 +183,13 @@ class StaffAppointmentController extends Controller
 	#[OA\Response(response: 403, description: 'Unauthorized')]
 	#[OA\Response(response: 404, description: 'Appointment not found')]
 	#[OA\Response(response: 422, description: 'Cannot complete appointment in current status')]
-	public function complete(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
+	public function complete(Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('manage', $appointment);
 
 		$appointment->ensureCanBeCompleted();
 
-		$appointment->changeStatus(AppointmentStatus::Completed, $request->reason);
+		$appointment->changeStatus(AppointmentStatus::Completed);
 
 		return new AppointmentResource($appointment);
 	}
@@ -210,10 +202,6 @@ class StaffAppointmentController extends Controller
 		tags: ['Appointments']
 	)]
 	#[OA\Parameter(name: 'appointment', in: 'path', required: true, schema: new OA\Schema(type: 'integer', example: 1))]
-	#[OA\RequestBody(
-		required: false,
-		content: new OA\JsonContent(ref: '#/components/schemas/AppointmentReasonRequest')
-	)]
 	#[OA\Response(
 		response: 200,
 		description: 'Appointment marked as no-show',
@@ -223,13 +211,13 @@ class StaffAppointmentController extends Controller
 	#[OA\Response(response: 403, description: 'Unauthorized')]
 	#[OA\Response(response: 404, description: 'Appointment not found')]
 	#[OA\Response(response: 422, description: 'Cannot mark as no-show in current status')]
-	public function markNoShow(AppointmentReasonRequest $request, Appointment $appointment): AppointmentResource
+	public function markNoShow(Appointment $appointment): AppointmentResource
 	{
 		$this->authorize('manage', $appointment);
 
 		$appointment->ensureCanBeNoShow();
 
-		$appointment->changeStatus(AppointmentStatus::NoShow, $request->reason);
+		$appointment->changeStatus(AppointmentStatus::NoShow);
 
 		return new AppointmentResource($appointment);
 	}

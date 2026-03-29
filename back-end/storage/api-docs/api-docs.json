@@ -441,16 +441,6 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AppointmentReasonRequest"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Appointment started",
@@ -497,16 +487,6 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AppointmentReasonRequest"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Appointment completed",
@@ -556,16 +536,6 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AppointmentReasonRequest"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Appointment marked as no-show",
