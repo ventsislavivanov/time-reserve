@@ -4,6 +4,7 @@ export { default as Input } from './base/input/Input.jsx';
 export { default as Select } from './base/select/Select.jsx';
 //Base
 export { default as UIButton } from './base/button/Button.jsx';
+export { default as UILoadingButton } from './base/loading-button/LoadingButton.jsx';
 export { default as UICard } from './base/card/Card.jsx';
 
 //Complex
