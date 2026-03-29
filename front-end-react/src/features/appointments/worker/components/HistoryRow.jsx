@@ -20,6 +20,6 @@ const HistoryRow = ({app, onView}) => {
             </td>
         </tr>
     );
-}
+};
 
 export default HistoryRow;

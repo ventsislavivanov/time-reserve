@@ -17,13 +17,12 @@ const WorkerRow = ({
     const twoHoursAfterEnd = new Date(endsAt.getTime() + 2 * 60 * 60 * 1000);
 
     const isRowBusy = isUpdating && activeActionId === app.id;
-
-    const actions = [];
-
     const base = {
         size: "sm",
         disabled: isRowBusy
     };
+
+    const actions = [];
 
     if (app.status === "confirmed") {
         actions.push({
@@ -35,9 +34,7 @@ const WorkerRow = ({
             loadingLabel: "Starting...",
             onClick: () => start(app.id)
         });
-    }
 
-    if (app.status === "confirmed") {
         actions.push({
             ...base,
             key: `decline-${app.id}`,

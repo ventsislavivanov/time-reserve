@@ -61,7 +61,6 @@ const WorkerAppointments = () => {
 							decline={setDeclineId}
 							markNoShow={markNoShow}
 							complete={complete}
-							setDeclineId={setDeclineId}
 						/>
 					))}
 					</tbody>
