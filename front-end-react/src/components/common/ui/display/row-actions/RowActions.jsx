@@ -40,23 +40,27 @@ const UIRowActions = ({ actions = [], align = "end" }) => {
 		<div ref={ref}>
 			{/* DESKTOP */}
 			<div className={`d-none d-md-flex justify-content-${align} gap-2`}>
-				{actions.map(action =>
-					action.loading ? (
-						<UILoadingButton
-							key={action.key}
-							{...action}
+				{actions.map(action => {
+					const {
+						id,
+						loading,
+						loadingLabel,
+						label,
+						...buttonProps
+					} = action;
+
+					const ButtonComponent = loading ? UILoadingButton : UIButton;
+
+					return (
+						<ButtonComponent
+							key={id}
+							loading={loading || undefined}
+							{...buttonProps}
 						>
-							{action.label}
-						</UILoadingButton>
-					) : (
-						<UIButton
-							key={action.key}
-							{...action}
-						>
-							{action.label}
-						</UIButton>
-					)
-				)}
+							{loading ? loadingLabel : label}
+						</ButtonComponent>
+					);
+				})}
 			</div>
 
 			{/* MOBILE */}
@@ -75,31 +79,34 @@ const UIRowActions = ({ actions = [], align = "end" }) => {
 						className="dropdown-menu show mt-2 shadow-sm"
 						style={{ right: 0, left: "auto" }}
 					>
-						{actions.map((action) => (
-							<button
-								key={action.key || action.title}
-								className="dropdown-item d-flex align-items-center gap-2"
-								onClick={() => {
-									setOpen(false);
-									action.onClick();
-								}}
-							>
-								{action.icon && (
-									<FontAwesomeIcon
-										icon={action.icon}
-										className={action.iconClassName}
-										fixedWidth
-									/>
-								)}
+						{actions.map(action => {
+							const { id, icon, iconClassName, label, title, onClick } = action;
 
-								<span className="text-body">
-                    				{action.label || action.title}
-                				</span>
-							</button>
-						))}
+							return (
+								<button
+									key={id}
+									className="dropdown-item d-flex align-items-center gap-2"
+									onClick={() => {
+										setOpen(false);
+										onClick?.();
+									}}
+								>
+									{icon && (
+										<FontAwesomeIcon
+											icon={icon}
+											className={iconClassName}
+											fixedWidth
+										/>
+									)}
+
+									<span className="text-body">
+                                        {label || title}
+                                    </span>
+								</button>
+							);
+						})}
 					</div>
 				)}
-
 			</div>
 		</div>
 	);
