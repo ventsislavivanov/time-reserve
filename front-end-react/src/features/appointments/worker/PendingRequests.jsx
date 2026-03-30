@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { usePendingRequests } from './hooks/usePendingRequests.js';
 import { SkeletonTable } from '../../../components/common/ui';
 import PendingRow from "./components/PendingRow.jsx";
+import DeclineAppointmentModal from "./components/modals/DeclineAppointmentModal.jsx";
+import { useBootstrapModal } from "../../../hooks";
 
 const PendingRequests = () => {
 	const {
@@ -12,6 +15,25 @@ const PendingRequests = () => {
 		confirm,
 		decline
 	} = usePendingRequests();
+
+	const { showModal, hideModal } = useBootstrapModal();
+
+	const [declineAppointment, setDeclineAppointment] = useState(null);
+
+	const openDecline = (appointment) => {
+		setDeclineAppointment(appointment);
+		setTimeout(() => showModal("declineAppointmentModal"), 10);
+	};
+
+	const closeDecline = () => {
+		hideModal("declineAppointmentModal");
+		setDeclineAppointment(null);
+	};
+
+	const confirmDecline = async (reason) => {
+		await decline(declineAppointment.id, reason);
+		closeDecline();
+	};
 
 	if (isLoading) {
 		return (
@@ -26,9 +48,7 @@ const PendingRequests = () => {
 			<h2 className="mb-4">Pending Requests</h2>
 
 			{requests.length === 0 ? (
-				<div className="alert alert-info">
-					You have no pending requests.
-				</div>
+				<div className="alert alert-info">You have no pending requests.</div>
 			) : (
 				<table className="table table-striped align-middle">
 					<thead>
@@ -51,12 +71,19 @@ const PendingRequests = () => {
 							activeActionId={activeActionId}
 							activeActionType={activeActionType}
 							confirm={confirm}
-							decline={decline}
+							decline={() => openDecline(app)}
 						/>
 					))}
 					</tbody>
 				</table>
 			)}
+
+			<DeclineAppointmentModal
+				appointment={declineAppointment}
+				onClose={closeDecline}
+				onConfirm={confirmDecline}
+				isDeclining={isUpdating}
+			/>
 		</div>
 	);
 };

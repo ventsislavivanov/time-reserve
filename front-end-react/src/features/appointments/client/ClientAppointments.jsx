@@ -14,7 +14,14 @@ const TABS = [
 
 const ClientAppointments = () => {
 	const navigate = useNavigate();
-	const { appointments, isLoading, cancelAppointment, isCancelling } = useClientAppointments();
+
+	const {
+		appointments,
+		isLoading,
+		isCancelling,
+		cancelAppointment
+	} = useClientAppointments();
+
 	const { showModal, hideModal } = useBootstrapModal();
 
 	const [activeTab, setActiveTab] = useState('upcoming');

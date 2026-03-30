@@ -3,6 +3,7 @@ import { useWorkerAppointments } from './hooks/useWorkerAppointments.js';
 import { SkeletonTable } from '../../../components/common/ui';
 import DeclineAppointmentModal from "./components/modals/DeclineAppointmentModal.jsx";
 import WorkerRow from "./components/WorkerRow.jsx";
+import { useBootstrapModal } from "../../../hooks/index.js";
 
 const WorkerAppointments = () => {
 	const {
@@ -17,7 +18,24 @@ const WorkerAppointments = () => {
 		markNoShow,
 	} = useWorkerAppointments();
 
-	const [declineId, setDeclineId] = useState(null);
+	const { showModal, hideModal } = useBootstrapModal();
+
+	const [declining, setDeclining] = useState(null);
+
+	const openDecline = (appointment) => {
+		setDeclining(appointment);
+		setTimeout(() => showModal('declineAppointmentModal'), 10);
+	};
+
+	const closeDecline = () => {
+		hideModal('declineAppointmentModal');
+		setDeclining(null);
+	};
+
+	const confirmDecline = async (reason) => {
+		await decline(declining.id, reason);
+		closeDecline();
+	};
 
 	if (isLoading) {
 		return (
@@ -58,7 +76,7 @@ const WorkerAppointments = () => {
 							activeActionId={activeActionId}
 							activeActionType={activeActionType}
 							start={start}
-							decline={setDeclineId}
+							decline={() => openDecline(app)}
 							markNoShow={markNoShow}
 							complete={complete}
 						/>
@@ -68,9 +86,9 @@ const WorkerAppointments = () => {
 			)}
 
 			<DeclineAppointmentModal
-				appointmentId={declineId}
-				onClose={() => setDeclineId(null)}
-				declineAppointment={decline}
+				appointment={declining}
+				onClose={closeDecline}
+				onConfirm={confirmDecline}
 				isDeclining={isUpdating}
 			/>
 		</div>

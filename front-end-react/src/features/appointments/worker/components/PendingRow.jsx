@@ -17,22 +17,20 @@ const PendingRow = ({
 
     const actions = [
         {
-            ...base,
-            key: `confirm-${app.id}`,
+            id: `confirm-${app.id}`,
             label: "Confirm",
             variant: "outline-primary",
             loading: isRowBusy && activeActionType === "confirm",
             loadingLabel: "Confirming...",
-            onClick: () => confirm(app.id)
+            onClick: () => confirm(app.id),
+            ...base
         },
         {
-            ...base,
-            key: `decline-${app.id}`,
+            id: `decline-${app.id}`,
             label: "Decline",
             variant: "outline-danger",
-            loading: isRowBusy && activeActionType === "decline",
-            loadingLabel: "Declining...",
-            onClick: () => decline(app.id)
+            onClick: decline,
+            ...base,
         }
     ];
 

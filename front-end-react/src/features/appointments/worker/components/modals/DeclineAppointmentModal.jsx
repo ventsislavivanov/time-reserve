@@ -1,63 +1,43 @@
-import { useEffect, useRef, useState } from 'react';
-import { Modal } from 'bootstrap';
-import {UIModal, UIButton, UITextarea, UILoadingButton} from '../../../../../components/common/ui/index.js';
+import { useState } from 'react';
+import { UIModal, UIButton, UILoadingButton } from '../../../../../components/common/ui/index.js';
 
-const DeclineAppointmentModal = ({ appointmentId, onClose, declineAppointment, isDeclining }) => {
-    const modalRef = useRef(null);
-    const bsModalRef = useRef(null);
+const DeclineAppointmentModal = ({
+    appointment,
+    onClose,
+    onConfirm,
+    isDeclining
+}) => {
+    if (!appointment) return null;
+
     const [reason, setReason] = useState('');
 
-    useEffect(() => {
-        if (modalRef.current) {
-            bsModalRef.current = new Modal(modalRef.current);
-        }
-        return () => {
-            bsModalRef.current?.dispose();
-        };
-    }, []);
+    const requiresReason = appointment.status === 'confirmed';
 
-    useEffect(() => {
-        if (appointmentId) {
-            setReason('');
-            bsModalRef.current?.show();
-        } else {
-            bsModalRef.current?.hide();
-        }
-    }, [appointmentId]);
-
-    const handleConfirm = async () => {
-        if (!reason.trim()) return; // required
-        await declineAppointment(appointmentId, reason);
-        bsModalRef.current?.hide();
-        onClose();
-    };
-
-    const handleClose = () => {
-        bsModalRef.current?.hide();
-        onClose();
+    const handleConfirm = () => {
+        if (requiresReason && !reason.trim()) return;
+        onConfirm(reason);
     };
 
     return (
         <UIModal
-            ref={modalRef}
             id="declineAppointmentModal"
             title="Decline Appointment"
             icon="x-circle"
             centered
             staticBackdrop
-            onClose={handleClose}
+            onClose={onClose}
             footer={
                 <>
-                    <UIButton variant="outline-secondary" onClick={handleClose}>
+                    <UIButton variant="outline-secondary" onClick={onClose}>
                         Cancel
                     </UIButton>
 
                     <UILoadingButton
                         variant="danger"
-                        loading={isDeclining}
-                        disabled={isDeclining || !reason.trim()}
-                        loadingLabel="Declining..."
                         onClick={handleConfirm}
+                        loading={isDeclining}
+                        loadingLabel="Declining..."
+                        disabled={requiresReason && !reason.trim()}
                     >
                         Decline
                     </UILoadingButton>
@@ -65,16 +45,22 @@ const DeclineAppointmentModal = ({ appointmentId, onClose, declineAppointment, i
                 </>
             }
         >
-            <p className="mb-3">Please provide a reason for declining this appointment.</p>
+            <p className="mb-3">
+                Please provide a reason for declining this appointment.
+            </p>
 
-            <textarea
-                className="form-control"
-                rows="4"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder="Reason for decline..."
-                required
-            />
+            {requiresReason && (
+                <div className="mb-3">
+                    <label className="form-label">Reason for decline</label>
+                    <textarea
+                        className="form-control"
+                        rows="3"
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                        placeholder="Please explain why you need to decline"
+                    />
+                </div>
+            )}
         </UIModal>
     );
 };

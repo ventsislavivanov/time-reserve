@@ -10,7 +10,6 @@ const WorkerRow = ({
     markNoShow,
     complete
 }) => {
-
     const now = new Date();
     const startsAt = new Date(app.starts_at);
     const endsAt = new Date(app.ends_at);
@@ -26,30 +25,28 @@ const WorkerRow = ({
 
     if (app.status === "confirmed") {
         actions.push({
-            ...base,
-            key: `start-${app.id}`,
+            id: `start-${app.id}`,
             label: "Start",
             variant: "outline-warning",
             loading: isRowBusy && activeActionType === "start",
             loadingLabel: "Starting...",
-            onClick: () => start(app.id)
+            onClick: () => start(app.id),
+            ...base,
         });
 
         actions.push({
-            ...base,
-            key: `decline-${app.id}`,
+            id: `decline-${app.id}`,
             label: "Decline",
             variant: "outline-danger",
-            loading: isRowBusy && activeActionType === "decline",
-            loadingLabel: "Declining...",
-            onClick: () => decline(app.id)
+            onClick: decline,
+            ...base,
         });
     }
 
     if (app.status === "confirmed" && now >= twoHoursAfterEnd) {
         actions.push({
             ...base,
-            key: `no-show-${app.id}`,
+            id: `no-show-${app.id}`,
             label: "Mark no-show",
             variant: "outline-dark",
             loading: isRowBusy && activeActionType === "no_show",
@@ -61,7 +58,7 @@ const WorkerRow = ({
     if (app.status === "in_progress") {
         actions.push({
             ...base,
-            key: `complete-${app.id}`,
+            id: `complete-${app.id}`,
             label: "Complete",
             variant: "outline-success",
             loading: isRowBusy && activeActionType === "complete",

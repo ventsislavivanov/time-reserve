@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UIModal, UIButton } from '../../../../../components/common/ui/index.js';
+import {UIModal, UIButton, UILoadingButton} from '../../../../../components/common/ui/index.js';
 
 const CancelAppointmentModal = ({
 	appointment,
@@ -31,20 +31,16 @@ const CancelAppointmentModal = ({
 					<UIButton variant="outline-secondary" onClick={onClose}>
 						Keep it
 					</UIButton>
-					<UIButton
+
+					<UILoadingButton
 						variant="danger"
 						onClick={handleConfirm}
-						disabled={isCancelling}
+						loading={isCancelling}
+						loadingLabel="Declining..."
+						disabled={requiresReason && !reason.trim()}
 					>
-						{isCancelling ? (
-							<>
-								<span className="spinner-border spinner-border-sm me-2"></span>
-								Cancelling...
-							</>
-						) : (
-							'Yes, Cancel'
-						)}
-					</UIButton>
+						Yes, Cancel
+					</UILoadingButton>
 				</>
 			}
 		>
