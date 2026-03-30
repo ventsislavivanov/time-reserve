@@ -61,8 +61,6 @@ const AppointmentCard = ({ appointment, onCancel, onViewDetails }) => {
 					{notes}
 				</div>
 			)}
-
-
 				<div className="d-flex justify-content-end mt-auto">
 					{canViewDetails && (
 						<UIButton
@@ -82,10 +80,9 @@ const AppointmentCard = ({ appointment, onCancel, onViewDetails }) => {
 							className="ms-2"
 							onClick={() => onCancel(appointment)}
 						>
-							Cancel Appointment
+							Cancel
 						</UIButton>
 					)}
-
 				</div>
 		</UICard>
 	);
