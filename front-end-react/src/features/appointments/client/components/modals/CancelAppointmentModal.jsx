@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import {UIModal, UIButton, UILoadingButton} from '../../../../../components/common/ui/index.js';
+import { useForm, FormProvider } from "react-hook-form";
+import { UIActionModal, UITextarea } from "../../../../../components/common/ui";
 
 const CancelAppointmentModal = ({
 	appointment,
@@ -7,60 +7,59 @@ const CancelAppointmentModal = ({
 	onConfirm,
 	isCancelling
 }) => {
-	if (!appointment) return null;
+	const methods = useForm({
+		defaultValues: { reason: "" }
+	});
 
-	const [reason, setReason] = useState('');
+	const {
+		handleSubmit,
+		watch,
+		reset
+	} = methods;
 
-	const requiresReason = appointment.status === 'confirmed';
+	const requiresReason = appointment?.status === "confirmed";
+	const reason = watch("reason");
 
-	const handleConfirm = () => {
-		if (requiresReason && !reason.trim()) return;
+	const submit = ({ reason }) => {
 		onConfirm(reason);
+		reset();
 	};
 
 	return (
-		<UIModal
+		<UIActionModal
 			id="cancelAppointmentModal"
 			title="Cancel Appointment"
 			icon="triangle-exclamation"
-			centered
-			staticBackdrop
-			onClose={onClose}
-			footer={
-				<>
-					<UIButton variant="outline-secondary" onClick={onClose}>
-						Keep it
-					</UIButton>
-
-					<UILoadingButton
-						variant="danger"
-						onClick={handleConfirm}
-						loading={isCancelling}
-						loadingLabel="Declining..."
-						disabled={requiresReason && !reason.trim()}
-					>
-						Yes, Cancel
-					</UILoadingButton>
-				</>
-			}
+			loading={isCancelling}
+			loadingLabel="Cancelling..."
+			confirmLabel="Yes, Cancel"
+			cancelLabel="Keep it"
+			onConfirm={handleSubmit(submit)}
+			onClose={() => {
+				reset();
+				onClose();
+			}}
+			disableConfirm={requiresReason && !reason?.trim()}
 		>
-			<p className="mb-3">
-				Are you sure you want to cancel this appointment?
-			</p>
+			{appointment && (
+				<FormProvider {...methods}>
+					<form onSubmit={handleSubmit(submit)}>
+						<p className="mb-3">
+							Are you sure you want to cancel this appointment?
+						</p>
 
-			{requiresReason && (
-				<div className="mb-3">
-					<label className="form-label">Reason for cancellation</label>
-					<textarea
-						className="form-control"
-						rows="3"
-						value={reason}
-						onChange={(e) => setReason(e.target.value)}
-						placeholder="Please explain why you need to cancel"
-					/>
-				</div>
+						{requiresReason && (
+							<UITextarea
+								name="reason"
+								label="Reason for cancellation"
+								placeholder="Please explain why you need to cancel"
+								rules={{ required: "Reason is required" }}
+							/>
+						)}
+					</form>
+				</FormProvider>
 			)}
-		</UIModal>
+		</UIActionModal>
 	);
 };
 

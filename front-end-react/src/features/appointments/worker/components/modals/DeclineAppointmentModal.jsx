@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { UIModal, UIButton, UILoadingButton } from '../../../../../components/common/ui/index.js';
+import { useForm, FormProvider } from "react-hook-form";
+import { UIActionModal, UITextarea } from "../../../../../components/common/ui";
 
 const DeclineAppointmentModal = ({
     appointment,
@@ -7,61 +7,59 @@ const DeclineAppointmentModal = ({
     onConfirm,
     isDeclining
 }) => {
-    if (!appointment) return null;
+    const methods = useForm({
+        defaultValues: { reason: "" }
+    });
 
-    const [reason, setReason] = useState('');
+    const {
+        handleSubmit,
+        watch,
+        reset
+    } = methods;
 
-    const requiresReason = appointment.status === 'confirmed';
+    const requiresReason = appointment?.status === "confirmed";
+    const reason = watch("reason");
 
-    const handleConfirm = () => {
-        if (requiresReason && !reason.trim()) return;
+    const submit = ({ reason }) => {
         onConfirm(reason);
+        reset();
     };
 
     return (
-        <UIModal
+        <UIActionModal
             id="declineAppointmentModal"
             title="Decline Appointment"
             icon="x-circle"
-            centered
-            staticBackdrop
-            onClose={onClose}
-            footer={
-                <>
-                    <UIButton variant="outline-secondary" onClick={onClose}>
-                        Cancel
-                    </UIButton>
-
-                    <UILoadingButton
-                        variant="danger"
-                        onClick={handleConfirm}
-                        loading={isDeclining}
-                        loadingLabel="Declining..."
-                        disabled={requiresReason && !reason.trim()}
-                    >
-                        Decline
-                    </UILoadingButton>
-
-                </>
-            }
+            loading={isDeclining}
+            loadingLabel="Declining..."
+            confirmLabel="Decline"
+            cancelLabel="Cancel"
+            onConfirm={handleSubmit(submit)}
+            onClose={() => {
+                reset();
+                onClose();
+            }}
+            disableConfirm={requiresReason && !reason?.trim()}
         >
-            <p className="mb-3">
-                Please provide a reason for declining this appointment.
-            </p>
+            {appointment && (
+                <FormProvider {...methods}>
+                    <form onSubmit={handleSubmit(submit)}>
+                        <p className="mb-3">
+                            Please provide a reason for declining this appointment.
+                        </p>
 
-            {requiresReason && (
-                <div className="mb-3">
-                    <label className="form-label">Reason for decline</label>
-                    <textarea
-                        className="form-control"
-                        rows="3"
-                        value={reason}
-                        onChange={(e) => setReason(e.target.value)}
-                        placeholder="Please explain why you need to decline"
-                    />
-                </div>
+                        {requiresReason && (
+                            <UITextarea
+                                name="reason"
+                                label="Reason for decline"
+                                placeholder="Please explain why you need to decline"
+                                rules={{ required: "Reason is required" }}
+                            />
+                        )}
+                    </form>
+                </FormProvider>
             )}
-        </UIModal>
+        </UIActionModal>
     );
 };
 

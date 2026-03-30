@@ -9,6 +9,7 @@ export { default as UICard } from './base/card/Card.jsx';
 
 //Complex
 export { default as UIModal } from './complex/modal/Modal.jsx';
+export { default as UIActionModal } from './complex/action-modal/ActionModal.jsx';
 export { default as UIPagination } from './complex/pagination/Pagination.jsx';
 
 //Controlled
