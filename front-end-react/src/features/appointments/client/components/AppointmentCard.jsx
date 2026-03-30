@@ -64,26 +64,28 @@ const AppointmentCard = ({ appointment, onCancel, onViewDetails }) => {
 
 
 				<div className="d-flex justify-content-end mt-auto">
+					{canViewDetails && (
+						<UIButton
+							variant="outline-info"
+							size="sm"
+							className="ms-2"
+							onClick={() => onViewDetails(appointment)}
+						>
+							View Details
+						</UIButton>
+					)}
+
 					{isCancellable && (
 						<UIButton
 							variant="outline-danger"
 							size="sm"
-							className="me-2"
+							className="ms-2"
 							onClick={() => onCancel(appointment)}
 						>
 							Cancel Appointment
 						</UIButton>
 					)}
 
-					{canViewDetails && (
-						<UIButton
-							variant="outline-info"
-							size="sm"
-							onClick={() => onViewDetails(appointment)}
-						>
-							View Details
-						</UIButton>
-					)}
 				</div>
 		</UICard>
 	);
