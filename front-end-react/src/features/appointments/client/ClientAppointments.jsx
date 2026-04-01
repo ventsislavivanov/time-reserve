@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { UICard, UIButton } from '../../../components/common/ui/index.js';
+import { useBootstrapModal } from "../../../hooks";
+import { UICard, UIButton } from '../../../components/common/ui';
 import AppointmentCard from './components/AppointmentCard.jsx';
-import CancelAppointmentModal from './components/modals/CancelAppointmentModal.jsx';
 import { useClientAppointments } from './hooks/useClientAppointments.js';
-import { useBootstrapModal } from "../../../hooks/index.js";
+import { CancelAppointmentModal } from '../components/modals/';
 import AppointmentDetailsModal from "./components/modals/AppointmentDetailsModal.jsx";
 
 const TABS = [

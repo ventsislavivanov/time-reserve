@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useWorkerAppointments } from './hooks/useWorkerAppointments.js';
 import { SkeletonTable } from '../../../components/common/ui';
-import DeclineAppointmentModal from "./components/modals/DeclineAppointmentModal.jsx";
+import { DeclineAppointmentModal } from "../components/modals/index.js";
 import WorkerRow from "./components/WorkerRow.jsx";
 import { useBootstrapModal } from "../../../hooks/index.js";
+import NoShowAppointmentModal from "../components/modals/NoShowAppointmentModal.jsx";
 
 const WorkerAppointments = () => {
 	const {
@@ -21,20 +22,38 @@ const WorkerAppointments = () => {
 	const { showModal, hideModal } = useBootstrapModal();
 
 	const [declining, setDeclining] = useState(null);
+	const [noShowTarget, setNoShowTarget] = useState(null);
 
-	const openDecline = (appointment) => {
-		setDeclining(appointment);
-		setTimeout(() => showModal('declineAppointmentModal'), 10);
+	// Decline
+	const openDeclineModal = (app) => {
+		setDeclining(app);
+		setTimeout(() => showModal("declineAppointmentModal"), 10);
 	};
 
-	const closeDecline = () => {
-		hideModal('declineAppointmentModal');
+	const closeDeclineModal = () => {
+		hideModal("declineAppointmentModal");
 		setDeclining(null);
 	};
 
 	const confirmDecline = async (reason) => {
 		await decline(declining.id, reason);
-		closeDecline();
+		closeDeclineModal();
+	};
+
+	// NoShow
+	const openNoShowModal = (app) => {
+		setNoShowTarget(app);
+		setTimeout(() => showModal("noShowAppointmentModal"), 10);
+	};
+
+	const closeNoShowModal = () => {
+		hideModal("noShowAppointmentModal");
+		setNoShowTarget(null);
+	};
+
+	const confirmNoShow = async (id) => {
+		await noShow(id);
+		closeNoShowModal();
 	};
 
 	if (isLoading) {
@@ -76,8 +95,8 @@ const WorkerAppointments = () => {
 							activeActionId={activeActionId}
 							activeActionType={activeActionType}
 							start={start}
-							decline={() => openDecline(app)}
-							markNoShow={markNoShow}
+							decline={() => openDeclineModal(app)}
+							markNoShow={() => openNoShowModal(app)}
 							complete={complete}
 						/>
 					))}
@@ -87,9 +106,16 @@ const WorkerAppointments = () => {
 
 			<DeclineAppointmentModal
 				appointment={declining}
-				onClose={closeDecline}
+				onClose={closeDeclineModal}
 				onConfirm={confirmDecline}
 				isDeclining={isUpdating}
+			/>
+
+			<NoShowAppointmentModal
+				appointment={noShowTarget}
+				onClose={closeNoShowModal}
+				onConfirm={confirmNoShow}
+				isMarking={isUpdating}
 			/>
 		</div>
 	);

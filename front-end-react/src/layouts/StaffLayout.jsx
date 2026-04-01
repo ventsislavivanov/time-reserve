@@ -45,6 +45,7 @@ export default function StaffLayout() {
 
 						{role === 'admin' && (
 							<>
+								<UINavLink to="/staff/admin-appointments">Appointments</UINavLink>
 								<UINavLink to="/staff/users">Users</UINavLink>
 								<UINavLink to="/staff/jobs">Jobs</UINavLink>
 								<UINavLink to="/staff/categories">Categories</UINavLink>

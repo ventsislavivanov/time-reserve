@@ -18,7 +18,8 @@ import {
 	ClientAppointments,
 	WorkerAppointments,
 	PendingRequests,
-	HistoryAppointments
+	HistoryAppointments,
+	AdminAppointments
 } from './features/appointments';
 
 import { AdminDashboard, WorkerDashboard } from "./features/dashboard";
@@ -84,8 +85,10 @@ function App() {
 						<Route path="login" element={<Login isClient={false} guard="staff" />} />
 
 						<Route index element={ role === 'admin' ? <AdminDashboard /> : <WorkerDashboard /> } />
-						<Route path="dashboard" element={ role === 'admin' ? <AdminDashboard /> : <WorkerDashboard /> } />
+
 						<Route element={<RoleGuard allowedRoles={['admin']} />}>
+							<Route path="dashboard" element={ <AdminDashboard /> } />
+							<Route path="admin-appointments" element={<AdminAppointments />} />
 							<Route path="users" element={<ManageUsers />} />
 							<Route path="jobs" element={<ManageJobs />} />
 							<Route path="categories" element={<ManageCategories />} />
@@ -94,6 +97,7 @@ function App() {
 						</Route>
 
 						<Route element={<RoleGuard allowedRoles={['worker']} />}>
+							<Route path="dashboard" element={ <WorkerDashboard /> } />
 							<Route path="appointments" element={<WorkerAppointments />} />
 							<Route path="pending" element={<PendingRequests />} />
 							<Route path="history" element={<HistoryAppointments />} />

@@ -20,8 +20,6 @@ const PendingRow = ({
             id: `confirm-${app.id}`,
             label: "Confirm",
             variant: "outline-primary",
-            loading: isRowBusy && activeActionType === "confirm",
-            loadingLabel: "Confirming...",
             onClick: () => confirm(app.id),
             ...base
         },

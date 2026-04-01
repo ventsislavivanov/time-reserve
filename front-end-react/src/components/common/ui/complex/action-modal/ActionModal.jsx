@@ -4,6 +4,7 @@ const ActionModal = ({
                          id,
                          title,
                          icon,
+                         variantAction,
                          loading,
                          loadingLabel,
                          confirmLabel,
@@ -28,7 +29,7 @@ const ActionModal = ({
                     </UIButton>
 
                     <UILoadingButton
-                        variant="danger"
+                        variant={variantAction}
                         onClick={onConfirm}
                         loading={loading}
                         loadingLabel={loadingLabel}

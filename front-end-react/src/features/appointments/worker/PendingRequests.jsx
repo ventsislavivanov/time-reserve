@@ -2,7 +2,7 @@ import { useState } from "react";
 import { usePendingRequests } from './hooks/usePendingRequests.js';
 import { SkeletonTable } from '../../../components/common/ui';
 import PendingRow from "./components/PendingRow.jsx";
-import DeclineAppointmentModal from "./components/modals/DeclineAppointmentModal.jsx";
+import { DeclineAppointmentModal, ConfirmAppointmentModal } from "../components/modals";
 import { useBootstrapModal } from "../../../hooks";
 
 const PendingRequests = () => {
@@ -18,21 +18,37 @@ const PendingRequests = () => {
 
 	const { showModal, hideModal } = useBootstrapModal();
 
-	const [declineAppointment, setDeclineAppointment] = useState(null);
+	const [declining, setDeclining] = useState(null);
+	const [confirming, setConfirming] = useState(null);
 
-	const openDecline = (appointment) => {
-		setDeclineAppointment(appointment);
+	const openDeclineModal = (app) => {
+		setDeclining(app);
 		setTimeout(() => showModal("declineAppointmentModal"), 10);
 	};
 
-	const closeDecline = () => {
+	const closeDeclineModal = () => {
 		hideModal("declineAppointmentModal");
-		setDeclineAppointment(null);
+		setDeclining(null);
 	};
 
 	const confirmDecline = async (reason) => {
-		await decline(declineAppointment.id, reason);
-		closeDecline();
+		await decline(declining.id, reason);
+		closeDeclineModal();
+	};
+
+	const openConfirmModal = (app) => {
+		setConfirming(app);
+		setTimeout(() => showModal("confirmAppointmentModal"), 10);
+	};
+
+	const closeConfirmModal = () => {
+		hideModal("confirmAppointmentModal");
+		setConfirming(null);
+	};
+
+	const confirmConfirm = async (id) => {
+		await confirm(id);
+		closeConfirmModal();
 	};
 
 	if (isLoading) {
@@ -70,8 +86,8 @@ const PendingRequests = () => {
 							isUpdating={isUpdating}
 							activeActionId={activeActionId}
 							activeActionType={activeActionType}
-							confirm={confirm}
-							decline={() => openDecline(app)}
+							confirm={()=> openConfirmModal(app)}
+							decline={() => openDeclineModal(app)}
 						/>
 					))}
 					</tbody>
@@ -79,10 +95,17 @@ const PendingRequests = () => {
 			)}
 
 			<DeclineAppointmentModal
-				appointment={declineAppointment}
-				onClose={closeDecline}
+				appointment={declining}
+				onClose={closeDeclineModal}
 				onConfirm={confirmDecline}
 				isDeclining={isUpdating}
+			/>
+
+			<ConfirmAppointmentModal
+				appointment={confirming}
+				onClose={closeConfirmModal}
+				onConfirm={confirmConfirm}
+				isConfirming={isUpdating}
 			/>
 		</div>
 	);

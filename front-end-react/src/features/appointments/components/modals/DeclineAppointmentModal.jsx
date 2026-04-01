@@ -1,5 +1,5 @@
 import { useForm, FormProvider } from "react-hook-form";
-import { UIActionModal, UITextarea } from "../../../../../components/common/ui";
+import { UIActionModal, UITextarea } from "../../../../components/common/ui/index.js";
 
 const DeclineAppointmentModal = ({
     appointment,
@@ -30,6 +30,7 @@ const DeclineAppointmentModal = ({
             id="declineAppointmentModal"
             title="Decline Appointment"
             icon="x-circle"
+            variantAction="danger"
             loading={isDeclining}
             loadingLabel="Declining..."
             confirmLabel="Decline"
@@ -59,6 +60,10 @@ const DeclineAppointmentModal = ({
                     </form>
                 </FormProvider>
             )}
+
+            <p className="text-muted small">
+                Once confirmed, the client will be notified.
+            </p>
         </UIActionModal>
     );
 };

@@ -1,5 +1,5 @@
 import { useForm, FormProvider } from "react-hook-form";
-import { UIActionModal, UITextarea } from "../../../../../components/common/ui";
+import { UIActionModal, UITextarea } from "../../../../components/common/ui/index.js";
 
 const CancelAppointmentModal = ({
 	appointment,
@@ -30,6 +30,7 @@ const CancelAppointmentModal = ({
 			id="cancelAppointmentModal"
 			title="Cancel Appointment"
 			icon="triangle-exclamation"
+			variantAction="danger"
 			loading={isCancelling}
 			loadingLabel="Cancelling..."
 			confirmLabel="Yes, Cancel"
@@ -59,6 +60,10 @@ const CancelAppointmentModal = ({
 					</form>
 				</FormProvider>
 			)}
+
+			<p className="text-muted small">
+				This action cannot be undone.
+			</p>
 		</UIActionModal>
 	);
 };
