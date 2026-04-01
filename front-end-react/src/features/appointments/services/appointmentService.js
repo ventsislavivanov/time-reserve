@@ -57,7 +57,7 @@ export const completeAppointment = async (id) => {
 	return response.data;
 };
 
-export const markNoShowAppointment = async (id) => {
+export const noShowAppointment = async (id) => {
 	const response = await api.patch(`/staff/appointments/${id}/no-show`);
 	return response.data;
 };

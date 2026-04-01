@@ -5,7 +5,7 @@ import {
 	completeAppointment,
 	declineAppointment,
 	startAppointment,
-	markNoShowAppointment
+	noShowAppointment
 } from '../../services/appointmentService.js';
 
 export const useWorkerAppointments = () => {
@@ -64,11 +64,11 @@ export const useWorkerAppointments = () => {
 				setAppointments(prev => prev.filter(a => a.id !== id))
 		});
 
-	const markNoShow = (id) =>
+	const noShow = (id) =>
 		handleAction({
 			id,
 			type: "no_show",
-			requestFn: markNoShowAppointment,
+			requestFn: noShowAppointment,
 			successMessage: "Appointment marked no-show",
 			refetchFn: fetchAppointments,
 			optimisticUpdate: () =>
@@ -84,7 +84,7 @@ export const useWorkerAppointments = () => {
 		start,
 		complete,
 		decline,
-		markNoShow,
+		noShow,
 		refetch: fetchAppointments
 	};
 };

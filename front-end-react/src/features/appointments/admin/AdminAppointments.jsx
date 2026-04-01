@@ -1,8 +1,9 @@
-import { useAdminAppointments } from "./hooks/useAdminAppointments";
-import { useAdminAppointmentFilters } from "./hooks/useAdminAppointmentFilters";
-import { useAppointmentModals } from "../hooks/useAppointmentModals.js";
 import AdminAppointmentFilters from "./components/AdminAppointmentFilters";
 import AdminAppointmentsTable from "./components/AdminAppointmentsTable";
+import { useAdminAppointments } from "./hooks/useAdminAppointments";
+import { useAdminAppointmentFilters } from "./hooks/useAdminAppointmentFilters";
+
+import { useAppointmentModals } from "../hooks/useAppointmentModals.js";
 import { DeclineAppointmentModal, ConfirmAppointmentModal, NoShowAppointmentModal } from "../components/modals";
 
 const AdminAppointments = () => {

@@ -4,7 +4,7 @@ import {
     getStaffAppointments,
     confirmAppointment,
     declineAppointment,
-    markNoShowAppointment
+    noShowAppointment
 } from '../../services/appointmentService';
 
 export const useAdminAppointments = () => {
@@ -52,7 +52,7 @@ export const useAdminAppointments = () => {
         handleAction({
             id,
             type: "no_show",
-            requestFn: markNoShowAppointment,
+            requestFn: noShowAppointment,
             successMessage: "Marked as no-show",
             refetchFn: fetchAppointments,
             optimisticUpdate: (updated) =>

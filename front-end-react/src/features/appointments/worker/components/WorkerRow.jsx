@@ -1,15 +1,11 @@
 import { UIAppointmentBadge, UIRowActions } from "../../../../components/common/ui";
 
 const WorkerRow = ({
-    app,
-    isUpdating,
-    activeActionId,
-    activeActionType,
-    start,
-    decline,
-    markNoShow,
-    complete
-}) => {
+                       app,
+                       isUpdating,
+                       activeActionId,
+                       openModal
+                   }) => {
     const now = new Date();
     const startsAt = new Date(app.starts_at);
     const endsAt = new Date(app.ends_at);
@@ -28,9 +24,7 @@ const WorkerRow = ({
             id: `start-${app.id}`,
             label: "Start",
             variant: "outline-warning",
-            loading: isRowBusy && activeActionType === "start",
-            loadingLabel: "Starting...",
-            onClick: () => start(app.id),
+            onClick: () => openModal("start", app),
             ...base,
         });
 
@@ -38,32 +32,28 @@ const WorkerRow = ({
             id: `decline-${app.id}`,
             label: "Decline",
             variant: "outline-danger",
-            onClick: decline,
+            onClick: () => openModal("decline", app),
             ...base,
         });
     }
 
     if (app.status === "confirmed" && now >= twoHoursAfterEnd) {
         actions.push({
-            ...base,
             id: `no-show-${app.id}`,
-            label: "Mark no-show",
+            label: "Mark No-Show",
             variant: "outline-dark",
-            loading: isRowBusy && activeActionType === "no_show",
-            loadingLabel: "Marking...",
-            onClick: () => markNoShow(app.id)
+            onClick: () => openModal("no_show", app),
+            ...base,
         });
     }
 
     if (app.status === "in_progress") {
         actions.push({
-            ...base,
             id: `complete-${app.id}`,
             label: "Complete",
             variant: "outline-success",
-            loading: isRowBusy && activeActionType === "complete",
-            loadingLabel: "Completing...",
-            onClick: () => complete(app.id)
+            onClick: () => openModal("complete", app),
+            ...base,
         });
     }
 
