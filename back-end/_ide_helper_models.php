@@ -17,12 +17,10 @@ namespace App\Models{
  * @property int $service_id
  * @property int $worker_id
  * @property int|null $client_id
- * @property \Illuminate\Support\Carbon $starts_at
- * @property \Illuminate\Support\Carbon $ends_at
+ * @property string $date
+ * @property string $start_time
+ * @property string $end_time
  * @property \App\AppointmentStatus $status
- * @property int|null $changed_by
- * @property string|null $notes
- * @property string|null $reason
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User|null $changedBy
@@ -39,15 +37,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment pending()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereChangedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereClientId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereEndsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereEndTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereServiceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereStartsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereStartTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Appointment whereWorkerId($value)
@@ -59,27 +55,11 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property int $appointment_id
- * @property string|null $old_status
- * @property string $new_status
- * @property int|null $changed_by
- * @property string|null $reason
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Appointment $appointment
+ * @property-read \App\Models\Appointment|null $appointment
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereAppointmentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereChangedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereNewStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereOldStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereReason($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AppointmentHistory whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -88,24 +68,10 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property int $day_of_week
- * @property string $start_time
- * @property string $end_time
- * @property bool $is_working
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours forDay(int $dayOfWeek)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours whereDayOfWeek($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours whereEndTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours whereIsWorking($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours whereStartTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessHours working()
  * @mixin \Eloquent
  */
@@ -115,19 +81,11 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service> $services
  * @property-read int|null $services_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -136,19 +94,9 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $name
- * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|JobPosition whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -159,14 +107,9 @@ namespace App\Models{
 /**
  * @property int $id
  * @property string $name
+ * @property int $duration_minutes
  * @property string|null $description
- * @property int|null $category_id
- * @property int $duration
- * @property float $price
  * @property bool $is_active
- * @property string|null $image
- * @property int $preparation_time
- * @property int $cleanup_time
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Category|null $category
@@ -175,17 +118,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereCleanupTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereDurationMinutes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Service wherePreparationTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Service wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -209,12 +147,6 @@ namespace App\Models{
  * @property string $role
  * @property bool $is_approved
  * @property bool $is_active
- * @property int|null $job_position_id
- * @property bool|null $can_book_appointments
- * @property int $no_show_count
- * @property int $no_show_total_count
- * @property int $cancelled_count
- * @property int $completed_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Appointment> $appointments
  * @property-read int|null $appointments_count
  * @property-read bool $is_verified
@@ -236,9 +168,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User role($role)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User search($search)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBirthDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCanBookAppointments($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCancelledCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCompletedCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
@@ -246,10 +175,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsApproved($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereJobPositionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereNoShowCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereNoShowTotalCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)

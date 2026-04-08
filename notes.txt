@@ -1,3 +1,5 @@
+!!! Трябва да има дравер за pgsql и pdo_pgsql
+
 #STATUSES
 pending      – нов час, чакащ потвърждение от работник
 cancelled    – клиентът е отменил час (от pending или confirmed)
