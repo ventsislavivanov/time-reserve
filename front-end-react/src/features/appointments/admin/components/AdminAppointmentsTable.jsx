@@ -6,7 +6,8 @@ const AdminAppointmentsTable = ({
                                     isLoading,
                                     isUpdating,
                                     activeActionId,
-                                    openModal={openModal}
+                                    openModal={openModal},
+                                    openDetails= {openDetails}
                                 }) => {
     if (isLoading) {
         return <SkeletonTable rows={15} columns={6} />;
@@ -37,6 +38,7 @@ const AdminAppointmentsTable = ({
                     isUpdating={isUpdating}
                     activeActionId={activeActionId}
                     openModal={openModal}
+                    openDetails={openDetails}
                 />
             ))}
             </tbody>

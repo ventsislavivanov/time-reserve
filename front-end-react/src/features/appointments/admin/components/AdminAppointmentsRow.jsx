@@ -1,10 +1,11 @@
 import { UIAppointmentBadge, UIRowActions } from "../../../../components/common/ui";
 
 const AdminAppointmentsRow = ({
-                      app,
-                      isUpdating,
-                      activeActionId,
-                      openModal
+                                  app,
+                                  isUpdating,
+                                  activeActionId,
+                                  openModal,
+                                  openDetails
                   }) => {
     const isRowBusy = isUpdating && activeActionId === app.id;
 
@@ -42,6 +43,16 @@ const AdminAppointmentsRow = ({
             variant: "outline-dark",
             onClick: () => openModal("no_show", app),
             ...base,
+        });
+    }
+
+    if (app.status !== "pending") {
+        actions.push({
+            id: `view-${app.id}`,
+            label: "View",
+            variant: "outline-info",
+            onClick: () => openDetails(app),
+            size: "sm"
         });
     }
 

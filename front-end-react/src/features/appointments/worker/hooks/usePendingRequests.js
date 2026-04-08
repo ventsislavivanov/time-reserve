@@ -8,8 +8,8 @@ import {
 
 export const usePendingRequests = () => {
 	const {
-		items: requests,
-		setItems: setRequests,
+		items: appointments,
+		setItems: setAppointments,
 		isLoading,
 		fetchData: fetchPending
 	} = useFetchList(
@@ -32,7 +32,7 @@ export const usePendingRequests = () => {
 			successMessage: "Appointment confirmed",
 			refetchFn: fetchPending,
 			optimisticUpdate: () =>
-				setRequests(prev => prev.filter(r => r.id !== id))
+				setAppointments(prev => prev.filter(r => r.id !== id))
 		});
 
 	const decline = (id, reason) =>
@@ -43,11 +43,11 @@ export const usePendingRequests = () => {
 			successMessage: "Appointment declined",
 			refetchFn: fetchPending,
 			optimisticUpdate: () =>
-				setRequests(prev => prev.filter(r => r.id !== id))
+				setAppointments(prev => prev.filter(r => r.id !== id))
 		});
 
 	return {
-		requests,
+		appointments,
 		isLoading,
 		isUpdating,
 		activeActionId,

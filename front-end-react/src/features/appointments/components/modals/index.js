@@ -4,3 +4,4 @@ export { default as ConfirmAppointmentModal } from './ConfirmAppointmentModal.js
 export { default as StartAppointmentModal } from './StartAppointmentModal.jsx';
 export { default as CompleteAppointmentModal } from './CompleteAppointmentModal.jsx';
 export { default as NoShowAppointmentModal } from './NoShowAppointmentModal.jsx';
+export { default as AppointmentDetailsModal } from './AppointmentDetailsModal.jsx'

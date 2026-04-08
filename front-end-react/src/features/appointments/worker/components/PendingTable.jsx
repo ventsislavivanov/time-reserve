@@ -1,13 +1,13 @@
-import WorkerRow from "./WorkerRow.jsx";
+import PendingRow from "./PendingRow.jsx";
 import { SkeletonTable } from "../../../../components/common/ui";
 
-const WorkerTable = ({
-                                     appointments,
-                                     isLoading,
-                                     isUpdating,
-                                     activeActionId,
-                                     openModal
-                                 }) => {
+const PendingTable = ({
+                         appointments,
+                         isLoading,
+                         isUpdating,
+                         activeActionId,
+                         openModal
+                     }) => {
 
     if (isLoading) {
         return <SkeletonTable rows={8} columns={6} /> ;
@@ -16,7 +16,7 @@ const WorkerTable = ({
     return (
         appointments.length === 0 ? (
             <div className="alert alert-info">
-                You have no confirmed requests.
+                You have no pending requests.
             </div>
         ) : (
             <table className="table table-striped align-middle">
@@ -33,7 +33,7 @@ const WorkerTable = ({
 
                 <tbody>
                 {appointments.map(app => (
-                    <WorkerRow
+                    <PendingRow
                         key={app.id}
                         app={app}
                         isUpdating={isUpdating}
@@ -47,4 +47,4 @@ const WorkerTable = ({
     );
 };
 
-export default WorkerTable;
+export default PendingTable;

@@ -1,6 +1,5 @@
 import { useWorkerAppointments } from "./hooks/useWorkerAppointments";
 import WorkerTable from "./components/WorkerTable.jsx";
-
 import { useAppointmentModals } from "../hooks/useAppointmentModals.js";
 import {
 	DeclineAppointmentModal,

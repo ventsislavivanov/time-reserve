@@ -1,6 +1,6 @@
-import { UIModal, UIButton, SkeletonTableCompact } from "../../../../../components/common/ui/index.js";
-import { useAppointmentTimeline } from "../../../hooks/useAppointmentTimeline.js";
-import AppointmentTimeline from "../../../components/AppointmentTimeline.jsx";
+import { UIModal, UIButton, SkeletonTableCompact } from "../../../../components/common/ui/index.js";
+import { useAppointmentTimeline } from "../../hooks/useAppointmentTimeline.js";
+import AppointmentTimeline from "../AppointmentTimeline.jsx";
 
 const AppointmentDetailsModal = ({ appointment, onClose }) => {
     const { timeline, loading } = useAppointmentTimeline(appointment?.id);
