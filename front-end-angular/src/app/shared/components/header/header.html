@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark navbarAnimated">
+  <div class="container-fluid">
+
+    <a routerLink="/" class="navbar-brand">Time Reserve</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarColor01"
+      aria-controls="navbarColor01"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div
+      id="navbarColor01"
+      class="collapse navbar-collapse"
+    >
+      <ul class="navbar-nav me-auto">
+        <nav-link to="/" [exact]="true">Home</nav-link>
+        <nav-link to="/about-us">About</nav-link>
+        <nav-link to="/contact-us">Contact</nav-link>
+      </ul>
+    </div>
+
+  </div>
+</nav>
