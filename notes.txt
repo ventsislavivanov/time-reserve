@@ -41,7 +41,7 @@ expired → END
 timed_out → END
 
 #shows all files and folders
-tree /F -
+tree /F
 
 Слагане на нов дб файл
 fly machine start 080573dc50e008
