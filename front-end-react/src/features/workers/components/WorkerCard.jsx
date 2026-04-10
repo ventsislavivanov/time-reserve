@@ -11,7 +11,7 @@ const WorkerCard = ({ worker, user }) => {
 	return (
 		<UICard
 			className="h-100 d-flex flex-column"
-			bodyClassName="d-flex flex-column flex-grow-1" // Важно!
+			bodyClassName="d-flex flex-column flex-grow-1"
 		>
 			<div className="d-flex align-items-center mb-3">
 				<div className="avatar bg-primary text-white rounded-circle me-3"
