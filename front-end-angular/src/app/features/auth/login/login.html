@@ -1,1 +1,60 @@
-<p>login works!</p>
+<div class="container flex-grow-1 d-flex justify-content-center align-items-center py-4">
+  <div class="card shadow-sm p-4 bg-dark-subtle"
+       style="max-width: 400px; width: 100%"
+  >
+    <h3 class="text-center mb-4">Login</h3>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <form-field
+        label="Email"
+        name="email"
+        [icon]="faUser"
+        [errors]="emailErrors"
+      >
+        <input
+          formControlName="email"
+          type="text"
+          placeholder="Please enter email..."
+          class="form-control"
+          [class.is-invalid]="emailErrors.length > 0"
+          [class.is-valid]="loginForm.get('email')?.valid &&
+                            loginForm.get('email')?.touched &&
+                            loginForm.get('email')?.value"
+        />
+      </form-field>
+
+      <form-field
+        label="Password"
+        name="password"
+        [icon]="faLock"
+        [errors]="passwordErrors"
+      >
+        <input
+          formControlName="password"
+          type="password"
+          placeholder="Please enter password..."
+          class="form-control"
+          [class.is-invalid]="passwordErrors.length > 0"
+          [class.is-valid]="loginForm.get('password')?.valid &&
+                            loginForm.get('password')?.touched &&
+                            loginForm.get('password')?.value"
+        />
+      </form-field>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+
+    @if(isClient()) {
+      <p class="text-center mt-3">
+        Don't have an account? <a routerLink="/sign-up">Sign up</a>
+      </p>
+    }
+  </div>
+</div>
