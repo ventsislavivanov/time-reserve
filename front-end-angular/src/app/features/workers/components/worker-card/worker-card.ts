@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import {Worker} from '../../models/worker';
+import { Worker } from '../../models/worker.model';
 
 @Component({
   selector: 'worker-card',

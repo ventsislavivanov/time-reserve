@@ -1,0 +1,25 @@
+<div class="mb-4">
+  <div class="btn-group flex-wrap" role="group">
+
+    <button
+      type="button"
+      class="btn"
+      [ngClass]="selectedCategory() === 'all' ? 'btn-primary' : 'btn-outline-primary'"
+      (click)="onSelect('all')"
+    >
+      All Services
+    </button>
+
+    @for(category of categories(); track category.id) {
+      <button
+        type="button"
+        class="btn"
+        [ngClass]="selectedCategory() === category.id.toString() ? 'btn-primary' : 'btn-outline-primary'"
+        (click)="onSelect(category.id.toString())"
+      >
+        {{ category.name }}
+      </button>
+    }
+
+  </div>
+</div>
