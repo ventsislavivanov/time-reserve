@@ -21,8 +21,16 @@
     >
       <ul class="navbar-nav me-auto">
         <nav-link to="/" [exact]="true">Home</nav-link>
+        <nav-link to="/our-team">Our team</nav-link>
+        <nav-link to="/services">Services</nav-link>
+        <nav-link to="/my-appointments">My appointments</nav-link>
         <nav-link to="/about-us">About</nav-link>
         <nav-link to="/contact-us">Contact</nav-link>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <a routerLink="/login" class="btn btn-outline-light m-1">Login</a>
+        <a routerLink="/sign-up" class="btn btn-outline-light m-1">Sign up</a>
       </ul>
     </div>
 
