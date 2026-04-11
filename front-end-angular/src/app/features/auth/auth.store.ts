@@ -1,21 +1,21 @@
 import {computed, Injectable, signal} from '@angular/core';
-import { User} from '../../core/models';
+import { User } from '../../core/models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
-  private user$ = signal<User | null>(null);
-  private isAuthenticated$ = signal<boolean>(false);
+  private userSig = signal<User | null>(null);
+  private isAuthenticatedSig = signal<boolean>(false);
 
-  user = computed(() => this.user$());
-  isAuthenticated = computed(() => this.isAuthenticated$());
+  user = computed(() => this.userSig());
+  isAuthenticated = computed(() => this.isAuthenticatedSig());
 
   login(data: User) {
-    this.user$.set(data);
-    this.isAuthenticated$.set(true);
+    this.userSig.set(data);
+    this.isAuthenticatedSig.set(true);
   }
 
   logout() {
-    this.user$.set(null);
-    this.isAuthenticated$.set(false);
+    this.userSig.set(null);
+    this.isAuthenticatedSig.set(false);
   }
 }

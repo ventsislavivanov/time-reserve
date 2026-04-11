@@ -9,6 +9,7 @@ export const routes: Routes = [
   { path: 'our-team', loadComponent: () => import('./features/workers/workers-list').then(m => m.WorkersList) },
   { path: 'services', loadComponent: () => import('./features/services/services-catalog').then(m => m.ServicesCatalog) },
 
+  { path: 'sign-up', loadComponent: () => import('./features/auth/sign-up').then(m => m.SignUp) },
   { path: 'login', loadComponent: () => import('./features/auth/login').then(m => m.Login) },
   // Staff
   { path: 'staff/login', loadComponent: () => import('./features/auth/login').then(m => m.Login) },

@@ -1,0 +1,142 @@
+<div class="container flex-grow-1 d-flex justify-content-center align-items-center py-4">
+  <div class="card shadow-sm p-4 bg-dark-subtle" style="max-width: 500px; width: 100%">
+    <h3 class="text-center mb-4">Sign up</h3>
+
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-12">
+          <form-field
+            name="name"
+            [icon]="faUser"
+            [errors]="getErrors('name')"
+          >
+            <input
+              formControlName="name"
+              type="text"
+              placeholder="Full Name"
+              class="form-control"
+              [class.is-invalid]="getErrors('name').length > 0" />
+          </form-field>
+        </div>
+
+        <div class="col-md-12">
+          <form-field
+            name="email" [icon]="faEnvelope"
+            [errors]="getErrors('email')"
+          >
+            <input
+              formControlName="email"
+              type="email"
+              placeholder="Email"
+              class="form-control"
+              [class.is-invalid]="getErrors('email').length > 0"
+            >
+          </form-field>
+        </div>
+      </div>
+
+      <div formGroupName="passwords" class="row">
+        <div class="col-md-6">
+          <form-field
+            name="password"
+            [icon]="faUnlock"
+            [errors]="getErrors('passwords.password')"
+          >
+            <input
+              formControlName="password"
+              type="password"
+              placeholder="Password"
+              class="form-control"
+              [class.is-invalid]="getErrors('passwords.password').length > 0"
+            >
+          </form-field>
+        </div>
+
+        <div class="col-md-6">
+          <form-field
+            name="confirmPassword"
+            [icon]="faUnlockKeyhole"
+            [errors]="getErrors('passwords.confirmPassword')"
+          >
+            <input
+              formControlName="confirmPassword"
+              type="password" placeholder="Confirm password"
+              class="form-control"
+              [class.is-invalid]="getErrors('passwords.confirmPassword').length > 0"
+            >
+          </form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <form-field
+            name="address"
+            [icon]="faLocationPin"
+            [errors]="getErrors('address')"
+          >
+            <input
+              formControlName="address"
+              type="text"
+              placeholder="Address"
+              class="form-control"
+              [class.is-invalid]="getErrors('address').length > 0"
+            >
+          </form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-12">
+              <form-field
+                name="phone"
+                [icon]="faPhoneVolume"
+                [errors]="getErrors('phone')"
+              >
+                <input
+                  formControlName="phone"
+                  type="text"
+                  placeholder="Phone number"
+                  class="form-control"
+                  [class.is-invalid]="getErrors('phone').length > 0"
+                >
+              </form-field>
+            </div>
+
+            <div class="col-md-12">
+              <form-field
+                name="birth_date"
+                [icon]="faCalendar"
+              >
+                <input
+                  formControlName="birth_date"
+                  type="date"
+                  placeholder="Date of Birth"
+                  class="form-control"
+                >
+              </form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <radio-group
+            name="gender"
+            [options]="genderOptions()"
+            (radioValue)="onChangeGender($event)"
+          ></radio-group>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="signUpForm.invalid"
+      >
+        Register
+      </button>
+    </form>
+  </div>
+</div>
