@@ -28,7 +28,7 @@
         <nav-link to="/contact-us">Contact</nav-link>
       </ul>
 
-      @if (!user()) {
+      @if (!auth.isAuthenticated()) {
         <ul class="navbar-nav ms-auto">
           <a routerLink="/login" class="btn btn-outline-light m-1">Login</a>
           <a routerLink="/sign-up" class="btn btn-outline-light m-1">Sign up</a>
@@ -36,7 +36,7 @@
       }
       @else {
         <div class="align-items-center d-flex">
-          <span class="navbar-text me-2">{{ user()?.email }}</span>
+          <span class="navbar-text me-2">{{ auth.user()?.email }}</span>
           <button class="btn btn-outline-light" (click)="onLogout()">Logout</button>
         </div>
       }

@@ -3,8 +3,9 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
-import { AuthService } from '../../../core/services';
+import { AuthService } from '../index';
 import { FormField } from '../../../shared/components';
+import { AuthStore } from '../auth.store';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class Login implements OnInit{
 
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
+  private auth = inject(AuthStore);
   private router = inject(Router);
 
   loginForm: FormGroup = this.formBuilder.group({
@@ -76,13 +78,13 @@ export class Login implements OnInit{
       this.authService.login(data).subscribe({
         next: (response) => {
           localStorage.setItem("token", response.token);
-          localStorage.setItem("user", JSON.stringify(response.user));
+
+          this.auth.login(response.user);
 
           const target = response.user.role === 'client'
             ? '/'
             : '/staff/dashboard';
 
-          this.authService.setUser(response.user);
           this.router.navigate([target]);
         },
         error: (error) => {

@@ -2,7 +2,8 @@ import {Component, inject} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { NavLink} from '../ui/navigation/nav-link/nav-link';
-import { AuthService } from '../../../core/services';
+import { AuthService } from '../../../features/auth';
+import { AuthStore } from '../../../features/auth/auth.store';
 
 @Component({
   selector: 'app-header',
@@ -15,13 +16,13 @@ import { AuthService } from '../../../core/services';
 })
 export class Header {
   authService = inject(AuthService);
-  user = this.authService.user;
+  public auth = inject(AuthStore);
 
   onLogout() {
-    console.log('logout')
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.authService.setUser(null);
+
+    this.auth.logout();
+
     this.authService.logout();
   }
 }
