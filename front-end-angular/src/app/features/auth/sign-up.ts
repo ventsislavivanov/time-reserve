@@ -13,8 +13,6 @@ import {
 import { FormField, RadioGroup } from '../../shared/components';
 import { passwordMatchValidator } from '../../core/validators';
 import {AuthService} from './auth.service';
-import {AuthStore} from './auth.store';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'sign-up',
@@ -35,8 +33,6 @@ export class SignUp {
 
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
-  private auth = inject(AuthStore);
-  private router = inject(Router);
 
   signUpForm: FormGroup = this.formBuilder.group({
     name: ['', [Validators.required, Validators.pattern(/^[A-Z][a-z]+ [A-Z][a-z]+$/)]],
@@ -97,14 +93,10 @@ export class SignUp {
 
       this.authService.register(data).subscribe({
         next: (response) => {
-          localStorage.setItem("token", response.token);
-
-          this.auth.login(response.user);
-
-          this.router.navigate(['/login']);
+          console.log('Success')
         },
         error: (error) => {
-          console.error('Login failed', error);
+          console.error('Sign up failed', error);
         }
       });
     }

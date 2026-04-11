@@ -55,7 +55,7 @@ const SignUp = () => {
 			<div className="card shadow-sm p-4 bg-dark-subtle"
 				 style={{ maxWidth: 500, width: "100%"}}
 			>
-				<h3 className="text-center mb-4">Login</h3>
+				<h3 className="text-center mb-4">Sign up</h3>
 
 				<UIAppForm methods={methods} onSubmit={registerHandler} onInvalid={onInvalid}>
 					<div className="row">
