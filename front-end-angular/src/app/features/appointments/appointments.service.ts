@@ -2,13 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiUrl } from '../../shared/constants';
-import { ServicesResponse } from './service.model';
+import { AppointmentsResponse } from './appointment.model';
+
 
 @Injectable({ providedIn: 'root' })
-export class ServicesService {
+export class AppointmentsService {
   http = inject(HttpClient)
 
-  getActive(): Observable<ServicesResponse> {
-    return this.http.get<ServicesResponse>(`${apiUrl}/services/active`);
+  getClientAppointments(): Observable<AppointmentsResponse> {
+    return this.http.get<AppointmentsResponse>(`${apiUrl}/appointments`);
   }
 }

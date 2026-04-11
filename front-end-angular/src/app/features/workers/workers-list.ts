@@ -15,7 +15,7 @@ export class WorkersList implements OnInit {
   workers = signal<Worker[]>([]);
   isLoading = signal<boolean>(true);
   error = signal<string | null>(null);
-  ngOnInit() {
+  ngOnInit():void {
     this.isLoading.set(true);
 
     this.workersService.getWorkers().subscribe({
