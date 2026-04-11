@@ -1,11 +1,11 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { forkJoin } from 'rxjs';
 
-import { ServiceCard, ServiceFilters } from './components';
-import { ServicesService } from './services/services.service';
-import { CategoriesService } from './services/categories.service';
-import { Service, ServicesResponse } from './models/service.model';
-import { Category, CategoriesResponse } from './models/categories.model';
+import { ServiceCard } from './service-card/service-card';
+import { ServiceFilters } from './service-filters/service-filters';
+import { ServicesService } from './services.service';
+import { Service, ServicesResponse } from './service.model';
+import { CategoriesService, Category, CategoriesResponse } from '../categories';
 
 @Component({
   selector: 'services-catalog',

@@ -3,9 +3,9 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
-import { AuthService } from '../index';
-import { FormField } from '../../../shared/components';
-import { AuthStore } from '../auth.store';
+import { AuthService } from './index';
+import { FormField } from '../../shared/components';
+import { AuthStore } from './auth.store';
 
 @Component({
   selector: 'app-login',

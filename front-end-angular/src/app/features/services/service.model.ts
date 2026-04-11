@@ -1,4 +1,4 @@
-import { Links, Meta } from '../../../core/models';
+import { Links, Meta } from '../../core/models';
 
 export interface ServicesResponse {
   data: Service[]

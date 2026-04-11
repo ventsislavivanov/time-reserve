@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 
-import { WorkersService } from './services/workers.service';
-import { WorkerCard } from './components/worker-card/worker-card';
-import { Worker, WorkersResponse } from './models/worker.model';
+import { WorkersService } from './workers.service';
+import { WorkerCard } from './worker-card/worker-card';
+import { Worker, WorkersResponse } from './worker.model';
 
 @Component({
   selector: 'workers-list',
