@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from './index';
 import { AuthStore } from './auth.store';
@@ -21,6 +22,7 @@ export class Login implements OnInit{
   private authService = inject(AuthService);
   private auth = inject(AuthStore);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
 
   loginForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -94,6 +96,8 @@ export class Login implements OnInit{
           } else {
             this.router.navigateByUrl(target);
           }
+
+          this.toastr.success('Login successful!');
         },
         error: (error) => {
           console.error('Login failed', error);
