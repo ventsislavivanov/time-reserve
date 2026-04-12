@@ -49,8 +49,7 @@ export class AuthStore {
 
     localStorage.removeItem('token');
 
-    const url = this.router.url;
-    const loginUrl = url.startsWith('/staff')
+    const loginUrl = this.router.url.startsWith('/staff')
       ? '/staff/login'
       : '/login';
 
