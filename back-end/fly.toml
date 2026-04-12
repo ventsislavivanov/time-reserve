@@ -16,20 +16,39 @@ console_command = 'php /var/www/html/artisan tinker'
   APP_ENV = 'production'
   LOG_CHANNEL = 'stderr'
   LOG_LEVEL = 'info'
-  LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
+  LOG_STDERR_FORMATTER = 'Monolog\\Formatter\\JsonFormatter'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
 
 [http_service]
   internal_port = 8080
   force_https = true
+
   auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
+
   processes = ['app']
 
+[processes]
+  app = "php artisan serve --host 0.0.0.0 --port 8080"
+  worker = "php artisan queue:work --tries=3"
+  cron = "php artisan schedule:work"
+
 [[vm]]
-  memory = '512mb'
-  cpu_kind = 'shared'
-  cpus = 1
-  memory_mb = 512
+processes = ["app"]
+memory_mb = 512
+cpus = 1
+cpu_kind = "shared"
+
+[[vm]]
+processes = ["worker"]
+memory_mb = 128
+cpus = 1
+cpu_kind = "shared"
+
+[[vm]]
+processes = ["cron"]
+memory_mb = 128
+cpus = 1
+cpu_kind = "shared"
