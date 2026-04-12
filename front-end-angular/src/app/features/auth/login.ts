@@ -84,7 +84,16 @@ export class Login implements OnInit{
             ? '/'
             : '/staff/dashboard';
 
-          this.router.navigate([target]);
+          const redirect = this.auth.redirectUrl();
+
+          if (redirect) {
+            this.auth.redirectUrl.set(null);
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigateByUrl(redirect);
+            });
+          } else {
+            this.router.navigateByUrl(target);
+          }
         },
         error: (error) => {
           console.error('Login failed', error);
