@@ -1,34 +1,42 @@
-import { computed, Injectable, signal } from '@angular/core';
-import { User, UserResponse } from '../../core/models';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { LoginResponse, User, UserLogin } from '../../core/models';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
-  private userSig = signal<User | null>(null);
+  private authService = inject(AuthService);
+
+  private userSig = signal<UserLogin | null>(null);
   private isAuthenticatedSig = signal<boolean>(false);
 
   user = computed(() => this.userSig());
   isAuthenticated = computed(() => this.isAuthenticatedSig());
 
-  constructor() {
-    this.restoreFromLocalStorage();
-  }
-
-  private restoreFromLocalStorage() {
-    const userJson = localStorage.getItem('user');
+  async restoreSession(): Promise<void> {
     const token = localStorage.getItem('token');
+    if (!token) return;
 
-    if (userJson && token) {
-      const user = JSON.parse(userJson) as User;
-      this.userSig.set(user);
+    try {
+      const response: User = await firstValueFrom(this.authService.getMe());
+      this.userSig.set({
+        id: response.id,
+        email: response.email,
+        role: response.role
+      });
       this.isAuthenticatedSig.set(true);
+    } catch {
+      this.userSig.set(null);
+      this.isAuthenticatedSig.set(false);
+
+      localStorage.removeItem('token');
     }
   }
 
-  login(data: UserResponse) {
+  login(data: LoginResponse) {
     this.userSig.set(data.user);
     this.isAuthenticatedSig.set(true);
 
-    localStorage.setItem('user', JSON.stringify(data.user));
     localStorage.setItem('token', data.token);
   }
 
@@ -36,7 +44,6 @@ export class AuthStore {
     this.userSig.set(null);
     this.isAuthenticatedSig.set(false);
 
-    localStorage.removeItem('user');
     localStorage.removeItem('token');
   }
 }
