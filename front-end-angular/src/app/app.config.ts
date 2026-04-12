@@ -6,8 +6,11 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
+
 import { routes } from './app.routes';
-import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { ErrorInterceptor, TokenInterceptor } from './core/interceptors';
 import { AuthStore } from './features/auth/auth.store';
 
 export const appConfig: ApplicationConfig = {
@@ -15,8 +18,19 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([TokenInterceptor])
+      withInterceptors([TokenInterceptor, ErrorInterceptor])
     ),
+    {
+      provide: ANIMATION_MODULE_TYPE,
+      useValue: 'BrowserAnimations'
+    },
+    provideToastr({
+      timeOut: 3500,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+      closeButton: true,
+      progressBar: true
+    }),
 
     provideAppInitializer(() => {
       const authStore = inject(AuthStore);
