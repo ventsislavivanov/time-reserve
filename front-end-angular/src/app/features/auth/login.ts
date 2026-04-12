@@ -6,7 +6,7 @@ import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from './index';
 import { AuthStore } from './auth.store';
 import { FormField } from '../../shared/components';
-import { LoginResponse } from '../../core/models';
+import { AuthResponse } from '../../core/models';
 
 @Component({
   selector: 'app-login',
@@ -77,7 +77,7 @@ export class Login implements OnInit{
       data.guard = this.guard();
 
       this.authService.login(data).subscribe({
-        next: (response: LoginResponse) => {
+        next: (response: AuthResponse) => {
           this.auth.login(response);
 
           const target = response.user.role === 'client'

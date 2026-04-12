@@ -1,13 +1,13 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { LoginResponse, User, UserLogin } from '../../core/models';
+import { AuthResponse, User, AuthUser } from '../../core/models';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
   private authService = inject(AuthService);
 
-  private userSig = signal<UserLogin | null>(null);
+  private userSig = signal<AuthUser | null>(null);
   private isAuthenticatedSig = signal<boolean>(false);
 
   user = computed(() => this.userSig());
@@ -33,7 +33,7 @@ export class AuthStore {
     }
   }
 
-  login(data: LoginResponse) {
+  login(data: AuthResponse) {
     this.userSig.set(data.user);
     this.isAuthenticatedSig.set(true);
 
