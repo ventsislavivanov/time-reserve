@@ -4,8 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from './index';
-import { FormField } from '../../shared/components';
 import { AuthStore } from './auth.store';
+import { FormField } from '../../shared/components';
+import { UserResponse } from '../../core/models';
 
 @Component({
   selector: 'app-login',
@@ -76,10 +77,8 @@ export class Login implements OnInit{
       data.guard = this.guard();
 
       this.authService.login(data).subscribe({
-        next: (response) => {
-          localStorage.setItem("token", response.token);
-
-          this.auth.login(response.user);
+        next: (response: UserResponse) => {
+          this.auth.login(response);
 
           const target = response.user.role === 'client'
             ? '/'

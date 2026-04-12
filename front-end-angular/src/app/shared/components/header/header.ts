@@ -19,8 +19,6 @@ export class Header {
   public auth = inject(AuthStore);
 
   onLogout() {
-    localStorage.removeItem('token');
-
     this.auth.logout();
 
     this.authService.logout();
