@@ -2,6 +2,10 @@ export interface WorkersResponse {
   data: Worker[]
 }
 
+export interface WorkerResponse {
+  data: Worker
+}
+
 export interface Worker {
   id: number;
   name: string;

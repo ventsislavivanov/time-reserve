@@ -10,4 +10,8 @@ export class WorkersService {
   getWorkers(): Observable<WorkersResponse> {
     return this.http.get<WorkersResponse>(`${apiUrl}/workers`);
   }
+
+  getWorker(id: number): Observable<WorkersResponse> {
+    return this.http.get<WorkersResponse>(`${apiUrl}/workers/${id}`);
+  }
 }

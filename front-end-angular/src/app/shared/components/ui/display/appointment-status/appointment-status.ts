@@ -32,7 +32,6 @@ const STATUS_CONFIG: Record<string, AppointmentStatusConfig> = {
 
 @Component({
   selector: 'appointment-status',
-  standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './appointment-status.html',
 })

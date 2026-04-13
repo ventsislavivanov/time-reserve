@@ -7,7 +7,6 @@ import { AppointmentStatus } from '../../../../shared/components/ui';
 
 @Component({
   selector: 'appointment-card',
-  standalone: true,
   imports: [CommonModule, FontAwesomeModule, AppointmentStatus],
   providers: [DatePipe],
   templateUrl: './appointment-card.html',

@@ -64,3 +64,9 @@ php artisan appointments:mark-expired
 
 Change cpu
 fly machine update 080573dc50e008 --vm-cpus 1 --vm-memory 256
+
+
+SELECT setval(
+  pg_get_serial_sequence('categories', 'id'),
+  (SELECT MAX(id) FROM categories)
+);
