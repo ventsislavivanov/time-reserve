@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CategoriesService } from './categories.service';
-import { FormField } from '../../shared/components';
+import { FormField } from '../../shared/components/ui';
 
 
 @Component({

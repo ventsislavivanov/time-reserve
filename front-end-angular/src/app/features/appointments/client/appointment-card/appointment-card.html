@@ -1,0 +1,49 @@
+﻿<div class="card h-100 shadow-sm border-0">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <div>
+        <h5 class="mb-1 text-primary">{{ appointment().service.name }}</h5>
+        <p class="text-muted mb-0 small">with {{ appointment().worker.name }}</p>
+      </div>
+
+      <appointment-status [status]="appointment().status"></appointment-status>
+    </div>
+
+    <hr class="my-2 opacity-25"/>
+
+    <div class="row g-2 mb-3">
+      <div class="col-12">
+        <div class="d-flex align-items-center gap-2">
+          <fa-icon [icon]="faCalendar" class="text-primary small"></fa-icon>
+          <span class="small text-dark">{{ appointment().date | date: "EEEE, d MMMM, yyyy" }}</span>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="d-flex align-items-center gap-2">
+          <fa-icon [icon]="faClock" class="text-primary small"></fa-icon>
+          <span class="small text-dark">{{ appointment().time }}</span>
+        </div>
+      </div>
+    </div>
+
+    @if (appointment().notes) {
+      <div class="alert alert-light py-2 px-3 small mb-3 border-0 bg-light">
+        <fa-icon [icon]="faComment" class="me-2 text-muted small"></fa-icon>
+        {{ appointment().notes }}
+      </div>
+    }
+
+    <div class="d-flex justify-content-end mt-auto gap-2">
+      @if (canViewDetails()) {
+        <button class="btn btn-outline-info btn-sm px-3" (click)="viewDetails.emit(appointment())"> View
+          Details
+        </button>
+      }
+
+      @if (isCancellable()) {
+        <button class="btn btn-outline-danger btn-sm px-3" (click)="cancel.emit(appointment())"> Cancel </button>
+      }
+    </div>
+  </div>
+</div>

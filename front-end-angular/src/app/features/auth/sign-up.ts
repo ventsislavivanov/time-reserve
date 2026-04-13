@@ -10,7 +10,7 @@ import {
   faLocationPin,
   faCalendar
 } from '@fortawesome/free-solid-svg-icons';
-import { FormField, RadioGroup } from '../../shared/components';
+import { FormField, RadioGroup } from '../../shared/components/ui';
 import { passwordMatchValidator } from '../../core/validators';
 import {AuthService} from './auth.service';
 

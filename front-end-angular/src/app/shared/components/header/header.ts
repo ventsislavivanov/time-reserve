@@ -1,7 +1,7 @@
 import { Component, inject, computed } from '@angular/core';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
 
-import { NavLink} from '../ui/navigation/nav-link/nav-link';
+import { NavLink} from '../ui';
 import { AuthService } from '../../../features/auth';
 import { AuthStore } from '../../../features/auth/auth.store';
 import { toSignal } from '@angular/core/rxjs-interop';

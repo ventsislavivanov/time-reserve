@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from './index';
 import { AuthStore } from './auth.store';
-import { FormField } from '../../shared/components';
+import { FormField } from '../../shared/components/ui';
 import { AuthResponse } from '../../core/models';
 
 @Component({
