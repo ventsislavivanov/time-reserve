@@ -64,11 +64,21 @@ export const routes: Routes = [
         .then(m => m.Login)
   },
   {
-    path: 'staff/dashboard',
+    path: 'staff',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/dashboard/dashboard')
-        .then(m => m.Dashboard)
+    children: [
+      { path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/dashboard')
+            .then(m => m.Dashboard)
+      },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./features/categories/manage-categories')
+            .then(m => m.ManageCategories)
+      }
+    ]
   },
   // NotFound
   {

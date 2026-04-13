@@ -40,7 +40,7 @@ export class ServicesCatalog implements OnInit {
 
     forkJoin({
       services: this.servicesService.getActive(),
-      categories: this.categoriesService.getAllCategories()
+      categories: this.categoriesService.getAll()
     }).subscribe({
       next: (response: {
         services: ServicesResponse,

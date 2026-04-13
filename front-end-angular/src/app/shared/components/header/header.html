@@ -22,6 +22,15 @@
       @if (isStaff()) {
         <ul class="navbar-nav me-auto">
           <nav-link to="staff/dashboard">Dashboard</nav-link>
+
+          @if (auth.user()?.role === 'admin') {
+            <nav-link to="staff/admin-appointments">Appointments</nav-link>
+            <nav-link to="staff/categories">Categories</nav-link>
+          }
+
+          @if (auth.user()?.role === 'worker') {
+            <nav-link to="staff/appointments">Appointments</nav-link>
+          }
         </ul>
       }
       @else {
