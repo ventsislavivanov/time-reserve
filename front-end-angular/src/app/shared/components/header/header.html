@@ -30,6 +30,8 @@
 
           @if (auth.user()?.role === 'worker') {
             <nav-link to="staff/appointments">Appointments</nav-link>
+            <nav-link to="staff/pending">Pending Request</nav-link>
+            <nav-link to="staff/history">History</nav-link>
           }
         </ul>
       }

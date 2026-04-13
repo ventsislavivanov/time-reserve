@@ -64,7 +64,19 @@ export const routes: Routes = [
       {
         path: 'categories',
         loadComponent: () => import('./features/categories/manage-categories').then(m => m.ManageCategories)
-      }
+      },
+      {
+        path: 'appointments',
+        loadComponent: () => import('./features/appointments/worker/worker-appointments').then(m => m.WorkerAppointments)
+      },
+      {
+        path: 'pending',
+        loadComponent: () => import('./features/appointments/worker/pending').then(m => m.Pending)
+      },
+      {
+        path: 'history',
+        loadComponent: () => import('./features/appointments/worker/history').then(m => m.History)
+      },
     ]
   },
   // NotFound
