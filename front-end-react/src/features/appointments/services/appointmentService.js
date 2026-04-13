@@ -12,8 +12,8 @@ export const createAppointment = async (data) => {
 	return response.data;
 };
 
-export const getClientAppointments = async () => {
-	const response = await api.get('/appointments');
+export const getClientAppointments = async (params = {}) => {
+	const response = await api.get('/appointments', { params });
 	return response.data;
 };
 

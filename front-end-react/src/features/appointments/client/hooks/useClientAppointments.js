@@ -14,7 +14,7 @@ export const useClientAppointments = () => {
 	const fetchAppointments = async () => {
 		try {
 			setIsLoading(true);
-			const response = await appointmentService.getClientAppointments();
+			const response = await appointmentService.getClientAppointments({ per_page: 100 });
 			setAppointments(response.data);
 		} catch (error) {
 			notify.error('Failed to load appointments');
