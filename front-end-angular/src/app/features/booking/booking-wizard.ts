@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { Worker, WorkersService } from '../workers';
 import { AppointmentsService } from '../appointments';
+import { Loading } from '../../shared/components/ui';
 
 @Component({
   selector: 'booking-wizard',
-  imports: [FormsModule],
+  imports: [FormsModule, Loading],
   templateUrl: './booking-wizard.html',
 })
 export class BookingWizard implements OnInit {
