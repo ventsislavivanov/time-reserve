@@ -53,9 +53,13 @@
           <a routerLink="/sign-up" class="btn btn-outline-light m-1">Sign up</a>
         </ul>
       }
+
       @else {
         <div class="align-items-center d-flex">
-          <span class="navbar-text me-2">{{ auth.user()?.email }}</span>
+          @if (auth.user()?.role !== 'client') {
+            <span class="navbar-text me-2">Role: {{ auth.user()?.role }}</span>
+          }
+          <span class="navbar-text me-2">Email: {{ auth.user()?.email }}</span>
           <button class="btn btn-outline-light" (click)="onLogout()">Logout</button>
         </div>
       }

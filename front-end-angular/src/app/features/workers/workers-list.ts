@@ -3,10 +3,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { WorkersService } from './workers.service';
 import { WorkerCard } from './worker-card/worker-card';
 import { Worker, WorkersResponse } from './worker.model';
+import { Loading } from '../../shared/components/ui';
 
 @Component({
   selector: 'workers-list',
-  imports: [WorkerCard],
+  imports: [WorkerCard, Loading],
   templateUrl: './workers-list.html',
 })
 export class WorkersList implements OnInit {

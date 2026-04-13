@@ -4,11 +4,12 @@ import { Router, RouterModule } from '@angular/router';
 import { AppointmentCard } from './appointment-card/appointment-card';
 import { AppointmentsService } from '../appointments.service';
 import { Appointment, AppointmentsResponse } from '../appointment.model';
+import { Loading } from '../../../shared/components/ui';
 
 @Component({
   selector: 'client-appointments',
   standalone: true,
-  imports: [CommonModule, RouterModule, AppointmentCard],
+  imports: [CommonModule, RouterModule, AppointmentCard, Loading],
   templateUrl: './client-appointments.html',
 })
 export class ClientAppointments implements OnInit {

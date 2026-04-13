@@ -4,19 +4,19 @@
     <p class="lead text-muted">Choose from our wide range of professional services</p>
   </div>
 
-  <service-filters
-    [categories]="categories()"
-    (categoryChange)="onCategoryChange($event)"
-    [selectedCategory]="selectedCategory()"
-  />
-
   <div class="row g-4">
     @if (isLoading()) {
-      <!--    TODO /sceleton -->
-      <p>Loading...</p>
+      <!--    TODO skeleton -->
+      <app-loading></app-loading>
     }
 
     @else {
+      <service-filters
+        [categories]="categories()"
+        (categoryChange)="onCategoryChange($event)"
+        [selectedCategory]="selectedCategory()"
+      />
+
       @if (services().length === 0) {
         <div class="col-12 text-center py-5">
           <p class="text-muted">No services are available in this category.</p>

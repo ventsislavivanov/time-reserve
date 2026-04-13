@@ -6,10 +6,11 @@ import { ServiceFilters } from './service-filters/service-filters';
 import { ServicesService } from './services.service';
 import { Service, ServicesResponse } from './service.model';
 import { CategoriesService, Category, CategoriesResponse } from '../categories';
+import { Loading } from '../../shared/components/ui';
 
 @Component({
   selector: 'services-catalog',
-  imports: [ServiceCard, ServiceFilters],
+  imports: [ServiceCard, ServiceFilters, Loading],
   templateUrl: './services-catalog.html',
 })
 

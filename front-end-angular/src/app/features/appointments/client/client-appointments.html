@@ -6,33 +6,33 @@
         <p class="text-muted">Manage all your bookings in one place</p>
       </div>
 
-      <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light border shadow-sm">
-        <li class="nav-item">
-          <button
-            class="nav-link px-4 py-2"
-            [class.active]="activeTab() === 'upcoming'"
-            (click)="setActiveTab('upcoming')"
-          >
-            Upcoming <span class="badge ms-2 bg-info px-2 py-1 rounded-circle small">{{ upcoming().length }}</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button
-            class="nav-link px-4 py-2"
-            [class.active]="activeTab() === 'past'"
-            (click)="setActiveTab('past')"
-          >
-            Past <span class="badge ms-2 bg-info px-2 py-1 rounded-circle small">{{ past().length }}</span>
-          </button>
-        </li>
-      </ul>
-
       @if (isLoading()) {
         <!--    TODO skeleton-->
-        <p>Loading....</p>
+        <app-loading></app-loading>
       }
 
       @else {
+        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light border shadow-sm">
+          <li class="nav-item">
+            <button
+              class="nav-link px-4 py-2"
+              [class.active]="activeTab() === 'upcoming'"
+              (click)="setActiveTab('upcoming')"
+            >
+              Upcoming <span class="badge ms-2 bg-info px-2 py-1 rounded-circle small">{{ upcoming().length }}</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button
+              class="nav-link px-4 py-2"
+              [class.active]="activeTab() === 'past'"
+              (click)="setActiveTab('past')"
+            >
+              Past <span class="badge ms-2 bg-info px-2 py-1 rounded-circle small">{{ past().length }}</span>
+            </button>
+          </li>
+        </ul>
+
 
         @if (displayed().length === 0) {
           <div class="card shadow-sm border-0 text-center py-5 px-4 rounded-4 animate__animated animate__fadeIn">
