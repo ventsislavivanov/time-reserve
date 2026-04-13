@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { NotFound } from './shared/components';
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard } from './core/guards';
+import {inject} from '@angular/core';
+import {AuthStore} from './features/auth/auth.store';
 
 export const routes: Routes = [
   {
@@ -60,6 +62,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/login')
         .then(m => m.Login)
+  },
+  {
+    path: 'staff/dashboard',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/dashboard/dashboard')
+        .then(m => m.Dashboard)
   },
   // NotFound
   {

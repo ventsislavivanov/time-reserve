@@ -12,7 +12,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${apiUrl}/logout`, {}, { withCredentials: true });
+    return this.http.post(`${apiUrl}/logout`, {});
   }
 
   getMe(): Observable<any> {

@@ -19,8 +19,9 @@ export class Header {
   public auth = inject(AuthStore);
 
   onLogout() {
-    this.auth.logout();
-
-    this.authService.logout();
+    this.authService.logout().subscribe({
+      next: () => this.auth.logout(),
+      error: () => this.auth.logout()
+    });
   }
 }
