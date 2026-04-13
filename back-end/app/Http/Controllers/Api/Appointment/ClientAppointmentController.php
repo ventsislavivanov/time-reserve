@@ -40,6 +40,8 @@ class ClientAppointmentController extends Controller
 	#[OA\Response(response: 401, description: 'Unauthenticated')]
 	public function index(): AppointmentCollection
 	{
+        $perPage = request('per_page', 10);
+
 		$appointments = Appointment::where('client_id', auth()->id())
 			->with([
 				'service:id,name,duration,price',
@@ -47,7 +49,7 @@ class ClientAppointmentController extends Controller
 			])
 			->select(['id', 'service_id', 'worker_id', 'client_id', 'starts_at', 'ends_at', 'status', 'notes'])
 			->orderBy('starts_at', 'desc')
-			->paginate(10);
+			->paginate($perPage);
 
 		return new AppointmentCollection($appointments);
 	}
