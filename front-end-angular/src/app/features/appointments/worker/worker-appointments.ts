@@ -60,7 +60,9 @@ export class WorkerAppointments implements OnInit {
     this.appointmentsService.startAppointment(id).subscribe({
       next: () => {
         this.toastr.success('Appointment started');
-        this.appointments.update(prev => prev.filter(a => a.id !== id));
+        this.appointments.update(prev =>
+          prev.map(a => a.id === id ? { ...a, status: 'in_progress' } : a)
+        );
         this.isUpdating.set(null)
       }
     });
