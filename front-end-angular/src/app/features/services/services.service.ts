@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { apiUrl } from '../../shared/constants';
 import { ServicesResponse } from './service.model';
+import { API_URL } from '../../app.config';
 
 @Injectable({ providedIn: 'root' })
 export class ServicesService {
   http = inject(HttpClient)
 
   getActive(): Observable<ServicesResponse> {
-    return this.http.get<ServicesResponse>(`${apiUrl}/services/active`);
+    return this.http.get<ServicesResponse>(`${API_URL}/services/active`);
   }
 }

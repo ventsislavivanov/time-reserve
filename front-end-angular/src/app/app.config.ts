@@ -9,6 +9,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 
+import { environment } from '.././environments/environment';
+
 import { routes } from './app.routes';
 import { ErrorInterceptor, TokenInterceptor } from './core/interceptors';
 import { AuthStore } from './features/auth/auth.store';
@@ -38,3 +40,5 @@ export const appConfig: ApplicationConfig = {
     })
   ]
 };
+
+export const API_URL = environment.apiUrl;
