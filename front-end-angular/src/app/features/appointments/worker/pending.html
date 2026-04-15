@@ -17,6 +17,7 @@
         <table class="table table-striped align-middle">
           <thead>
           <tr>
+            <th>ID</th>
             <th>Client</th>
             <th>Service</th>
             <th>Date</th>
@@ -30,6 +31,7 @@
 
             @for (app of pendingAppointments(); track app.id) {
               <tr>
+                <td>{{ app.id }}</td>
                 <td>{{ app.client.name }}</td>
                 <td>{{ app.service.name }}</td>
                 <td>{{ app.date }}</td>

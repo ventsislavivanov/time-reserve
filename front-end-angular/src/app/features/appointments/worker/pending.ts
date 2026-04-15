@@ -54,11 +54,10 @@ export class Pending implements OnInit {
   }
 
   onDecline(id: number) {
-    const reason = prompt('Please enter a reason for declining (optional):');
-    if (reason === null) return;
+    if (!confirm('Are you sure you want to decline this appointment?')) return;
 
     this.isUpdating.set(id);
-    this.appointmentsService.declineAppointment(id, reason).subscribe({
+    this.appointmentsService.declineAppointment(id).subscribe({
       next: () => {
         this.toastr.success('Appointment declined');
         this.appointments.update(prev => prev.filter(a => a.id !== id));
