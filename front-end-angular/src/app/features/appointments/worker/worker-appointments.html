@@ -1,1 +1,92 @@
-<p>worker-appointments works!</p>
+<div class="container py-5">
+  <h2 class="mb-4">My Appointments</h2>
+
+  @if (isLoading()) {
+    <app-loading></app-loading>
+  }
+
+  @else {
+    @if (confirmedAppointments().length === 0) {
+      <div class="alert alert-info">
+        You have no pending requests.
+      </div>
+    }
+
+    @else {
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Client</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th class="text-center">Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+            @for (app of confirmedAppointments(); track app.id) {
+              <tr>
+                <td>{{ app.id }}</td>
+                <td>{{ app.client.name }}</td>
+                <td>{{ app.service.name }}</td>
+                <td>{{ app.date }}</td>
+                <td>{{ app.time }}</td>
+                <td class="text-center">
+                  <appointment-status [status]="app.status"></appointment-status>
+                </td>
+
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm gap-2">
+                    @if (app.status === 'confirmed') {
+                      <button
+                        class="btn btn-outline-warning"
+                        (click)="onStart(app.id)"
+                        [disabled]="isUpdating() === app.id"
+                      >
+                        Start
+                      </button>
+
+                      <button
+                        class="btn btn-outline-danger"
+                        (click)="onDecline(app.id)"
+                        [disabled]="isUpdating() === app.id"
+                      >
+                        Decline
+                      </button>
+                    }
+
+                    @if (app.status === 'in_progress') {
+                      <button
+                        class="btn btn-outline-success"
+                        (click)="onComplete(app.id)"
+                        [disabled]="isUpdating() === app.id"
+                      >
+                        Complete
+                      </button>
+                    }
+
+                    @if (canShowNoShow(app)) {
+                      <button
+                        class="btn btn-outline-dark"
+                        (click)="onNoShow(app.id)"
+                        [disabled]="isUpdating() === app.id"
+                      >
+                        No Show
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

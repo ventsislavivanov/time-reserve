@@ -33,9 +33,8 @@ export class Pending implements OnInit {
     this.appointmentsService.getStaffAppointments().subscribe({
       next: (res: AppointmentsResponse) => {
         this.appointments.set(res.data);
-      },
-      error: () => this.toastr.error('Failed to load pending requests'),
-      complete: () => this.isLoading.set(false)
+        this.isLoading.set(false);
+      }
     });
   }
 
@@ -47,9 +46,8 @@ export class Pending implements OnInit {
       next: () => {
         this.toastr.success('Appointment confirmed');
         this.appointments.update(prev => prev.filter(a => a.id !== id));
-      },
-      error: () => this.toastr.error('Failed to confirm appointment'),
-      complete: () => this.isUpdating.set(null)
+        this.isUpdating.set(null);
+      }
     });
   }
 
@@ -61,9 +59,8 @@ export class Pending implements OnInit {
       next: () => {
         this.toastr.success('Appointment declined');
         this.appointments.update(prev => prev.filter(a => a.id !== id));
-      },
-      error: () => this.toastr.error('Failed to decline appointment'),
-      complete: () => this.isUpdating.set(null)
+        this.isUpdating.set(null);
+      }
     });
   }
 }
