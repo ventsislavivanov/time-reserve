@@ -69,3 +69,8 @@
     </div>
   </div>
 </div>
+
+<appointment-details-modal
+  [appointment]='selectedAppointment()'
+  (close)='selectedAppointment.set(null)'
+></appointment-details-modal>

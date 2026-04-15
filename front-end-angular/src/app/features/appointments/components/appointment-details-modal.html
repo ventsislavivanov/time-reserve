@@ -1,0 +1,40 @@
+@if (appointment()) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5)">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content border-0 shadow">
+
+        <div class="modal-header bg-primary text-white border-0">
+          <h5 class="modal-title fw-bold text-white">
+            <fa-icon [icon]="faCalendar" class="me-2"></fa-icon>
+            Appointment Details
+          </h5>
+          <button type="button" class="btn-close btn-close-white" (click)="onClose()"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <h5 class="mb-3">General Info</h5>
+          <div class="mb-4">
+            <strong>Service:</strong> {{ appointment()?.service?.name }} <br />
+            <strong>Client:</strong> {{ appointment()?.client?.name }} <br />
+            <strong>Worker:</strong> {{ appointment()?.worker?.name }}
+          </div>
+
+          <h5 class="mt-4">Status Timeline</h5>
+          @if (isLoading()) {
+            <app-loading></app-loading>
+          }
+
+          @else {
+            <appointment-timeline [timeline]="timeline()"></appointment-timeline>
+          }
+        </div>
+
+        <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+          <button type="button" class="btn btn-outline-secondary" (click)="onClose()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

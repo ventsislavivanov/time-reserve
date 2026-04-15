@@ -5,11 +5,12 @@ import { AppointmentCard } from './appointment-card/appointment-card';
 import { AppointmentsService } from '../appointments.service';
 import { Appointment, AppointmentsResponse } from '../appointment.model';
 import { Loading } from '../../../shared/components/ui';
+import {AppointmentDetailsModal} from '../components/appointment-details-modal';
 
 @Component({
   selector: 'client-appointments',
   standalone: true,
-  imports: [CommonModule, RouterModule, AppointmentCard, Loading],
+  imports: [CommonModule, RouterModule, AppointmentCard, Loading, AppointmentDetailsModal],
   templateUrl: './client-appointments.html',
 })
 export class ClientAppointments implements OnInit {
@@ -28,6 +29,8 @@ export class ClientAppointments implements OnInit {
     return this.appointments().filter(a => new Date(a.date) < now || a.status === 'cancelled' || a.status === 'declined');
   });
   displayed = computed(() => this.activeTab() === 'upcoming' ? this.upcoming() : this.past());
+
+  selectedAppointment = signal<Appointment | null>(null);
 
   ngOnInit(): void {
     this.loadAppointments();
@@ -50,9 +53,9 @@ export class ClientAppointments implements OnInit {
     // TODO modalCancel
     console.log('Cancel', appointment);
   }
+
   onViewDetails(appointment: Appointment) {
-    // TODO modalDetails
-    console.log('Details', appointment);
+    this.selectedAppointment.set(appointment);
   }
 
   goToTeam() {

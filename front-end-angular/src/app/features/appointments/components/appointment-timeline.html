@@ -1,0 +1,33 @@
+@if (!timeline().length) {
+  <p class="text-muted">No timeline data available.</p>
+}
+
+@else {
+  <ul class="list-group">
+
+    @for (event of timeline(); track event.id) {
+      <li class="list-group-item px-1 py-2 border-0 border-bottom">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <small class="text-muted">
+            {{ event.created_at | date:'dd.MM.yyyy HH:mm' }}
+          </small>
+
+          <div class="d-flex align-items-center gap-1">
+            @if (event.old_status) {
+              <appointment-status [status]="event.old_status"></appointment-status>
+              <span class="text-muted">→</span>
+            }
+            <appointment-status [status]="event.new_status"></appointment-status>
+          </div>
+        </div>
+
+        @if (event.reason) {
+          <div class="mt-1">
+            <em class="text-muted small">Reason: {{ event.reason }}</em>
+          </div>
+        }
+      </li>
+    }
+
+  </ul>
+}
