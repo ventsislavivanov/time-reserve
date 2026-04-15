@@ -28,6 +28,12 @@ export class AuthStore {
         role: response.role
       });
       this.isAuthenticatedSig.set(true);
+
+      if (response.role !== 'client') {
+        this.router.navigate(['/staff/dashboard']);
+      } else {
+        this.router.navigate(['/']);
+      }
     } catch {
       this.userSig.set(null);
       this.isAuthenticatedSig.set(false);
