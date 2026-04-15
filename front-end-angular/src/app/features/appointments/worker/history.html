@@ -1,1 +1,56 @@
-<p>history works!</p>
+<div class="container py-5">
+  <h2 class="mb-4">History</h2>
+
+  @if (isLoading()) {
+    <app-loading></app-loading>
+  }
+
+  @else {
+    @if (appointments().length === 0) {
+      <div class="alert alert-info">
+        You have no history.
+      </div>
+    }
+
+    @else {
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Client</th>
+            <th>Service</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Details</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+            @for (app of appointments(); track app.id) {
+              <tr>
+                <td>{{ app.id }}</td>
+                <td>{{ app.date }}</td>
+                <td>{{ app.time }}</td>
+                <td>{{ app.client.name }}</td>
+                <td>{{ app.service.name }}</td>
+                <td class="text-center">
+                  <appointment-status [status]="app.status"></appointment-status>
+                </td>
+
+                <td class="text-center">
+                  <button class="btn btn-sm btn-outline-info" (click)="onViewDetails(app.id)">
+                    <fa-icon [icon]="faEye"></fa-icon>
+                  </button>
+                </td>
+              </tr>
+            }
+
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>
