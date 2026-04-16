@@ -103,7 +103,7 @@ export class SignUp {
 
       this.authService.register(data).subscribe({
         next: (response) => {
-          console.log('Success')
+          alert(response.message);
         },
         error: (error) => {
           console.error('Sign up failed', error);
