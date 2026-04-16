@@ -25,6 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
     "bootstrap": "^5.3.8",
     "bootswatch": "^5.3.8",
+    "ng-recaptcha": "^13.2.1",
     "ngx-toastr": "^20.0.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"

@@ -3,11 +3,14 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { firstValueFrom } from 'rxjs';
 
 import { AuthService } from './index';
 import { AuthStore } from './auth.store';
 import { FormField } from '../../shared/components/ui';
 import { AuthResponse } from '../../core/models';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +26,7 @@ export class Login implements OnInit{
   private auth = inject(AuthStore);
   private router = inject(Router);
   private toastr = inject(ToastrService);
+  private recaptchaV3Service= inject(ReCaptchaV3Service);
 
   loginForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -73,10 +77,19 @@ export class Login implements OnInit{
     return messages[errorKey] || 'Invalid field';
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.loginForm.valid) {
+      let token = null;
+
       const data = this.loginForm.getRawValue();
+      if (environment.production && (environment as any).recaptchaSiteKey) {
+        token = await firstValueFrom(this.recaptchaV3Service.execute('login'));
+        data.recaptcha = token
+      }
+
       data.guard = this.guard();
+
+
 
       this.authService.login(data).subscribe({
         next: (response: AuthResponse) => {
@@ -101,6 +114,7 @@ export class Login implements OnInit{
         },
         error: (error) => {
           console.error('Login failed', error);
+          this.toastr.error(error.error?.message || 'Login failed');
         }
       });
     }
