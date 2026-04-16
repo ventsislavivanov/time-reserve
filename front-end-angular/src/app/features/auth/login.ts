@@ -89,8 +89,6 @@ export class Login implements OnInit{
 
       data.guard = this.guard();
 
-
-
       this.authService.login(data).subscribe({
         next: (response: AuthResponse) => {
           this.auth.login(response);
