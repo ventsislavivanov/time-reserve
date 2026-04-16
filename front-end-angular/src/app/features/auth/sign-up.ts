@@ -10,9 +10,14 @@ import {
   faLocationPin,
   faCalendar
 } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { firstValueFrom } from 'rxjs';
+
+import { AuthService } from './auth.service';
 import { FormField, RadioGroup } from '../../shared/components/ui';
 import { passwordMatchValidator } from '../../core/validators';
-import {AuthService} from './auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'sign-up',
@@ -33,6 +38,8 @@ export class SignUp {
 
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
+  private toastr = inject(ToastrService);
+  private recaptchaV3Service= inject(ReCaptchaV3Service);
 
   signUpForm: FormGroup = this.formBuilder.group({
     name: ['', [Validators.required, Validators.pattern(/^[A-Z][a-z]+ [A-Z][a-z]+$/)]],
@@ -84,12 +91,15 @@ export class SignUp {
     this.signUpForm.get('gender')?.updateValueAndValidity();
   }
 
-  onSubmit() {
-    console.log('Form data', this.signUpForm.value);
+  async onSubmit() {
     if (this.signUpForm.valid) {
       const data = this.signUpForm.getRawValue();
       data.password = data.passwords.password;
       data.guard = 'client';
+
+      if (environment.production && (environment as any).recaptchaSiteKey) {
+        data.recaptcha = await firstValueFrom(this.recaptchaV3Service.execute('login'));
+      }
 
       this.authService.register(data).subscribe({
         next: (response) => {
@@ -97,6 +107,7 @@ export class SignUp {
         },
         error: (error) => {
           console.error('Sign up failed', error);
+          this.toastr.error(error.error?.message || 'Sign up failed');
         }
       });
     }

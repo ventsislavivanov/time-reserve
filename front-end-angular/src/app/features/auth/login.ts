@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { firstValueFrom } from 'rxjs';
@@ -41,10 +41,6 @@ export class Login implements OnInit{
     const url = this.router.url;
     this.guard.set(url === '/login' ? 'client' : 'staff');
     this.isClient.set(url === '/login');
-
-    console.log('Is Production?', environment.production);
-    console.log('API URL:', environment.apiUrl);
-    console.log('Recaptcha key:', environment.recaptchaSiteKey);
   }
 
   get emailErrors() {
@@ -83,15 +79,12 @@ export class Login implements OnInit{
 
   async onSubmit() {
     if (this.loginForm.valid) {
-      let token = null;
-
       const data = this.loginForm.getRawValue();
-      if (environment.production && (environment as any).recaptchaSiteKey) {
-        token = await firstValueFrom(this.recaptchaV3Service.execute('login'));
-        data.recaptcha = token
-      }
-
       data.guard = this.guard();
+
+      if (environment.production && (environment as any).recaptchaSiteKey) {
+        data.recaptcha = await firstValueFrom(this.recaptchaV3Service.execute('login'));
+      }
 
       this.authService.login(data).subscribe({
         next: (response: AuthResponse) => {
