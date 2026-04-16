@@ -41,6 +41,10 @@ export class Login implements OnInit{
     const url = this.router.url;
     this.guard.set(url === '/login' ? 'client' : 'staff');
     this.isClient.set(url === '/login');
+
+    console.log('Is Production?', environment.production);
+    console.log('API URL:', environment.apiUrl);
+    console.log('Recaptcha key:', environment.recaptchaSiteKey);
   }
 
   get emailErrors() {
