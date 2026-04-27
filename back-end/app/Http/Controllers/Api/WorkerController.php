@@ -6,12 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Worker\WorkerCollection;
 use App\Http\Resources\Worker\WorkerResource;
 use App\Models\User;
+use OpenApi\Attributes as OA;
 
 class WorkerController extends Controller
 {
-	/**
-	 * All active workers with their services
-	 */
+    #[OA\Get(
+        path: '/api/workers',
+        description: 'Returns a list of all active workers with their services and job positions.',
+        summary: 'Get all active workers',
+        tags: ['Workers']
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful operation',
+        content: new OA\JsonContent(ref: '#/components/schemas/WorkerCollection')
+    )]
 	public function index(): WorkerCollection
 	{
 		$workers = User::where('role', 'worker')
@@ -29,9 +38,25 @@ class WorkerController extends Controller
 		return new WorkerCollection($workers);
 	}
 
-	/**
-	 * A specific worker with his services
-	 */
+    #[OA\Get(
+        path: '/api/workers/{id}',
+        description: 'Returns detailed information about a specific worker.',
+        summary: 'Get worker by ID',
+        tags: ['Workers']
+    )]
+    #[OA\Parameter(
+        name: 'id',
+        description: 'ID of the worker',
+        in: 'path',
+        required: true,
+        schema: new OA\Schema(type: 'integer')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful operation',
+        content: new OA\JsonContent(ref: '#/components/schemas/WorkerResource')
+    )]
+    #[OA\Response(response: 404, description: 'Worker not found')]
 	public function show(User $worker): WorkerResource
 	{
 		$worker->load([

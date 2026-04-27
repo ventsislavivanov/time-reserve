@@ -1893,6 +1893,64 @@
                     }
                 ]
             }
+        },
+        "/api/workers": {
+            "get": {
+                "tags": [
+                    "Workers"
+                ],
+                "summary": "Get all active workers",
+                "description": "Returns a list of all active workers with their services and job positions.",
+                "operationId": "dc732912abaf137a3407eefef15ab31d",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkerCollection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/workers/{id}": {
+            "get": {
+                "tags": [
+                    "Workers"
+                ],
+                "summary": "Get worker by ID",
+                "description": "Returns detailed information about a specific worker.",
+                "operationId": "c0a6db82825f797d6726afd779ab9e03",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the worker",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkerResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Worker not found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -2770,6 +2828,53 @@
                     }
                 ]
             },
+            "WorkerCollection": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WorkerResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "WorkerResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Jane Doe"
+                    },
+                    "job_position_id": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "job_position": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 2
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Senior Stylist"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "services": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ServiceResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "PaginationLinks": {
                 "properties": {
                     "first": {
@@ -2862,6 +2967,10 @@
         {
             "name": "Users",
             "description": "Users"
+        },
+        {
+            "name": "Workers",
+            "description": "Workers"
         }
     ]
 }
