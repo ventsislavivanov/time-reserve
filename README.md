@@ -2,11 +2,11 @@
 The application is deployed and can be tested live at:
 
 
-| Framework       | Live Demo Link                                                                                                               | 
-|:----------------|:-----------------------------------------------------------------------------------------------------------------------------|
-| **Angular**     | **[https://time-reserve-ybzm.vercel.app](https://time-reserve-ybzm.vercel.app)**                                             |
-| **React**       | **[https://time-reserve.vercel.app](https://time-reserve.vercel.app)**                                                       |
-| **Laravel API** | **[https://back-end-wild-shape-9497.fly.dev/api/documentation](https://back-end-wild-shape-9497.fly.dev/api/documentation)** |
+| Framework       | Live Demo Link                                                                           | 
+|:----------------|:-----------------------------------------------------------------------------------------|
+| **Angular**     | **[https://time-reserve-ybzm.vercel.app](https://time-reserve-ybzm.vercel.app)**         |
+| **React**       | **[https://time-reserve.vercel.app](https://time-reserve.vercel.app)**                   |
+| **Laravel API** | **[https://back-end-wild-shape-9497.fly.dev](https://back-end-wild-shape-9497.fly.dev)** |
 
 
 
