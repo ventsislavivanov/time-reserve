@@ -78,7 +78,7 @@ For a detailed look at the data structures, endpoints, and models used in this p
 To run the project locally, follow these steps:
 1. Clone the repository: `git clone https://github.com/ventsislavivanov/time-reserve.git`
 2. Navigate to the project directory: `cd time-reserve/back-end`
-3. Install dependencies: `composer setup`
+3. Install dependencies: `composer install`
 4. Copy the `.env.example` file to `.env` and update the database credentials:
    * DB_CONNECTION=pgsql
    * DB_HOST=db.lkyklocykxwqoglqetzb.supabase.co
@@ -91,3 +91,13 @@ To run the project locally, follow these steps:
 7. Install dependencies: `npm install`
 8. Start the development server: `ng serve`
 9. Access the application at: `http://localhost:4200`
+
+
+### 🔑 Database Credentials (Local Setup)
+If you need to run the back-end locally, expand the section below to see the connection string:
+
+<details>
+  <summary>Click to view DB_URL</summary>
+
+  ```text
+  postgresql://postgres:S2LgJCRGF0UqOOu@db.lkyklocykxwqoglqetzb.supabase.co:5432/postgres
