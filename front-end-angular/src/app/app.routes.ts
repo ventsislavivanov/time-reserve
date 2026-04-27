@@ -26,7 +26,7 @@ export const routes: Routes = [
       },
       {
         path: 'book/:workerId',
-        anActivate: [authGuard],
+        canActivate: [authGuard],
         loadComponent: () => import('./features/booking/booking-wizard').then(m => m.BookingWizard)
       }
     ]
