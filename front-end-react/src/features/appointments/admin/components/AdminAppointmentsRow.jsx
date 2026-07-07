@@ -66,7 +66,7 @@ const AdminAppointmentsRow = ({
             <td><UIAppointmentBadge status={app.status} /></td>
             <td>{app.created_at}</td>
             <td>{app.updated_at}</td>
-            <td>{app.changed_by.type}{/* → {app.changed_by.name}*/}</td>
+            <td>{app.changed_by?.type && `${app.changed_by.type} → ${app.changed_by.name}`}</td>
             <td className="text-end">
                 <UIRowActions actions={actions} />
             </td>
