@@ -256,6 +256,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
+                            "example": "pending",
                             "enum": [
                                 "pending",
                                 "cancelled",
@@ -265,8 +266,7 @@
                                 "completed",
                                 "no_show",
                                 "expired"
-                            ],
-                            "example": "pending"
+                            ]
                         }
                     },
                     {
@@ -1959,9 +1959,9 @@
                 "properties": {
                     "reason": {
                         "type": "string",
-                        "maxLength": 500,
                         "example": "Cannot make it anymore",
-                        "nullable": true
+                        "nullable": true,
+                        "maxLength": 500
                     }
                 },
                 "type": "object"
@@ -1983,9 +1983,9 @@
                     },
                     "notes": {
                         "type": "string",
-                        "maxLength": 1000,
                         "example": "Please use organic products",
-                        "nullable": true
+                        "nullable": true,
+                        "maxLength": 1000
                     }
                 },
                 "type": "object"
@@ -2023,8 +2023,8 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "maxLength": 255,
-                        "example": "Haircut"
+                        "example": "Haircut",
+                        "maxLength": 255
                     }
                 },
                 "type": "object"
@@ -2042,8 +2042,8 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "maxLength": 255,
-                        "example": "John Doe"
+                        "example": "John Doe",
+                        "maxLength": 255
                     },
                     "email": {
                         "type": "string",
@@ -2053,8 +2053,8 @@
                     "password": {
                         "type": "string",
                         "format": "password",
-                        "minLength": 6,
-                        "example": "password"
+                        "example": "password",
+                        "minLength": 6
                     },
                     "phone": {
                         "type": "string",
@@ -2067,20 +2067,20 @@
                     },
                     "gender": {
                         "type": "string",
+                        "example": "male",
                         "enum": [
                             "male",
                             "female"
-                        ],
-                        "example": "male"
+                        ]
                     },
                     "role": {
                         "type": "string",
+                        "example": "worker",
                         "enum": [
                             "admin",
                             "worker",
                             "client"
-                        ],
-                        "example": "worker"
+                        ]
                     },
                     "job_position_id": {
                         "type": "integer",
@@ -2097,8 +2097,8 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "maxLength": 255,
-                        "example": "Hair Stylist"
+                        "example": "Hair Stylist",
+                        "maxLength": 255
                     },
                     "description": {
                         "type": "string",
@@ -2147,8 +2147,8 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "maxLength": 255,
-                        "example": "John Doe"
+                        "example": "John Doe",
+                        "maxLength": 255
                     },
                     "email": {
                         "type": "string",
@@ -2158,14 +2158,14 @@
                     "password": {
                         "type": "string",
                         "format": "password",
-                        "minLength": 6,
-                        "example": "password"
+                        "example": "password",
+                        "minLength": 6
                     },
                     "phone": {
                         "type": "string",
+                        "example": "+359888123456",
                         "maxLength": 14,
-                        "minLength": 6,
-                        "example": "+359888123456"
+                        "minLength": 6
                     },
                     "birth_date": {
                         "type": "string",
@@ -2174,12 +2174,12 @@
                     },
                     "gender": {
                         "type": "string",
+                        "example": "male",
                         "enum": [
                             "male",
                             "female",
                             "other"
-                        ],
-                        "example": "male"
+                        ]
                     }
                 },
                 "type": "object"
@@ -2196,14 +2196,14 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "maxLength": 255,
-                        "example": "Haircut"
+                        "example": "Haircut",
+                        "maxLength": 255
                     },
                     "description": {
                         "type": "string",
-                        "maxLength": 5000,
                         "example": "Basic haircut service",
-                        "nullable": true
+                        "nullable": true,
+                        "maxLength": 5000
                     },
                     "category_id": {
                         "type": "integer",
@@ -2211,14 +2211,14 @@
                     },
                     "duration": {
                         "type": "integer",
-                        "minimum": 5,
-                        "example": 30
+                        "example": 30,
+                        "minimum": 5
                     },
                     "price": {
                         "type": "number",
                         "format": "float",
-                        "minimum": 0.01,
-                        "example": 25
+                        "example": 25,
+                        "minimum": 0.01
                     },
                     "is_active": {
                         "type": "boolean",
@@ -2226,13 +2226,13 @@
                     },
                     "preparation_time": {
                         "type": "integer",
-                        "minimum": 0,
-                        "example": 5
+                        "example": 5,
+                        "minimum": 0
                     },
                     "cleanup_time": {
                         "type": "integer",
-                        "minimum": 0,
-                        "example": 5
+                        "example": 5,
+                        "minimum": 0
                     }
                 },
                 "type": "object"
@@ -2268,8 +2268,8 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "maxLength": 255,
-                        "example": "John Doe"
+                        "example": "John Doe",
+                        "maxLength": 255
                     },
                     "email": {
                         "type": "string",
@@ -2287,19 +2287,19 @@
                     },
                     "gender": {
                         "type": "string",
+                        "example": "male",
                         "enum": [
                             "male",
                             "female",
                             "other"
-                        ],
-                        "example": "male"
+                        ]
                     },
                     "password": {
                         "type": "string",
                         "format": "password",
-                        "minLength": 6,
                         "example": "password",
-                        "nullable": true
+                        "nullable": true,
+                        "minLength": 6
                     },
                     "job_position_id": {
                         "type": "integer",
@@ -2316,12 +2316,12 @@
                 "properties": {
                     "role": {
                         "type": "string",
+                        "example": "worker",
                         "enum": [
                             "admin",
                             "worker",
                             "client"
-                        ],
-                        "example": "worker"
+                        ]
                     }
                 },
                 "type": "object"
@@ -2386,11 +2386,11 @@
                             },
                             "type": {
                                 "type": "string",
+                                "example": "user",
                                 "enum": [
                                     "user",
                                     "system"
-                                ],
-                                "example": "user"
+                                ]
                             }
                         },
                         "type": "object",
@@ -2423,6 +2423,7 @@
                             },
                             "status": {
                                 "type": "string",
+                                "example": "pending",
                                 "enum": [
                                     "pending",
                                     "cancelled",
@@ -2432,8 +2433,7 @@
                                     "completed",
                                     "no_show",
                                     "expired"
-                                ],
-                                "example": "pending"
+                                ]
                             },
                             "notes": {
                                 "type": "string",
@@ -2506,11 +2506,11 @@
                                     },
                                     "type": {
                                         "type": "string",
+                                        "example": "user",
                                         "enum": [
                                             "user",
                                             "system"
-                                        ],
-                                        "example": "user"
+                                        ]
                                     }
                                 },
                                 "type": "object",
@@ -2782,12 +2782,12 @@
                             },
                             "gender": {
                                 "type": "string",
+                                "example": "male",
                                 "enum": [
                                     "male",
                                     "female",
                                     "other"
-                                ],
-                                "example": "male"
+                                ]
                             },
                             "birth_date": {
                                 "type": "string",
@@ -2796,12 +2796,12 @@
                             },
                             "role": {
                                 "type": "string",
+                                "example": "worker",
                                 "enum": [
                                     "admin",
                                     "worker",
                                     "client"
-                                ],
-                                "example": "worker"
+                                ]
                             },
                             "is_active": {
                                 "type": "boolean",

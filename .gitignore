@@ -1,3 +1,8 @@
 /.idea
 /.vscode
 /.ai
+
+.env
+
+appdata/
+supabase_backup.sql
