@@ -33,7 +33,7 @@ docker compose down
 
 if [ -d "./appdata/postgres" ]; then
     echo "🗑️  Изтриване на старата локална база данни..."
-    rm -rf ./appdata/postgres
+    sudo rm -rf ./appdata/postgres
 fi
 
 # 3. Вдигане на базата данни на чисто
@@ -57,12 +57,6 @@ docker exec -i time-reserve-backend composer install
 
 echo "🔑 Генериране на APP_KEY за Laravel..."
 docker exec -i time-reserve-backend php artisan key:generate
-
-# 5.2. Инсталиране на dependencies и в React контейнера
-docker exec -i time-reserve-react npm install
-
-# 5.3. Инсталиране на dependencies и в Angular контейнера
-docker exec -i time-reserve-angular npm install
 
 # 6. Финални настройки в Laravel
 echo "🧹 Изчистване на кеша на Laravel..."

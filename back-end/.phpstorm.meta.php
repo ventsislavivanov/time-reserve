@@ -2271,7 +2271,7 @@ namespace PHPSTORM_META {
     override(\optional(0), type(0));
 
             registerArgumentsSet('auth', );
-        registerArgumentsSet('configs', 
+        registerArgumentsSet('configs',
 'broadcasting.default','broadcasting.connections.reverb.driver','broadcasting.connections.reverb.key','broadcasting.connections.reverb.secret','broadcasting.connections.reverb.app_id',
 'broadcasting.connections.reverb.options.host','broadcasting.connections.reverb.options.port','broadcasting.connections.reverb.options.scheme','broadcasting.connections.reverb.options.useTLS','broadcasting.connections.reverb.client_options',
 'broadcasting.connections.pusher.driver','broadcasting.connections.pusher.key','broadcasting.connections.pusher.secret','broadcasting.connections.pusher.app_id','broadcasting.connections.pusher.options.cluster',
@@ -2369,19 +2369,19 @@ namespace PHPSTORM_META {
 'ide-helper.include_class_docblocks','ide-helper.force_fqn','ide-helper.use_generics_annotations','ide-helper.macro_default_return_types.Illuminate\\Http\\Client\\Factory','ide-helper.additional_relation_types',
 'ide-helper.additional_relation_return_types','ide-helper.enforce_nullable_relationships','ide-helper.soft_deletes_force_nullable','ide-helper.post_migrate','tinker.commands',
 'tinker.alias','tinker.dont_alias','tinker.trust_project',);
-        registerArgumentsSet('middleware', 
+        registerArgumentsSet('middleware',
 'web','api','auth','auth.basic','auth.session',
 'cache.headers','can','guest','password.confirm','precognitive',
 'signed','throttle','verified','recaptcha','role',
 'trust-proxies',);
-        registerArgumentsSet('routes', 
+        registerArgumentsSet('routes',
 'l5-swagger.default.api','l5-swagger.default.docs','l5-swagger.default.asset','l5-swagger.default.oauth2_callback','sanctum.csrf-cookie','verification.verify',
 'users.index','users.store','users.update','job-positions.index','job-positions.store',
 'job-positions.show','job-positions.update','job-positions.destroy','categories.store','categories.show',
 'categories.update','categories.destroy','services.index','services.store','services.show',
 'services.update','services.destroy',
 'storage.local','storage.local.upload',);
-        registerArgumentsSet('views', 
+        registerArgumentsSet('views',
 'components.email-layout','emails.appointments.confirmed','emails.appointments.declined','emails.appointments.expired','emails.appointments.timed-out',
 'l5-swagger::index','vendor.l5-swagger.index','welcome','l5-swagger::index','laravel-exceptions-renderer::components.badge',
 'laravel-exceptions-renderer::components.empty-state','laravel-exceptions-renderer::components.file-with-line','laravel-exceptions-renderer::components.formatted-source','laravel-exceptions-renderer::components.frame','laravel-exceptions-renderer::components.frame-code',
@@ -2396,7 +2396,7 @@ namespace PHPSTORM_META {
 'laravel-exceptions::500','laravel-exceptions::503','laravel-exceptions::layout','laravel-exceptions::minimal','notifications::email',
 'pagination::bootstrap-4','pagination::bootstrap-5','pagination::default','pagination::semantic-ui','pagination::simple-bootstrap-4',
 'pagination::simple-bootstrap-5','pagination::simple-default','pagination::simple-tailwind','pagination::tailwind',);
-        registerArgumentsSet('translations', 
+        registerArgumentsSet('translations',
 'C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.auth.failed','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.auth.password','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.auth.throttle','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.pagination.previous','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.pagination.next',
 'C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.reset','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.sent','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.throttled','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.token','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.user',
 'C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.accepted','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.accepted_if','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.active_url','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.after','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.after_or_equal',
@@ -2427,7 +2427,7 @@ namespace PHPSTORM_META {
 'C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.size.string','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.starts_with','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.string','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.timezone','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.unique',
 'C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.uploaded','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.uppercase','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.url','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.ulid','C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.uuid',
 'C:.Users.RemotePC.Documents.Project.time-reserve.back-end.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.custom.attribute-name.rule-name',);
-        registerArgumentsSet('env', 
+        registerArgumentsSet('env',
 'APP_NAME','APP_ENV','APP_KEY','APP_DEBUG','APP_URL',
 'APP_LOCALE','APP_FALLBACK_LOCALE','APP_FAKER_LOCALE','APP_MAINTENANCE_DRIVER','BCRYPT_ROUNDS',
 'LOG_CHANNEL','LOG_STACK','LOG_DEPRECATIONS_CHANNEL','LOG_LEVEL','DB_CONNECTION',
@@ -2436,8 +2436,8 @@ namespace PHPSTORM_META {
 'REDIS_CLIENT','REDIS_HOST','REDIS_PASSWORD','REDIS_PORT','MAIL_MAILER',
 'MAIL_SCHEME','MAIL_HOST','MAIL_PORT','MAIL_USERNAME','MAIL_PASSWORD',
 'MAIL_ENCRYPTION','MAIL_FROM_ADDRESS','MAIL_FROM_NAME','AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY',
-'AWS_DEFAULT_REGION','AWS_BUCKET','AWS_USE_PATH_STYLE_ENDPOINT','VITE_APP_NAME',);
-        
+'AWS_DEFAULT_REGION','AWS_BUCKET','AWS_USE_PATH_STYLE_ENDPOINT',);
+
                 expectedArguments(\Illuminate\Support\Facades\Gate::has(), 0, argumentsSet('auth'));
     expectedArguments(\Illuminate\Support\Facades\Gate::allows(), 0, argumentsSet('auth'));
     expectedArguments(\Illuminate\Support\Facades\Gate::denies(), 0, argumentsSet('auth'));
@@ -2501,5 +2501,5 @@ namespace PHPSTORM_META {
                 expectedArguments(\Illuminate\Contracts\Translation\Translator::get(), 0, argumentsSet('translations'));
                 expectedArguments(\env(), 0, argumentsSet('env'));
                 expectedArguments(\Illuminate\Support\Env::get(), 0, argumentsSet('env'));
-            
+
 }
