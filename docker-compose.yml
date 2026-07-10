@@ -7,8 +7,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=${DB_DATABASE:-postgres}
-      - POSTGRES_USER=${DB_USERNAME:-postgres}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./appdata/postgres:/var/lib/postgresql/data
@@ -26,8 +26,8 @@ services:
       - ./back-end:/var/www
       - /var/www/vendor
     environment:
-      - APP_ENV=production
-      - APP_DEBUG=false
+      - APP_ENV=${DOCKER_APP_ENV:-production}
+      - APP_DEBUG=${DOCKER_APP_DEBUG:-false}
     depends_on:
       - database
 
@@ -43,8 +43,8 @@ services:
       - ./back-end:/var/www
       - /var/www/vendor
     environment:
-      - APP_ENV=production
-      - APP_DEBUG=false
+      - APP_ENV=${DOCKER_APP_ENV:-production}
+      - APP_DEBUG=${DOCKER_APP_DEBUG:-false}
     depends_on:
       - database
 
@@ -61,8 +61,8 @@ services:
       - ./back-end:/var/www
       - /var/www/vendor
     environment:
-      - APP_ENV=production
-      - APP_DEBUG=false
+      - APP_ENV=${DOCKER_APP_ENV:-production}
+      - APP_DEBUG=${DOCKER_APP_DEBUG:-false}
     depends_on:
       - database
 
@@ -72,11 +72,13 @@ services:
     build:
       context: ./front-end-react
       dockerfile: Dockerfile
+      target: development
     ports:
       - "5173:80"
+    volumes:
+      - ./front-end-react:/app
+      - /app/node_modules #
     restart: unless-stopped
-    networks:
-      - default
 
   # 3. Angular
   angular-frontend:
@@ -84,8 +86,10 @@ services:
     build:
       context: ./front-end-angular
       dockerfile: Dockerfile
+      target: development
     ports:
       - "4200:80"
+    volumes:
+      - ./front-end-angular:/app
+      - /app/node_modules
     restart: unless-stopped
-    networks:
-      - default

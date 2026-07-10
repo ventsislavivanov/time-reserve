@@ -1,15 +1,23 @@
-# ------- Stage 1: Comilation -------
-FROM node:20-alpine AS build
+# Stage 1: Base & Dependencies
+FROM node:20-alpine AS base
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+
+# New Stage: Development (За локално пускане с Hot Reload)
+FROM base AS development
+EXPOSE 80
+# Ползваме порт 80 вътре в контейнера, за да съвпада с мапинга в compose
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "80"]
+
+# Stage 2: Production Build
+FROM base AS build
 RUN npm run build
 
-# ------- Stage: 2 Serving with Nginx  -------
-FROM nginx:1.25-alpine
+# Stage 3: Serving with Nginx
+FROM nginx:1.25-alpine AS production
 COPY --from=build /app/dist /usr/share/nginx/html
-
 RUN echo 'server { listen 80; location / { root /usr/share/nginx/html; index index.html; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

@@ -2,11 +2,11 @@
 The application is deployed and can be tested live at:
 
 
-| Framework       | Live Demo Link                                                                           | 
-|:----------------|:-----------------------------------------------------------------------------------------|
-| **Angular**     | **[https://time-reserve-ybzm.vercel.app](https://time-reserve-ybzm.vercel.app)**         |
-| **React**       | **[https://time-reserve.vercel.app](https://time-reserve.vercel.app)**                   |
-| **Laravel API** | **[https://back-end-wild-shape-9497.fly.dev](https://back-end-wild-shape-9497.fly.dev)** |
+| Framework       | Live Demo Link                                                                                     | 
+|:----------------|:---------------------------------------------------------------------------------------------------|
+| **Angular**     | **[https://time-reserve-angular.ventsislav.space](https://time-reserve-angular.ventsislav.space)** |
+| **React**       | **[https://time-reserve-react.ventsislav.space](https://time-reserve-react.ventsislav.space)**     |
+| **Laravel API** | **[https://time-reserve-backend.ventsislav.space](https://time-reserve-backend.ventsislav.space)**           |
 
 
 
@@ -72,32 +72,48 @@ The core of **Time Reserve** is its dynamic appointment management system. The p
 
 ### 6. API Reference & Data Models
 For a detailed look at the data structures, endpoints, and models used in this project, please refer to the official API documentation:
-🔗 **[Link to API Documentation]** *(https://back-end-wild-shape-9497.fly.dev/api/documentation)*
+🔗 **[Link to API Documentation]** *(https://time-reserve-backend.ventsislav.space/api/documentation)*
+
+---
 
 ### 7. How to Run the Project Locally
-To run the project locally, follow these steps:
-1. Clone the repository: `git clone https://github.com/ventsislavivanov/time-reserve.git`
-2. Navigate to the project directory: `cd time-reserve/back-end`
-3. Install dependencies: `composer install`
-4. Copy the `.env.example` file to `.env` and update the database credentials:
-   * DB_CONNECTION=pgsql
-   * DB_HOST=db.lkyklocykxwqoglqetzb.supabase.co
-   * DB_PORT=5432
-   * DB_DATABASE=postgres
-   * DB_USERNAME=postgres
-   * DB_PASSWORD=YOUR_PASSWORD_HERE
-5. Run php artisan serve --host=127.0.0.1 --port=8989   
-6. Navigate to the project directory: `cd time-reserve/front-end-angular`
-7. Install dependencies: `npm install`
-8. Start the development server: `ng serve`
-9. Access the application at: `http://localhost:4200`
 
+We use Docker and Docker Compose to manage the entire environment (PostgreSQL, Laravel Backend, React, and Angular). An automation script is provided to set up everything with a single command.
 
-### 🔑 Database Credentials (Local Setup)
-If you need to run the back-end locally, expand the section below to see the connection string:
+#### Prerequisites
+* **Docker & Docker Compose** installed.
+* **WSL2** (if you are running on Windows).
 
-<details>
-  <summary>Click to view DB_URL</summary>
+#### Setup Steps
 
-  ```text
-  postgresql://postgres:S2LgJCRGF0UqOOu@db.lkyklocykxwqoglqetzb.supabase.co:5432/postgres
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/ventsislavivanov/time-reserve.git
+   cd time-reserve
+   
+2. **Run the Initialization Script:**
+
+    Execute the automated script from your WSL/Linux terminal. It will set up all environment files, initialize the local database using the included backup file, and spin up the containers:
+   ```bash
+   ./init-project.sh
+   
+---
+
+### 📍 Application Access Ports
+
+Once the script finishes successfully, access the apps via these URLs:
+
+| Service | Local URL | Environment |
+| :--- | :--- | :--- |
+| **Laravel API** | `http://localhost:8081` | Development (`APP_DEBUG=true`) |
+| **React Frontend** | `http://localhost:5173` | Development (Hot Reload) |
+| **Angular Frontend** | `http://localhost:4200` | Development (Hot Reload) |
+
+---
+
+### 🐳 Useful Docker Commands
+
+* **Stop the project:** `docker compose down`
+* **Start the project (without resetting DB):** `docker compose up -d`
+* **View running containers:** `docker compose ps`
+* **View backend logs:** `docker compose logs -f backend`
