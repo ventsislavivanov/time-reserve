@@ -37,7 +37,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 COPY . /var/www
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-plugins
+RUN rm -rf bootstrap/cache/*.php
+RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs --no-plugins
 RUN php artisan package:discover --ansi
 
 RUN mkdir -p /var/www/storage/database && chown -R www-data:www-data /var/www
