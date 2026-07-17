@@ -32,8 +32,13 @@ FROM php:8.2-fpm-alpine AS production
 RUN apk add --no-cache bash curl libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev libxml2-dev zip unzip postgresql-dev libpq
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 WORKDIR /var/www
 COPY . /var/www
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction --progress=none
+
 RUN mkdir -p /var/www/storage/database && chown -R www-data:www-data /var/www
 
 EXPOSE 9000
