@@ -30,7 +30,6 @@ services:
       - "${BACKEND_PORT_BINDING:-8081:8080}"
     volumes:
       - ./back-end:/var/www
-      - /var/www/vendor
     env_file:
       - ./back-end/.env
     depends_on:
@@ -63,7 +62,6 @@ services:
     command: php artisan queue:work --tries=3
     volumes:
       - ./back-end:/var/www
-      - /var/www/vendor
     env_file:
       - ./back-end/.env
     depends_on:
@@ -82,7 +80,6 @@ services:
     stop_grace_period: 1s
     volumes:
       - ./back-end:/var/www
-      - /var/www/vendor
     env_file:
       - ./back-end/.env
     depends_on:

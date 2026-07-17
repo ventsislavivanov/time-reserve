@@ -20,11 +20,12 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 WORKDIR /var/www
 COPY . /var/www
+
 RUN mkdir -p /var/www/storage/database && chown -R www-data:www-data /var/www
 
-EXPOSE 8080
+EXPOSE 8081
 
-CMD ["sh", "-c", "until [ -f vendor/autoload.php ]; do echo 'Waiting for vendor...'; sleep 3; done && php artisan serve --host=0.0.0.0 --port=8080"]
+CMD ["sh", "-c", "if [ ! -f vendor/autoload.php ]; then composer install; fi && php artisan serve --host=0.0.0.0 --port=8081"]
 
 # -------- Stage 2: Production --------
 FROM php:8.2-fpm-alpine AS production
