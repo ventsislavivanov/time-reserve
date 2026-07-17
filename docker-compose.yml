@@ -2,6 +2,11 @@ services:
   # 0. Database
   database:
     image: postgres:17.6-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     container_name: time-reserve-db
     restart: unless-stopped
     ports:
@@ -29,7 +34,8 @@ services:
     env_file:
       - ./back-end/.env
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   # 1.1 Laravel Nginx (Runs ONLY on production)
   backend-webserver:
@@ -61,7 +67,8 @@ services:
     env_file:
       - ./back-end/.env
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   # 1.3 Laravel - Cron Scheduler
   backend-cron:
@@ -79,7 +86,8 @@ services:
     env_file:
       - ./back-end/.env
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   # 2. React
   react-frontend:
