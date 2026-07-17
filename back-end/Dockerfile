@@ -37,7 +37,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 COPY . /var/www
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --progress=none
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-plugins
 
 RUN mkdir -p /var/www/storage/database && chown -R www-data:www-data /var/www
 
