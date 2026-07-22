@@ -1,0 +1,14 @@
+services:
+  backend:
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./back-end:/var/www
+
+  backend-queue:
+    volumes:
+      - ./back-end:/var/www
+
+  backend-cron:
+    volumes:
+      - ./back-end:/var/www

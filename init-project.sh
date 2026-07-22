@@ -47,9 +47,9 @@ sleep 5
 echo "💾 Наливане на дъмпа в 'time_reserve_local'..."
 docker exec -i time-reserve-db psql -U postgres -d time_reserve_local < ./init_project_db.sql
 
-# 5. Вдигане на останалите контейнери
-echo "🐳 Стартиране на всички приложения (Backend, React, Angular)..."
-docker compose up -d --build
+# 5. Вдигане на останалите контейнери за Разработка (DEV)
+echo "🐳 Стартиране на всички приложения за Разработка..."
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 
 # 5.1. Инсталиране на dependencies и генериране на ключ в Laravel контейнера
 echo "📦 Инсталиране на Composer пакети в контейнера..."

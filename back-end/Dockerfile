@@ -36,10 +36,15 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
+
+# Копираме целия проект в контейнера
 COPY . /var/www
 
+# Принудително инсталираме зависимостите ВЪТРЕ в контейнера
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
+
 RUN rm -rf bootstrap/cache/*.php
-RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs --no-plugins
 RUN php artisan package:discover --ansi
 
 RUN mkdir -p /var/www/storage/database && chown -R www-data:www-data /var/www
@@ -47,4 +52,3 @@ RUN mkdir -p /var/www/storage/database && chown -R www-data:www-data /var/www
 EXPOSE 9000
 
 CMD ["php-fpm"]
-
