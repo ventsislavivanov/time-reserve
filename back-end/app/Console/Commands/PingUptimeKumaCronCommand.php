@@ -17,7 +17,7 @@ class PingUptimeKumaCronCommand extends Command
         }
 
 
-        $url = env('UPTIME_KUMA_CRON_URL');
+        $url = config('services.uptime_kuma.cron_url');
         if ($url) {
             \Illuminate\Support\Facades\Http::get($url);
             $this->info('Uptime Kuma successfully pinged.');

@@ -39,4 +39,9 @@ return [
 		'secret' => env('RECAPTCHA_SECRET_KEY'),
 	],
 
+    'uptime_kuma' => [
+        'cron_url' => env('UPTIME_KUMA_CRON_URL'),
+        'queue_url' => env('UPTIME_KUMA_QUEUE_URL'),
+    ],
+
 ];

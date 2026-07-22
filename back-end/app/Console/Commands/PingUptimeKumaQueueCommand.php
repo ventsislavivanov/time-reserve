@@ -13,12 +13,20 @@ class PingUptimeKumaQueueCommand extends Command
 
     public function handle()
     {
+        if (!app()->isProduction()) {
+            $this->info('Ping skipped: Not in production environment.');
+            return self::SUCCESS;
+        }
+
         dispatch(function () {
-            $url = env('UPTIME_KUMA_QUEUE_URL');
-            
+            $url = config('services.uptime_kuma.queue_url');
+
             if ($url && app()->isProduction()) {
                 Http::get($url);
             }
         });
+
+        $this->info('Ping job dispatched to queue.');
+        return self::SUCCESS;
     }
 }
