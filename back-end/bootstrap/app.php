@@ -18,11 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
 			'trust-proxies' => \App\Http\Middleware\TrustProxies::class,
 		]);
     })
-	->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule): void {
-		$schedule->command('appointments:mark-no-show')->hourly();
-		$schedule->command('appointments:mark-expired')->hourly();
+    ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule): void {
+        $schedule->command('appointments:mark-no-show')->hourly();
+        $schedule->command('appointments:mark-expired')->hourly();
         $schedule->command('appointments:mark-timed-out')->everyMinute();
-	})
+        
+        // Monitoring in Uptime Kuma
+        $schedule->command('app:ping-uptime-kuma-cron-command')->everyMinute();
+        $schedule->command('app:ping-uptime-kuma-queue-command')->everyMinute();
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

@@ -4,10 +4,10 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class PingUptimeKumaCommand extends Command
+class PingUptimeKumaCronCommand extends Command
 {
-    protected $signature = 'app:ping-uptime-kuma-command';
-    protected $description = 'Send a heartbeat ping to Uptime Kuma monito';
+    protected $signature = 'app:ping-uptime-kuma-cron-command';
+    protected $description = 'Send a heartbeat ping to Uptime Kuma';
 
     public function handle()
     {
@@ -17,7 +17,7 @@ class PingUptimeKumaCommand extends Command
         }
 
 
-        $url = env('UPTIME_KUMA_URL');
+        $url = env('UPTIME_KUMA_CRON_URL');
         if ($url) {
             \Illuminate\Support\Facades\Http::get($url);
             $this->info('Uptime Kuma successfully pinged.');
