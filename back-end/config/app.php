@@ -123,5 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-	'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
+	'react_url' => env('REACT_URL', 'http://localhost:5173'),
+    'angular_url' => env('ANGULAR_URL', 'http://localhost:4200'),
 ];

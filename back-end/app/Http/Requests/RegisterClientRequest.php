@@ -34,6 +34,7 @@ class RegisterClientRequest extends FormRequest
 			'phone' => 'required|string|min:6|max:14',
 			'birth_date' => 'required|date',
 			'gender' => 'required|in:male,female,other',
+			'client' => 'required|in:react,angular',
         ];
     }
 }

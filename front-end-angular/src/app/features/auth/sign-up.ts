@@ -96,6 +96,7 @@ export class SignUp {
       const data = this.signUpForm.getRawValue();
       data.password = data.passwords.password;
       data.guard = 'client';
+      data.client = 'angular';
 
       if (environment.production && (environment as any).recaptchaSiteKey) {
         data.recaptcha = await firstValueFrom(this.recaptchaV3Service.execute('login'));

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
 
 /**
  * @mixin IdeHelperUser
@@ -199,4 +202,20 @@ class User extends Authenticatable implements MustVerifyEmail
 		return 'active';
 	}
 
+	public function sendEmailVerificationNotificationWithClient(string $client = 'react'): void
+	{
+		VerifyEmail::createUrlUsing(function ($notifiable) use ($client) {
+			return URL::temporarySignedRoute(
+				'verification.verify',
+				Carbon::now()->addMinutes(config('auth.verification.expire', 60)),
+				[
+					'id' => $notifiable->getKey(),
+					'hash' => sha1($notifiable->getEmailForVerification()),
+					'client' => $client,
+				]
+			);
+		});
+
+		$this->sendEmailVerificationNotification();
+	}
 }

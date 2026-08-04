@@ -53,13 +53,17 @@ class AuthController extends Controller
 	)]
 	public function registerClient(RegisterClientRequest $request): JsonResponse
 	{
+		$validated = $request->validated();
+		$client = $validated['client'];
+		unset($validated['client']);
+
 		$user = User::create([
-			...$request->validated(),
+			...$validated,
 			'is_approved' => false,
 			'can_book_appointments' => true,
 		]);
 
-		$user->sendEmailVerificationNotification();
+		$user->sendEmailVerificationNotificationWithClient($client);
 
 		return response()->json([
 			'message' => 'Please check your email for a confirmation link.'
@@ -128,11 +132,17 @@ class AuthController extends Controller
 	public function verifyEmail(Request $request, $id, $hash): JsonResponse|Redirector|RedirectResponse
 	{
 		$user = User::findOrFail($id);
-		$frontendUrl = config('app.frontend_url');
 
 		if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
 			return response()->json(['message' => 'Invalid verification link.'], 403);
 		}
+
+		$client = $request->query('client', 'react');
+		
+		$frontendUrl = match ($client) {
+			'angular' => config('app.angular_url', 'http://localhost:4200'),
+			default => config('app.react_url', 'http://localhost:5173'),
+		};
 
 		if ($user->hasVerifiedEmail()) {
 			return redirect("{$frontendUrl}/login?verified=1");
