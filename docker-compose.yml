@@ -68,7 +68,6 @@ services:
       - "5173:80"
     volumes:
       - ./front-end-react:/app
-      - /app/node_modules
     restart: unless-stopped
 
   # 3. Angular
@@ -83,5 +82,4 @@ services:
       - "4200:80"
     volumes:
       - ./front-end-angular:/app
-      - /app/node_modules
     restart: unless-stopped
