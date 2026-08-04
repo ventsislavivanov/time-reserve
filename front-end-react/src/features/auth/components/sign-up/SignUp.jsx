@@ -35,7 +35,6 @@ const SignUp = () => {
 		const { confirm_password, ...submitData } = data;
 
 		submitData.recaptcha = token;
-		submitData.client = "react";
 
 		const response = await registerUser(submitData);
 

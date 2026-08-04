@@ -53,15 +53,16 @@ class AuthController extends Controller
 	)]
 	public function registerClient(RegisterClientRequest $request): JsonResponse
 	{
-		$validated = $request->validated();
-		$client = $validated['client'];
-		unset($validated['client']);
-
 		$user = User::create([
-			...$validated,
+			...$request->validated(),
 			'is_approved' => false,
 			'can_book_appointments' => true,
 		]);
+
+		$origin = $request->header('Origin') ?? $request->header('Referer');
+		$angularUrl = config('app.angular_url', 'http://localhost:4200');
+		
+		$client = str_contains($origin, $angularUrl) ? 'angular' : 'react';
 
 		$user->sendEmailVerificationNotificationWithClient($client);
 
@@ -129,7 +130,7 @@ class AuthController extends Controller
 			new OA\Response(response: 404, description: 'User not found'),
 		]
 	)]
-	public function verifyEmail(Request $request, $id, $hash): JsonResponse|Redirector|RedirectResponse
+	public function verifyEmail(Request $request, int $id, string $hash): JsonResponse|Redirector|RedirectResponse
 	{
 		$user = User::findOrFail($id);
 

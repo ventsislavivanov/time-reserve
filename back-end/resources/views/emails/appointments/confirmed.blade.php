@@ -1,7 +1,7 @@
 <x-email-layout
     :subject="'Appointment Confirmed'"
     :title="'Your appointment was confirmed'"
-    :buttonUrl="config('app.frontend_url') . '/service'"
+    :buttonUrl="config('app.react_url') . '/service'"
     buttonText="Book a new appointment"
 >
 

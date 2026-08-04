@@ -1,7 +1,7 @@
 <x-email-layout
     :subject="'Appointment Declined'"
     :title="'Your appointment was declined'"
-    :buttonUrl="config('app.frontend_url') . '/our-team'"
+    :buttonUrl="config('app.react_url') . '/our-team'"
     buttonText="Book another appointment"
 >
 
