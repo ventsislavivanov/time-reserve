@@ -52,9 +52,6 @@ echo "🐳 Стартиране на всички приложения за Ра
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 
 # 5.1. Инсталиране на dependencies и генериране на ключ в Laravel контейнера
-echo "📦 Инсталиране на Composer пакети в контейнера..."
-docker exec -i time-reserve-backend composer install
-
 echo "🔑 Генериране на APP_KEY за Laravel..."
 docker exec -i time-reserve-backend php artisan key:generate
 

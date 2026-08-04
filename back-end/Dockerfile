@@ -19,13 +19,26 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 WORKDIR /var/www
+
+# 1. Копираме първо само composer файловете за оптимално кеширане
+COPY composer.json composer.lock ./
+
+# 2. Инсталираме всички dev зависимости ОЩЕ ПРИ BUILD
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install --prefer-dist --no-interaction --no-scripts
+
+# 3. Копираме останалата част от кода
 COPY . /var/www
+
+# 4. Генерираме ауторайтъра на composer
+RUN composer dump-autoload
 
 RUN mkdir -p /var/www/storage/database && chown -R www-data:www-data /var/www
 
 EXPOSE 8081
 
-CMD ["sh", "-c", "if [ ! -f vendor/autoload.php ]; then composer install; fi && php artisan serve --host=0.0.0.0 --port=8081"]
+# CMD вече само стартира сървъра, без да се опитва да инсталира нищо в движение
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8081"]
 
 # -------- Stage 2: Production --------
 FROM php:8.2-fpm-alpine AS production

@@ -4,11 +4,14 @@ services:
       - "8081:8081"
     volumes:
       - ./back-end:/var/www
+      - /var/www/vendor
 
   backend-queue:
     volumes:
       - ./back-end:/var/www
+      - /var/www/vendor
 
   backend-cron:
     volumes:
       - ./back-end:/var/www
+      - /var/www/vendor
