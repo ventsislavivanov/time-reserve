@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
+import { useAuth } from "../../../../context";
 import { Navigate, Outlet } from "react-router";
 
 const RoleGuard = ({ allowedRoles, redirectTo }) => {
-	const { isAuthenticated, user } = useSelector((state) => state.auth);
+	const { isAuthenticated, user } = useAuth();
 
 	if (!isAuthenticated) {
 		return <Navigate to={redirectTo ?? '/staff/login'} replace />;

@@ -1,8 +1,7 @@
 import { Route, Routes, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
-import { login, logout } from "./store/authSlice.js";
+import { useAuth } from "./context";
 
 import ClientLayout from "./layouts/ClientLayout.jsx";
 import StaffLayout from "./layouts/StaffLayout.jsx";
@@ -27,7 +26,7 @@ import { UILoading, UIToast } from "./components/common/ui";
 
 function App() {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const { login, logout } = useAuth();
 	const [isLoading, setLoading] = useState(true);
 	const [role, setRole] = useState(null);
 
@@ -39,23 +38,23 @@ function App() {
 				try {
 					const user = await getMe();
 					setRole(user.role);
-					dispatch(login({
+					login({
 						uid: user.id,
 						email: user.email,
 						role: user.role
-					}));
+					});
 					user.role === 'client' ? navigate('/') : navigate('/staff/dashboard');
 				} catch (error) {
 					console.error("Session expired or invalid token");
 					localStorage.removeItem("token");
-					dispatch(logout());
+					logout();
 				}
 			}
 			setLoading(false);
 		};
 
 		checkAuth();
-	}, [dispatch]);
+	}, [login, logout]);
 
 	if (isLoading) {
 		return <UILoading fullscreen={true} color="#436d9a" size={60} />;

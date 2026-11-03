@@ -1,22 +1,20 @@
 import { Link, Outlet, useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "../context";
 import { logout as logoutUser } from "../features/auth";
-import { logout } from "../store/authSlice.js";
 import Header from "../components/layout/header/Header.jsx";
 import Footer from "../components/layout/footer/Footer.jsx";
 import { UINavLink } from "../components/common/ui/index.js";
 
 export default function ClientLayout() {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const { isAuthenticated, user } = useSelector((s) => s.auth);
+	const { isAuthenticated, user, logout } = useAuth();
 
 	const handleLogout = async () => {
 		try {
 			await logoutUser();
 			localStorage.removeItem("token");
-			dispatch(logout());
+			logout();
 			navigate('/');
 		} catch (error) {
 			console.log("Logout error", error);

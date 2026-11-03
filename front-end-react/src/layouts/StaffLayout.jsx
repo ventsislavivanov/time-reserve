@@ -1,16 +1,14 @@
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "../context";
 import { logout as logoutUser } from "../features/auth";
-import { logout } from "../store/authSlice.js";
 import Header from "../components/layout/header/Header.jsx";
 import { UINavLink } from "../components/common/ui";
 
 export default function StaffLayout() {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const { isAuthenticated, user } = useSelector((s) => s.auth);
+	const { isAuthenticated, user, logout } = useAuth();
 	const role = user?.role;
 
 	const isLoginPage = location.pathname === "/staff/login";
@@ -27,7 +25,7 @@ export default function StaffLayout() {
 		try {
 			await logoutUser();
 			localStorage.removeItem("token");
-			dispatch(logout());
+			logout();
 			navigate('/staff/login');
 		} catch (error) {
 			console.log("Logout error", error);

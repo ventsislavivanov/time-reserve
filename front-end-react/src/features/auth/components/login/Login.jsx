@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
-import { useDispatch } from "react-redux";
 import { notify } from "../../../../services";
 import {
 	UIAppForm,
@@ -11,7 +10,7 @@ import {
 import { useAppForm, useRecaptcha } from "../../../../hooks";
 import { loginRules } from "../../validations/loginRules.js";
 import { login as loginUser } from "../../services/authService.js";
-import { login } from "../../../../store/authSlice.js";
+import { useAuth } from "../../../../context";
 
 const initialValues  = {
 	email: '',
@@ -21,7 +20,7 @@ const initialValues  = {
 
 const Login = ({ isClient, guard }) => {
 	const [searchParams] = useSearchParams()
-	const dispatch = useDispatch();
+	const { login } = useAuth();
 	const navigate = useNavigate();
 	const { getToken } = useRecaptcha();
 
@@ -57,11 +56,11 @@ const Login = ({ isClient, guard }) => {
 		notify.success('Login successful');
 
 		localStorage.setItem("token", response.token);
-		dispatch(login({
+		login({
 			uid: response.user.uid,
 			email: response.user.email,
 			role: response.user.role
-		}));
+		});
 
 		reset();
 		navigate(response.user.role === 'client' ? '/' : '/staff/dashboard');
