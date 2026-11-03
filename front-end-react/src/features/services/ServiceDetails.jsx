@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router';
 import { UILoading } from '../../components/common/ui';
+import { ReviewsSection } from '../reviews';
 import { useServiceDetails } from './hooks/useServiceDetails.js';
 
 const ServiceDetails = () => {
@@ -48,6 +49,8 @@ const ServiceDetails = () => {
 					</div>
 				</div>
 			</div>
+
+			<ReviewsSection serviceId={service.id} />
 		</div>
 	);
 };

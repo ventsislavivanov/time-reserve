@@ -57,7 +57,7 @@ const Login = ({ isClient, guard }) => {
 
 		localStorage.setItem("token", response.token);
 		login({
-			uid: response.user.uid,
+			uid: response.user.id,
 			email: response.user.email,
 			role: response.user.role
 		});
