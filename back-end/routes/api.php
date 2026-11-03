@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\JobPositionController;
+use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserManagementController;
@@ -21,6 +22,7 @@ Route::post('login', [AuthController::class, 'login'])->middleware('recaptcha');
 
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('services/active', [ServiceController::class, 'active']);
+Route::get('services/{service}/reviews', [ReviewController::class, 'index']);
 
 Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
     ->middleware(['signed'])
@@ -34,6 +36,10 @@ Route::get('workers/{worker}', [WorkerController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
 	Route::post('logout', [AuthController::class, 'logout']);
 	Route::get('me', fn (Request $r) => $r->user());
+
+	Route::post('services/{service}/reviews', [ReviewController::class, 'store']);
+	Route::put('reviews/{review}', [ReviewController::class, 'update']);
+	Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
 
 	Route::get('appointments', [ClientAppointmentController::class, 'index']);
 	Route::post('appointments', [ClientAppointmentController::class, 'store']);
