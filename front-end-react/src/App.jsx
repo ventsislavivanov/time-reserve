@@ -6,7 +6,7 @@ import { useAuth } from "./context";
 import ClientLayout from "./layouts/ClientLayout.jsx";
 import StaffLayout from "./layouts/StaffLayout.jsx";
 
-import { Login, SignUp, RoleGuard, getMe } from "./features/auth";
+import { Login, SignUp, RoleGuard, GuestGuard, getMe } from "./features/auth";
 import { ManageUsers } from "./features/users";
 import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
@@ -75,13 +75,17 @@ function App() {
 						<Route path="/my-appointments" element={<ClientAppointments />} />
 					</Route>
 
-					<Route path="/login" element={<Login isClient={true} guard="client" />} />
-					<Route path="/sign-up" element={<SignUp />} />
+					<Route element={<GuestGuard />}>
+						<Route path="/login" element={<Login isClient={true} guard="client" />} />
+						<Route path="/sign-up" element={<SignUp />} />
+					</Route>
 				</Route>
 
 				<Route path="/staff">
 					<Route element={<StaffLayout />}>
-						<Route path="login" element={<Login isClient={false} guard="staff" />} />
+						<Route element={<GuestGuard />}>
+							<Route path="login" element={<Login isClient={false} guard="staff" />} />
+						</Route>
 
 						<Route index element={ role === 'admin' ? <AdminDashboard /> : <WorkerDashboard /> } />
 

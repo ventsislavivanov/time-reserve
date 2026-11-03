@@ -32,7 +32,7 @@ To explore the different functionalities of the application, you can use the fol
 | Role        | Email               | Password | Login route    | Accessible Pages                                                                |
 |:------------|:--------------------|:---------|:---------------|:--------------------------------------------------------------------------------|
 | **Admin**   | admin@test.com      | password | `/staff/login` | `Dashboard`, `Appointnemt`, `User`,  `Job`, `Categories`, `Services`, `Reports` |
-| **Worker**  | an@test.com         | passowrd | `/staff/login` | `Dashboard`, `Appointnemt`, `Pending`, `History`                                |
+| **Worker**  | an@test.com         | passwоrd | `/staff/login` | `Dashboard`, `Appointnemt`, `Pending`, `History`                                |
 | **Client**  | john@example.com    | password | `/login`       | `My Appointments`, `Book Appointment`                                           |
 | **Guest**   | `No Login Required` | `None`   | `public`       | `Home`, `About`, `Services`, `Our team`, `Contact`                              |
 
