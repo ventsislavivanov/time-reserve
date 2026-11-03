@@ -92,12 +92,3 @@ To run the project locally, follow these steps:
 8. Start the development server: `ng serve`
 9. Access the application at: `http://localhost:4200`
 
-
-### 🔑 Database Credentials (Local Setup)
-If you need to run the back-end locally, expand the section below to see the connection string:
-
-<details>
-  <summary>Click to view DB_URL</summary>
-
-  ```text
-  postgresql://postgres:S2LgJCRGF0UqOOu@db.lkyklocykxwqoglqetzb.supabase.co:5432/postgres
