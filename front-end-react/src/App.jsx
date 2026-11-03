@@ -10,8 +10,8 @@ import { Login, SignUp, RoleGuard, GuestGuard, getMe } from "./features/auth";
 import { ManageUsers } from "./features/users";
 import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
-import { ManageServices, ServicesCatalog } from "./features/services";
-import { WorkersList } from './features/workers';
+import { ManageServices, ServicesCatalog, ServiceDetails } from "./features/services";
+import { WorkersList, WorkerDetails } from './features/workers';
 import {
 	BookingWizard,
 	ClientAppointments,
@@ -68,7 +68,9 @@ function App() {
 					<Route path="/about-us" element={<h1>About us page</h1>} />
 					<Route path="/contact-us" element={<h1>Contact us page</h1>} />
 					<Route path="/services" element={<ServicesCatalog/>} />
+					<Route path="/services/:serviceId" element={<ServiceDetails />} />
 					<Route path="/our-team" element={<WorkersList />} />
+					<Route path="/our-team/:workerId" element={<WorkerDetails />} />
 
 					<Route element={<RoleGuard allowedRoles={['client']} redirectTo="/login" />}>
 						<Route path="/our-team/book/:workerId" element={<BookingWizard />} />

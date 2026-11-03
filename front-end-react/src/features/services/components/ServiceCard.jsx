@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { UICard } from '../../../components/common/ui';
 
 const ServiceCard = ({ service, category }) => {
@@ -18,7 +19,7 @@ const ServiceCard = ({ service, category }) => {
 
 			<div className="card-body">
 				<div className="d-flex justify-content-between align-items-start mb-2">
-					<h5 className="card-title mb-0">{service.name}</h5>
+					<h5 className="card-title mb-0"><Link to={`/services/${service.id}`} className="text-decoration-none">{service.name}</Link></h5>
 					<span className="badge bg-primary">{category?.name}</span>
 				</div>
 
@@ -37,6 +38,9 @@ const ServiceCard = ({ service, category }) => {
 						<h6 className="mb-0 text-primary">{service.price} €</h6>
 					</div>
 				</div>
+				<Link to={`/services/${service.id}`} className="btn btn-outline-primary btn-sm w-100 mt-3">
+					View details
+				</Link>
 			</div>
 		</UICard>
 	);

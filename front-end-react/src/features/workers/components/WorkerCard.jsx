@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { UICard } from '../../../components/common/ui';
 
 const WorkerCard = ({ worker, user }) => {
@@ -50,8 +50,11 @@ const WorkerCard = ({ worker, user }) => {
 				)}
 			</div>
 
+			<Link to={`/our-team/${worker.id}`} className="btn btn-outline-primary w-100 mt-auto mb-2">
+				View profile
+			</Link>
 			<button
-				className="btn btn-primary w-100 mt-auto"
+				className="btn btn-primary w-100"
 				onClick={handleBooking}
 			>
 				Book Appointment
