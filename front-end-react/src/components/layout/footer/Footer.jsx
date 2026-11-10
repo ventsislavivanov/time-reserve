@@ -4,7 +4,7 @@ const Footer = () => {
 
 	return (
 		<footer className="text-center py-3 bg-primary text-white">
-			&copy; {year} MovieSearch. All rights reserved.
+			&copy; {year} Time Reserve. All rights reserved.
 		</footer>
 	);
 }
