@@ -12,6 +12,7 @@ import { ManageJobs } from "./features/jobs";
 import { ManageCategories } from "./features/categories";
 import { ManageServices, ServicesCatalog, ServiceDetails } from "./features/services";
 import { WorkersList, WorkerDetails } from './features/workers';
+import { Home, About, Contact } from './features/pages';
 import {
 	BookingWizard,
 	ClientAppointments,
@@ -64,9 +65,9 @@ function App() {
 		<>
 			<Routes>
 				<Route element={<ClientLayout />}>
-					<Route path="/" element={<h1>Welcome to our website!</h1>} />
-					<Route path="/about-us" element={<h1>About us page</h1>} />
-					<Route path="/contact-us" element={<h1>Contact us page</h1>} />
+					<Route path="/" element={<Home />} />
+					<Route path="/about-us" element={<About />} />
+					<Route path="/contact-us" element={<Contact />} />
 					<Route path="/services" element={<ServicesCatalog/>} />
 					<Route path="/services/:serviceId" element={<ServiceDetails />} />
 					<Route path="/our-team" element={<WorkersList />} />
