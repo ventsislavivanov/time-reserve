@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { BrowserRouter } from "react-router";
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import { ThemeProvider } from 'next-themes';
 
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
@@ -9,21 +10,22 @@ import './utils/fontawesome.js';
 
 import { AuthProvider } from "./context";
 
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootswatch/dist/spacelab/bootstrap.min.css';
+import '@fontsource-variable/inter';
+import './index.css';
 
 createRoot(document.getElementById('root')).render(
 	//<StrictMode>
-		<BrowserRouter>
-			<AuthProvider>
-				<GoogleReCaptchaProvider
-					reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-					scriptProps={{ async: true, defer: true, appendTo: 'head', }}
-				>
-					<App/>
-				</GoogleReCaptchaProvider>
-			</AuthProvider>
-		</BrowserRouter>
+		<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+			<BrowserRouter>
+				<AuthProvider>
+					<GoogleReCaptchaProvider
+						reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+						scriptProps={{ async: true, defer: true, appendTo: 'head', }}
+					>
+						<App/>
+					</GoogleReCaptchaProvider>
+				</AuthProvider>
+			</BrowserRouter>
+		</ThemeProvider>
 	//</StrictMode>,
 )
