@@ -1,5 +1,8 @@
 import { useFormContext } from 'react-hook-form';
+import { Textarea as ShTextarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { useFieldError } from "../../../../../hooks";
+import Field from "../field/Field.jsx";
 
 const Textarea = ({
 	name,
@@ -8,37 +11,24 @@ const Textarea = ({
 	label,
 	rows = 3,
 	disabled,
-	classes = 'form-control',
+	classes = '',
 	showErrors = true,
 }) => {
 	const { register } = useFormContext();
 	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
-	const cx = (...classes) => classes.filter(Boolean).join(' ');
-
 	return (
-		<div className="form-group mb-3">
-			{label && (
-				<label htmlFor={name} className="control-label">
-					{label}
-				</label>
-			)}
-
-			<textarea
+		<Field name={name} label={label} errors={errorMessages}>
+			<ShTextarea
 				id={name}
 				rows={rows}
 				placeholder={placeholder}
 				{...register(name, rules)}
-				className={cx(classes, isInvalid ? 'is-invalid' : null)}
+				aria-invalid={isInvalid || undefined}
+				className={cn(classes)}
 				disabled={disabled}
 			/>
-
-			{errorMessages.map((e) => (
-				<div key={e.$uid} className="invalid-feedback d-block">
-					{e.$message}
-				</div>
-			))}
-		</div>
+		</Field>
 	);
 };
 

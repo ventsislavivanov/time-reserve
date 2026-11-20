@@ -60,14 +60,13 @@ const GenericForm = ({
 
 	return (
 		<UICard
-			variant="primary"
 			title={isEditing ? `Edit ${title}` : `Add New ${title}`}
 			headerIcon={isEditing ? 'edit' : 'plus-circle'}
 		>
 			<UIAppForm methods={methods} onSubmit={onSubmit}>
 				{fields.map(renderField)}
 
-				<div className="d-grid gap-2">
+				<div className="grid gap-2">
 					<UIButton
 						type="submit"
 						variant="success"

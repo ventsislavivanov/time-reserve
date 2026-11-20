@@ -1,18 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Badge } from "@/components/ui/badge";
 
- const StatusBadge = ({
+const StatusBadge = ({
     condition,
     trueText = "Yes",
     falseText = "No"
 }) => {
     return (
-        <span
-            className={`badge rounded-pill ${condition ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}`}
-            style={{ fontSize: '0.75rem' }}
-        >
-        <FontAwesomeIcon icon={condition ? 'check-circle' : 'times-circle'} className="me-1"/>
+        <Badge variant={condition ? 'success' : 'danger'}>
+            <FontAwesomeIcon icon={condition ? 'check-circle' : 'times-circle'} />
             {condition ? trueText : falseText}
-    </span>
+        </Badge>
     );
 }
 

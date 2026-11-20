@@ -1,56 +1,70 @@
-import { forwardRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { hideModal, useModalOpen } from "../../../../../hooks/useBootstrapModal.js";
 
-const UIModal = forwardRef(({
+const SIZES = {
+	"modal-sm": "sm:max-w-sm",
+	"modal-md": "sm:max-w-lg",
+	"modal-lg": "sm:max-w-3xl",
+	"modal-xl": "sm:max-w-5xl",
+};
+
+// Opened and closed through showModal(id) / hideModal(id) from hooks/useBootstrapModal.
+const UIModal = ({
 	id,
 	title,
 	icon,
 	children,
 	footer,
 	size = "modal-md",
-	centered = false,
 	staticBackdrop = false,
-	onClose
-}, ref) => {
+	onClose,
+}) => {
+	const open = useModalOpen(id);
+
+	const handleOpenChange = (next) => {
+		if (next) return;
+		hideModal(id);
+		onClose?.();
+	};
+
+	const blockIfStatic = (e) => staticBackdrop && e.preventDefault();
+
 	return (
-		<div
-			className="modal fade"
-			id={id}
-			tabIndex="-1"
-			aria-hidden="true"
-			data-bs-backdrop={staticBackdrop ? "static" : "true"}
-			data-bs-keyboard={staticBackdrop ? "false" : "true"}
-			ref={ref}
-		>
-			<div className={`modal-dialog ${size} ${centered ? 'modal-dialog-centered' : ''}`}>
-				<div className="modal-content border-0 shadow">
-					<div className="modal-header bg-primary text-white border-0">
-						<h5 className="modal-title fw-bold text-white">
-							{icon && <FontAwesomeIcon icon={icon} className="me-2" />}
-							{title}
-						</h5>
-						<button
-							type="button"
-							className="btn-close btn-close-white"
-							data-bs-dismiss="modal"
-							aria-label="Close"
-							onClick={onClose}
-						></button>
-					</div>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
+			<DialogContent
+				className={cn("flex max-h-[90vh] flex-col gap-0 p-0", SIZES[size] ?? SIZES["modal-md"])}
+				onInteractOutside={blockIfStatic}
+				onEscapeKeyDown={blockIfStatic}
+			>
+				<DialogHeader className="border-b px-6 py-4">
+					<DialogTitle className="flex items-center gap-2 pr-6">
+						{icon && <FontAwesomeIcon icon={icon} className="text-primary" />}
+						{title}
+					</DialogTitle>
+					<DialogDescription className="sr-only">{title}</DialogDescription>
+				</DialogHeader>
 
-					<div className="modal-body p-4">
-						{children}
-					</div>
-
-					{footer && (
-						<div className="modal-footer border-top-0 pt-0 px-4 pb-4">
-							{footer}
-						</div>
-					)}
+				<div className="flex-1 overflow-y-auto px-6 py-5">
+					{children}
 				</div>
-			</div>
-		</div>
+
+				{footer && (
+					<DialogFooter className="border-t px-6 py-4">
+						{footer}
+					</DialogFooter>
+				)}
+			</DialogContent>
+		</Dialog>
 	);
-});
+};
 
 export default UIModal;

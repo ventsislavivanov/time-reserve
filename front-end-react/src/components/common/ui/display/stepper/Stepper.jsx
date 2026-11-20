@@ -1,40 +1,46 @@
+import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+
 const UIStepper = ({ steps, currentStep }) => {
 	return (
-		<div className="mb-4">
-			<div className="d-flex justify-content-between align-items-start">
-				{steps.map((s, index) => (
-					<div key={s.id} className="d-flex flex-column align-items-center flex-grow-1" style={{ position: 'relative' }}>
+		<ol className="mb-8 flex items-start justify-between">
+			{steps.map((s, index) => {
+				const done = currentStep > s.id;
+				const active = currentStep === s.id;
+
+				return (
+					<li key={s.id} className="relative flex flex-1 flex-col items-center">
 						{index < steps.length - 1 && (
 							<div
-								className={`position-absolute ${currentStep > s.id ? 'bg-primary' : 'bg-light'}`}
-								style={{
-									height: '2px',
-									width: '100%',
-									top: '20px',
-									left: '50%',
-									zIndex: 0
-								}}
+								className={cn(
+									"absolute left-1/2 top-5 h-0.5 w-full",
+									done ? "bg-primary" : "bg-border"
+								)}
 							/>
 						)}
 
 						<div
-							className={`rounded-circle d-flex align-items-center justify-content-center mb-2 ${
-								currentStep >= s.id ? 'bg-primary text-white' : 'bg-light text-muted'
-							}`}
-							style={{ width: '40px', height: '40px', zIndex: 1, position: 'relative' }}
+							aria-current={active ? "step" : undefined}
+							className={cn(
+								"relative z-10 mb-2 flex size-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors",
+								done && "border-primary bg-primary text-primary-foreground",
+								active && "border-primary bg-background text-primary ring-4 ring-primary/15",
+								!done && !active && "border-border bg-background text-muted-foreground"
+							)}
 						>
-							{s.id}
+							{done ? <Check className="size-5" /> : s.id}
 						</div>
 
-						<small className={`text-center ${currentStep >= s.id ? 'text-primary fw-bold' : 'text-muted'}`}
-							   style={{ fontSize: '0.8rem' }}
-						>
+						<span className={cn(
+							"text-center text-xs",
+							currentStep >= s.id ? "font-semibold text-foreground" : "text-muted-foreground"
+						)}>
 							{s.label}
-						</small>
-					</div>
-				))}
-			</div>
-		</div>
+						</span>
+					</li>
+				);
+			})}
+		</ol>
 	);
 };
 

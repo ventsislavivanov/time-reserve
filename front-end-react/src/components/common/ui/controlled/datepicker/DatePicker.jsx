@@ -1,69 +1,72 @@
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { registerLocale } from  "react-datepicker";
-import { bg } from 'date-fns/locale/bg';
+import { format } from "date-fns";
+import { bg } from "react-day-picker/locale";
+import { CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { useFieldError } from "../../../../../hooks";
-import styles from './DatePicker.module.css';
+import Field from "../field/Field.jsx";
 
-registerLocale('bg', bg);
+const START_MONTH = new Date(1920, 0);
+const END_MONTH = new Date(new Date().getFullYear() + 5, 11);
 
 const DatePicker = ({
 	name,
 	rules,
 	label,
 	placeholder,
-	icon = ['fas', 'calendar'],
 	showErrors = true,
 }) => {
 	const { control } = useFormContext();
 	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
+	const [open, setOpen] = useState(false);
 
 	return (
-		<div className="form-group mb-3">
-			{label && <label htmlFor={name} className="control-label">{label}</label>}
-
-			<div className="input-group">
-				{icon && (
-					<span className="input-group-text">
-                        <FontAwesomeIcon icon={icon} />
-                    </span>
+		<Field name={name} label={label} errors={errorMessages}>
+			<Controller
+				control={control}
+				name={name}
+				rules={rules}
+				render={({ field: { onChange, onBlur, value } }) => (
+					<Popover open={open} onOpenChange={setOpen}>
+						<PopoverTrigger asChild>
+							<Button
+								id={name}
+								type="button"
+								variant="outline"
+								onBlur={onBlur}
+								aria-invalid={isInvalid || undefined}
+								className={cn(
+									"w-full justify-start font-normal",
+									!value && "text-muted-foreground"
+								)}
+							>
+								<CalendarIcon />
+								{value ? format(value, "dd/MM/yyyy") : (placeholder ?? "dd/mm/yyyy")}
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="w-auto p-0" align="start">
+							<Calendar
+								mode="single"
+								locale={bg}
+								captionLayout="dropdown"
+								startMonth={START_MONTH}
+								endMonth={END_MONTH}
+								selected={value || undefined}
+								defaultMonth={value || undefined}
+								onSelect={(date) => {
+									onChange(date);
+									setOpen(false);
+								}}
+							/>
+						</PopoverContent>
+					</Popover>
 				)}
-
-				<Controller
-					control={control}
-					name={name}
-					rules={rules}
-					render={({ field: { onChange, onBlur, value } }) => (
-						<ReactDatePicker
-							portalId="root-portal"
-							onChange={onChange}
-							onBlur={onBlur}
-							selected={value}
-							placeholderText={placeholder}
-							dateFormat="dd/MM/yyyy"
-							locale="bg"
-							wrapperClassName={styles.datepickerWrapper}
-							className={`form-control ${isInvalid ? 'is-invalid' : ''} ${styles.customInput}`}
-							autoComplete="off"
-							showMonthDropdown
-							showYearDropdown
-							dropdownMode="select"
-							yearDropdownItemNumber={100}
-							scrollableYearDropdown
-							showMonthYearDropdown={false}
-						/>
-					)}
-				/>
-			</div>
-
-			{errorMessages.map((e) => (
-				<div key={e.$uid} className="invalid-feedback d-block">
-					{e.$message}
-				</div>
-			))}
-		</div>
+			/>
+		</Field>
 	);
 }
 

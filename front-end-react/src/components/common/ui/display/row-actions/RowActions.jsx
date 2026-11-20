@@ -1,45 +1,19 @@
-﻿import { useEffect, useRef, useState } from "react";
-import {UIButton, UILoadingButton} from "../../";
+﻿import { MoreVertical } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./RowActions.module.css";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { UIButton, UILoadingButton } from "../../";
+
+const ALIGN = { start: "justify-start", center: "justify-center", end: "justify-end" };
 
 const UIRowActions = ({ actions = [], align = "end" }) => {
-	const [open, setOpen] = useState(false);
-	const ref = useRef(null);
-
-	useEffect(() => {
-		const handleClickOutside = (e) => {
-			if (ref.current && !ref.current.contains(e.target)) {
-				setOpen(false);
-			}
-		};
-
-		const handleAnotherDropdownOpened = () => {
-			setOpen(false);
-		};
-
-		document.addEventListener("mousedown", handleClickOutside);
-		document.addEventListener("ui-row-actions-open", handleAnotherDropdownOpened);
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-			document.removeEventListener("ui-row-actions-open", handleAnotherDropdownOpened);
-		};
-	}, []);
-
-	const toggle = () => {
-		if (!open) {
-			document.dispatchEvent(new CustomEvent("ui-row-actions-open"));
-		}
-		setOpen(!open);
-	};
-
 	if (!actions.length) return null;
 
 	return (
-		<div ref={ref}>
+		<div>
 			{/* DESKTOP */}
-			<div className={`d-none d-md-flex justify-content-${align} gap-2`}>
+			<div className={cn("hidden gap-2 md:flex", ALIGN[align])}>
 				{actions.map(action => {
 					const {
 						id,
@@ -53,9 +27,10 @@ const UIRowActions = ({ actions = [], align = "end" }) => {
 
 					return (
 						<ButtonComponent
-							key={id}
+							key={id ?? buttonProps.title ?? label}
 							loading={loading || undefined}
 							{...buttonProps}
+							size={buttonProps.size ?? "sm"}
 						>
 							{loading ? loadingLabel : label}
 						</ButtonComponent>
@@ -64,49 +39,26 @@ const UIRowActions = ({ actions = [], align = "end" }) => {
 			</div>
 
 			{/* MOBILE */}
-			<div className="d-md-none position-relative text-end">
-				<UIButton
-					size="sm"
-					variant="light"
-					className="border"
-					onClick={toggle}
-				>
-					<FontAwesomeIcon icon="ellipsis-vertical" />
-				</UIButton>
-
-				{open && (
-					<div
-						className="dropdown-menu show mt-2 shadow-sm"
-						style={{ right: 0, left: "auto" }}
-					>
+			<div className="text-end md:hidden">
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button variant="outline" size="icon-sm" aria-label="Actions">
+							<MoreVertical />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
 						{actions.map(action => {
 							const { id, icon, iconClassName, label, title, onClick } = action;
 
 							return (
-								<button
-									key={id}
-									className="dropdown-item d-flex align-items-center gap-2"
-									onClick={() => {
-										setOpen(false);
-										onClick?.();
-									}}
-								>
-									{icon && (
-										<FontAwesomeIcon
-											icon={icon}
-											className={iconClassName}
-											fixedWidth
-										/>
-									)}
-
-									<span className="text-body">
-                                        {label || title}
-                                    </span>
-								</button>
+								<DropdownMenuItem key={id ?? title ?? label} onSelect={() => onClick?.()}>
+									{icon && <FontAwesomeIcon icon={icon} className={iconClassName} fixedWidth />}
+									{label || title}
+								</DropdownMenuItem>
 							);
 						})}
-					</div>
-				)}
+					</DropdownMenuContent>
+				</DropdownMenu>
 			</div>
 		</div>
 	);

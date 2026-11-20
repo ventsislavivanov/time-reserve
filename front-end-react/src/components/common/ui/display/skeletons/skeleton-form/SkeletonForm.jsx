@@ -1,19 +1,20 @@
-import styles from './SkeletonForm.module.css';
+import { Skeleton } from '@/components/ui/skeleton';
+import { UICard } from '../../../index.js';
 
 const SkeletonForm = ({ fields = 5 }) => {
 	return (
-		<div className="card p-4">
-			<div className={`${styles.skeleton} ${styles.skeletonLabel} mb-4`} style={{ width: '40%' }}></div>
+		<UICard>
+			<Skeleton className="mb-6 h-5 w-2/5" />
 
 			{[...Array(fields)].map((_, index) => (
-				<div key={index}>
-					<div className={`${styles.skeleton} ${styles.skeletonLabel}`} style={{ width: '30%' }}></div>
-					<div className={`${styles.skeleton} ${styles.skeletonInput}`}></div>
+				<div key={index} className="mb-4 space-y-2">
+					<Skeleton className="h-4 w-[30%]" />
+					<Skeleton className="h-9 w-full" />
 				</div>
 			))}
 
-			<div className={`${styles.skeleton} ${styles.skeletonButton}`}></div>
-		</div>
+			<Skeleton className="mt-6 h-10 w-full" />
+		</UICard>
 	);
 };
 

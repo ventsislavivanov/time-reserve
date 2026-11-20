@@ -1,4 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
+const HEADER_VARIANTS = {
+    primary: 'bg-primary text-primary-foreground',
+    success: 'bg-success text-success-foreground',
+    danger: 'bg-destructive text-white',
+    warning: 'bg-warning text-warning-foreground',
+    info: 'bg-primary text-primary-foreground',
+    dark: 'bg-foreground text-background',
+    secondary: 'bg-secondary text-secondary-foreground',
+};
 
 const UICard = ({
     children,
@@ -9,34 +21,35 @@ const UICard = ({
     className = '',
     headerClassName = '',
     bodyClassName = '',
-    variant = '', // primary, success, etc. for header bg
+    variant = '',
     ...props
 }) => {
-    const headerBgClass = variant ? `bg-${variant} text-white` : 'bg-white';
-    
     return (
-        <div className={`card shadow-sm border-0 rounded-3 overflow-hidden ${className}`} {...props}>
+        <Card className={cn('gap-0 overflow-hidden py-0 shadow-sm', className)} {...props}>
             {(title || headerIcon || headerActions) && (
-                <div className={`card-header d-flex justify-content-between align-items-center py-3 ${headerBgClass} ${headerClassName}`}>
-                    <h5 className="mb-0 d-flex align-items-center fw-bold">
-                        {headerIcon && (
-                            <span className="me-2">
-                                <FontAwesomeIcon icon={headerIcon} />
-                            </span>)}
+                <CardHeader
+                    className={cn(
+                        'flex flex-row items-center justify-between border-b py-4',
+                        variant && HEADER_VARIANTS[variant],
+                        headerClassName
+                    )}
+                >
+                    <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                        {headerIcon && <FontAwesomeIcon icon={headerIcon} />}
                         {title}
-                    </h5>
+                    </CardTitle>
                     {headerActions && <div>{headerActions}</div>}
-                </div>
+                </CardHeader>
             )}
-            <div className={`card-body ${bodyClassName}`}>
+            <CardContent className={cn('p-6', bodyClassName)}>
                 {children}
-            </div>
+            </CardContent>
             {footer && (
-                <div className="card-footer bg-white border-top-0 py-3">
+                <CardFooter className="border-t bg-muted/30 py-4">
                     {footer}
-                </div>
+                </CardFooter>
             )}
-        </div>
+        </Card>
     );
 };
 

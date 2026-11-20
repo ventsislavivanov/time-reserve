@@ -1,23 +1,24 @@
-import styles from './SkeletonList.module.css';
+import { Skeleton } from '@/components/ui/skeleton';
+import { UICard } from '../../../index.js';
 
 const SkeletonList = ({ rows = 5 }) => {
 	return (
-		<div className="card p-4">
-			<div className={styles.header}>
-				<div className={`${styles.skeleton} ${styles.skeletonHeaderTitle}`}></div>
-			</div>
+		<UICard>
+			<Skeleton className="mb-5 h-7 w-52" />
 
-			{[...Array(rows)].map((_, index) => (
-				<div key={index} className={styles.listItem}>
-					<div className={`${styles.skeleton} ${styles.skeletonTitle}`}></div>
-					<div className={`${styles.skeleton} ${styles.skeletonText}`}></div>
-					<div className="d-flex gap-2 mt-3">
-						<div className={`${styles.skeleton} ${styles.skeletonActions}`}></div>
-						<div className={`${styles.skeleton} ${styles.skeletonActions}`}></div>
+			<div className="space-y-3">
+				{[...Array(rows)].map((_, index) => (
+					<div key={index} className="space-y-2 rounded-lg border p-4">
+						<Skeleton className="h-5 w-2/5" />
+						<Skeleton className="h-4 w-7/12" />
+						<div className="flex gap-2 pt-2">
+							<Skeleton className="h-8 w-20" />
+							<Skeleton className="h-8 w-20" />
+						</div>
 					</div>
-				</div>
-			))}
-		</div>
+				))}
+			</div>
+		</UICard>
 	);
 };
 

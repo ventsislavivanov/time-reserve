@@ -1,5 +1,9 @@
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+import { Checkbox as ShCheckbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { useFieldError } from "../../../../../hooks";
+import { FieldErrors } from "../field/Field.jsx";
 
 const Checkbox = ({
 	name,
@@ -9,29 +13,34 @@ const Checkbox = ({
 	className = "",
 	showErrors = true
 }) => {
-	const { register } = useFormContext();
+	const { control } = useFormContext();
 	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
 	return (
-		<div className={`form-check mb-3 ${className}`}>
-			<input
-				type="checkbox"
-				id={name}
-				className={`form-check-input ${isInvalid ? 'is-invalid' : ''}`}
-				disabled={disabled}
-				{...register(name, rules)}
-			/>
-			{label && (
-				<label className="form-check-label text-secondary" htmlFor={name}>
-					{label}
-				</label>
-			)}
-
-			{errorMessages.map((e) => (
-				<div key={e.$uid} className="invalid-feedback d-block">
-					{e.$message}
-				</div>
-			))}
+		<div className={cn("mb-4 space-y-1.5", className)}>
+			<div className="flex items-center gap-2">
+				<Controller
+					control={control}
+					name={name}
+					rules={rules}
+					render={({ field }) => (
+						<ShCheckbox
+							id={name}
+							checked={!!field.value}
+							onCheckedChange={(checked) => field.onChange(checked === true)}
+							onBlur={field.onBlur}
+							disabled={disabled}
+							aria-invalid={isInvalid || undefined}
+						/>
+					)}
+				/>
+				{label && (
+					<Label htmlFor={name} className="font-normal text-muted-foreground">
+						{label}
+					</Label>
+				)}
+			</div>
+			<FieldErrors errors={errorMessages} />
 		</div>
 	);
 }

@@ -1,26 +1,23 @@
-import styles from '../skeleton-list/SkeletonList.module.css';
+import { Skeleton } from '@/components/ui/skeleton';
 import { UICard } from '../../../index.js';
 
 const ServiceCard = () => {
 	return (
-		<UICard className="h-100 shadow-sm border-0">
-			<div
-				className={`${styles.skeleton}`}
-				style={{ height: '200px', borderRadius: '8px 8px 0 0' }}
-			></div>
+		<UICard className="h-full" bodyClassName="p-0">
+			<Skeleton className="h-48 rounded-none" />
 
-			<div className="card-body">
-				<div className="d-flex justify-content-between align-items-start mb-3">
-					<div className={`${styles.skeleton}`} style={{ height: '24px', width: '60%' }}></div>
-					<div className={`${styles.skeleton}`} style={{ height: '20px', width: '25%', borderRadius: '10px' }}></div>
+			<div className="space-y-3 p-5">
+				<div className="flex items-start justify-between">
+					<Skeleton className="h-6 w-3/5" />
+					<Skeleton className="h-5 w-1/4 rounded-full" />
 				</div>
 
-				<div className={`${styles.skeleton} mb-2`} style={{ height: '14px', width: '90%' }}></div>
-				<div className={`${styles.skeleton} mb-3`} style={{ height: '14px', width: '70%' }}></div>
+				<Skeleton className="h-3.5 w-11/12" />
+				<Skeleton className="h-3.5 w-8/12" />
 
-				<div className="d-flex justify-content-between align-items-center mt-auto">
-					<div className={`${styles.skeleton}`} style={{ height: '16px', width: '30%' }}></div>
-					<div className={`${styles.skeleton}`} style={{ height: '20px', width: '20%' }}></div>
+				<div className="flex items-center justify-between pt-2">
+					<Skeleton className="h-4 w-[30%]" />
+					<Skeleton className="h-5 w-1/5" />
 				</div>
 			</div>
 		</UICard>

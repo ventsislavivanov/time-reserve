@@ -1,4 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { NativeSelect } from "../../base/native-select/NativeSelect.jsx";
 
 const Pagination = ({
 	currentPage,
@@ -40,79 +42,58 @@ const Pagination = ({
 
 	if (totalPages <= 0) return null;
 
+	const atStart = currentPage === 1;
+	const atEnd = currentPage === totalPages;
+
 	return (
-		<div className="d-flex justify-content-between align-items-center mt-3 px-2">
-			<div className="d-flex align-items-center gap-2">
-				<span className="text-muted small">Show</span>
-				<select
-					className="form-select form-select-sm"
-					style={{ width: 'auto' }}
-					value={itemsPerPage}
-					onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-				>
-					<option value="10">10</option>
-					<option value="20">20</option>
-					<option value="50">50</option>
-					<option value="100">100</option>
-				</select>
-				<span className="text-muted small">entries of {totalItems}</span>
+		<div className="mt-4 flex flex-col items-center justify-between gap-3 px-2 sm:flex-row">
+			<div className="flex items-center gap-2 text-sm text-muted-foreground">
+				<span>Show</span>
+				<div className="w-20">
+					<NativeSelect
+						className="h-8"
+						value={itemsPerPage}
+						onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
+					>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</NativeSelect>
+				</div>
+				<span>entries of {totalItems}</span>
 			</div>
 
-			<nav aria-label="Page navigation">
-				<ul className="pagination pagination-sm mb-0">
-					<li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-						<button className="page-link"
-								onClick={() => onPageChange(1)}
-								title="First Page"
-						>
-							<FontAwesomeIcon icon="angle-double-left" />
-						</button>
-					</li>
+			<nav aria-label="Page navigation" className="flex items-center gap-1">
+				<Button variant="outline" size="icon-sm" disabled={atStart} onClick={() => onPageChange(1)} title="First Page">
+					<ChevronsLeft />
+				</Button>
+				<Button variant="outline" size="icon-sm" disabled={atStart} onClick={() => onPageChange(currentPage - 1)} title="Previous">
+					<ChevronLeft />
+				</Button>
 
-					<li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-						<button className="page-link"
-								onClick={() => onPageChange(currentPage - 1)}
-								title="Previous"
+				{getPageNumbers().map((page, index) =>
+					page === '...' ? (
+						<span key={index} className="px-1 text-muted-foreground">…</span>
+					) : (
+						<Button
+							key={index}
+							size="icon-sm"
+							variant={page === currentPage ? "default" : "ghost"}
+							aria-current={page === currentPage ? "page" : undefined}
+							onClick={() => onPageChange(page)}
 						>
-							<FontAwesomeIcon icon="angle-left" />
-						</button>
-					</li>
+							{page}
+						</Button>
+					)
+				)}
 
-					{getPageNumbers().map((page, index) => (
-						<li key={index}
-							className={`
-								page-item
-								${page === currentPage ? 'active' : ''}
-								${page === '...' ? 'disabled' : ''}
-							`}
-						>
-							<button
-								className="page-link"
-								onClick={() => typeof page === 'number' && onPageChange(page)}
-							>
-								{page}
-							</button>
-						</li>
-					))}
-
-					<li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-						<button className="page-link"
-								onClick={() => onPageChange(currentPage + 1)}
-								title="Next"
-						>
-							<FontAwesomeIcon icon="angle-right" />
-						</button>
-					</li>
-
-					<li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-						<button className="page-link"
-								onClick={() => onPageChange(totalPages)}
-								title="Last Page"
-						>
-							<FontAwesomeIcon icon="angle-double-right" />
-						</button>
-					</li>
-				</ul>
+				<Button variant="outline" size="icon-sm" disabled={atEnd} onClick={() => onPageChange(currentPage + 1)} title="Next">
+					<ChevronRight />
+				</Button>
+				<Button variant="outline" size="icon-sm" disabled={atEnd} onClick={() => onPageChange(totalPages)} title="Last Page">
+					<ChevronsRight />
+				</Button>
 			</nav>
 		</div>
 	);

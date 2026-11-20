@@ -9,17 +9,11 @@ function LoadingButton({
 }) {
     return (
         <UIButton
+            isLoading={loading}
             disabled={loading || disabled}
             {...props}
         >
-            {loading ? (
-                <>
-                    <span className="spinner-border spinner-border-sm me-2"></span>
-                    {loadingLabel || children}
-                </>
-            ) : (
-                children
-            )}
+            {loading ? (loadingLabel || children) : children}
         </UIButton>
     );
 }

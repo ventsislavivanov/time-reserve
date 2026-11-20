@@ -1,6 +1,9 @@
 import { useId } from 'react';
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { useFieldError } from "../../../../../hooks";
+import { FieldErrors } from "../field/Field.jsx";
 
 const Radio = ({
 	name,
@@ -10,46 +13,42 @@ const Radio = ({
 	showErrors = true,
 }) => {
 	const groupId = useId();
-	const { register } = useFormContext();
+	const { control } = useFormContext();
 	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
 	const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 	return (
-		<div className="form-group mb-3">
-			<label className="form-label" style={{ paddingLeft: 5 }}>
-				{label}
-			</label>
-			<br />
+		<div className="mb-4 space-y-2">
+			{label && <Label>{label}</Label>}
 
-			{options.map((option, idx) => {
-				const id = `${groupId}-${option}`;
-				const regProps = idx === 0 ? register(name, rules) : register(name);
+			<Controller
+				control={control}
+				name={name}
+				rules={rules}
+				render={({ field }) => (
+					<RadioGroup
+						value={field.value ?? ""}
+						onValueChange={field.onChange}
+						onBlur={field.onBlur}
+						aria-invalid={isInvalid || undefined}
+					>
+						{options.map((option) => {
+							const id = `${groupId}-${option}`;
+							return (
+								<div key={option} className="flex items-center gap-2">
+									<RadioGroupItem value={option} id={id} />
+									<Label htmlFor={id} className="font-normal">
+										{capitalizeFirstLetter(option)}
+									</Label>
+								</div>
+							);
+						})}
+					</RadioGroup>
+				)}
+			/>
 
-				return (
-					<div key={option} className="form-check">
-						<input
-							type="radio"
-							id={id}
-							value={option}
-							name={name}
-							{...regProps}
-							className={`form-check-input ${isInvalid ? 'is-invalid' : ''}`}
-							aria-invalid={isInvalid ? 'true' : undefined}
-						/>
-
-						<label htmlFor={id} className="form-check-label" style={{ paddingLeft: 5 }}>
-							{capitalizeFirstLetter(option)}
-						</label>
-					</div>
-				);
-			})}
-
-			{errorMessages.map((e) => (
-				<div key={e.$uid} className="invalid-feedback d-block">
-					{e.$message}
-				</div>
-			))}
+			<FieldErrors errors={errorMessages} />
 		</div>
 	);
 }

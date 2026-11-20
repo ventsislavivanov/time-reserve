@@ -1,31 +1,38 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Input as ShInput } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 const Input = ({
 	type = 'text',
 	label,
 	labelClassName = '',
-	inputClassName = 'form-control',
+	inputClassName = '',
 	placeholder,
 	icon,
 	iconClassName = '',
 	value,
 	onChange,
-	positionClassName = "col-md-3",
+	positionClassName = "w-full md:w-64",
+	name,
 	...props
 }) => {
 	return (
-		<div className={positionClassName}>
-			{label && <label htmlFor={name} className={labelClassName}>{label}</label>}
+		<div className={cn("space-y-1.5", positionClassName)}>
+			{label && <Label htmlFor={name} className={labelClassName}>{label}</Label>}
 
-			<div className="input-group">
+			<div className="relative">
 				{icon && (
-					<span className={iconClassName}>
-                        <FontAwesomeIcon icon={icon} />
-                    </span>
+					<FontAwesomeIcon
+						icon={icon}
+						className={cn("pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground", iconClassName)}
+					/>
 				)}
-				<input
+				<ShInput
+					id={name}
+					name={name}
 					type={type}
-					className={inputClassName}
+					className={cn(icon && "pl-9", inputClassName)}
 					placeholder={placeholder}
 					value={value}
 					onChange={onChange}

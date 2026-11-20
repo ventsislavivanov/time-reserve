@@ -1,40 +1,33 @@
-import styles from './SkeletonTable.module.css';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-const SkeletonTable = ({ rows = 5, columns = 5 }) => {
-	const randomWidth = () => `${Math.floor(60 + Math.random() * 35)}%`;
+const SkeletonTable = ({ rows = 5, columns = 5, compact = false }) => {
+	const randomWidth = () => `${Math.floor(50 + Math.random() * 40)}%`;
 
 	return (
-		<div className="table-responsive">
-			<table className="table">
-				<thead>
-				<tr>
+		<Table>
+			<TableHeader>
+				<TableRow>
 					{[...Array(columns)].map((_, i) => (
-						<th key={i}>
-							<div
-								className={`${styles.skeleton} ${styles.headerCell}`}
-								style={{ width: randomWidth() }}
-							></div>
-						</th>
+						<TableHead key={i}>
+							<Skeleton className="h-4" style={{ width: randomWidth() }} />
+						</TableHead>
 					))}
-				</tr>
-				</thead>
+				</TableRow>
+			</TableHeader>
 
-				<tbody>
+			<TableBody>
 				{[...Array(rows)].map((_, rowIndex) => (
-					<tr key={rowIndex}>
+					<TableRow key={rowIndex}>
 						{[...Array(columns)].map((_, colIndex) => (
-							<td key={colIndex}>
-								<div
-									className={`${styles.skeleton} ${styles.bodyCell}`}
-									style={{ width: randomWidth() }}
-								></div>
-							</td>
+							<TableCell key={colIndex} className={compact ? 'py-1.5' : undefined}>
+								<Skeleton className={compact ? 'h-3' : 'h-4'} style={{ width: randomWidth() }} />
+							</TableCell>
 						))}
-					</tr>
+					</TableRow>
 				))}
-				</tbody>
-			</table>
-		</div>
+			</TableBody>
+		</Table>
 	);
 };
 

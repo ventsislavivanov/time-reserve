@@ -1,6 +1,8 @@
 import { useFormContext } from 'react-hook-form';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFieldError } from "../../../../../hooks";
+import { NativeSelect } from "../../base/native-select/NativeSelect.jsx";
+import { cn } from "@/lib/utils";
+import Field from "../field/Field.jsx";
 
 const UISelect = ({
     name,
@@ -15,33 +17,21 @@ const UISelect = ({
     const { isInvalid, errorMessages } = useFieldError(name, showErrors);
 
     return (
-        <div className="mb-3">
-            {label && <label className="form-label">{label}</label>}
-            <div className="input-group">
-                {icon && (
-                    <span className="input-group-text">
-                        <FontAwesomeIcon icon={icon} />
-                    </span>
-                )}
-                <select
-                    className={`form-select ${isInvalid ? 'is-invalid' : ''}`}
-                    {...register(name, rules)}
-                >
-                    <option value="">{placeholder}</option>
-                    {options.map((option) => (
-                        <option key={option.id} value={option.id}>
-                            {option.name}
-                        </option>
-                    ))}
-                </select>
-
-                {errorMessages.map((e) => (
-                    <div key={e.$uid} className="invalid-feedback">
-                        {e.$message}
-                    </div>
+        <Field name={name} label={label} icon={icon} errors={errorMessages}>
+            <NativeSelect
+                id={name}
+                aria-invalid={isInvalid || undefined}
+                className={cn(icon && "pl-9")}
+                {...register(name, rules)}
+            >
+                <option value="">{placeholder}</option>
+                {options.map((option) => (
+                    <option key={option.id} value={option.id}>
+                        {option.name}
+                    </option>
                 ))}
-            </div>
-        </div>
+            </NativeSelect>
+        </Field>
     );
 };
 

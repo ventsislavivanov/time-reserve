@@ -1,23 +1,5 @@
-import { Slide, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './Toast.module.css';
+import { Toaster } from "@/components/ui/sonner";
 
- const Toast = () => {
-	 return (
-		 <ToastContainer
-			position="bottom-right"
-			autoClose={3500}
-			hideProgressBar={false}
-			newestOnTop={true}
-			closeOnClick
-			rtl={false}
-			pauseOnFocusLoss
-			draggable
-			pauseOnHover
-			theme="dark"
-			transition={Slide}
-		/>
-	);
-}
+const Toast = () => <Toaster position="bottom-right" richColors closeButton />;
 
-export default Toast
+export default Toast;

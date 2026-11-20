@@ -1,6 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormContext } from "react-hook-form";
+import { Input as ShInput } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { useFieldError } from "../../../../../hooks";
+import Field from "../field/Field.jsx";
 
 const Input = ({
 	type = 'text',
@@ -10,43 +12,27 @@ const Input = ({
 	label,
 	icon = [],
 	disabled,
-	classes = 'form-control',
+	classes = '',
 	showErrors = true,
 	...rest
 }) => {
 	const { register } = useFormContext();
 	const { isInvalid, errorMessages } = useFieldError(name, showErrors);
-
-	const cx = (...classes) => classes.filter(Boolean).join(' ');
+	const hasIcon = icon.length > 0;
 
 	return (
-		<div className="form-group mb-3">
-			{label && <label htmlFor={name} className="control-label">{label}</label>}
-
-			<div className="input-group">
-				{icon.length > 0 && (
-					<span className="input-group-text">
-						<FontAwesomeIcon icon={icon} />
-					</span>
-				)}
-
-				<input
-					type={type}
-					id={name}
-					placeholder={placeholder}
-					{...register(name, rules)}
-					className={cx(classes, isInvalid ? 'is-invalid' : null)}
-					disabled={disabled}
-					{...rest}
-				/>
-			</div>
-
-			{errorMessages.map((e) => (
-				<div key={e.$uid} className="invalid-feedback d-block">
-					{e.$message}
-				</div>
-			))}
-		</div>
+		<Field name={name} label={label} icon={icon} errors={errorMessages}>
+			<ShInput
+				type={type}
+				id={name}
+				placeholder={placeholder}
+				{...register(name, rules)}
+				aria-invalid={isInvalid || undefined}
+				className={cn(hasIcon && "pl-9", classes)}
+				disabled={disabled}
+				{...rest}
+			/>
+		</Field>
 	);
 }
 

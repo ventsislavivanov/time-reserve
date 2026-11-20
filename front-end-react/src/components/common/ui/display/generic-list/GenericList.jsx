@@ -1,4 +1,6 @@
 import { UICard, UIRowActions } from '../../index.js';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
 const GenericList = ({
 	items,
@@ -10,61 +12,54 @@ const GenericList = ({
 }) => {
 	return (
 		<UICard
-			variant="primary"
 			title={title}
 			headerIcon="clipboard-list"
+			bodyClassName="p-0"
 		>
 			{items.length === 0 ? (
-				<p className="text-center text-muted py-4">
+				<p className="py-10 text-center text-muted-foreground">
 					{emptyMessage}
 				</p>
 			) : (
-				<div className="table-responsive">
-					<table className="table table-hover align-middle mb-0">
-						<thead className="table-light">
-						<tr>
+				<Table>
+					<TableHeader className="bg-muted/40">
+						<TableRow>
 							{columns.map(col => (
-								<th key={col.key}>{col.label}</th>
+								<TableHead key={col.key}>{col.label}</TableHead>
 							))}
-							<th className="text-end pe-3">Actions</th>
-						</tr>
-						</thead>
-						<tbody>
+							<TableHead className="pr-4 text-right">Actions</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
 						{items.map((item) => (
-							<tr key={item.id}>
+							<TableRow key={item.id}>
 								{columns.map(col => (
-									<td
-										key={col.key}
-										className={col.className}
-									>
+									<TableCell key={col.key} className={cn(col.className)}>
 										{col.render ? col.render(item[col.key]) : item[col.key]}
-									</td>
+									</TableCell>
 								))}
-								<td className="text-end">
+								<TableCell className="pr-4 text-right">
 									<UIRowActions
 										actions={[
 											{
 												icon: "edit",
-												iconClassName: "text-warning",
 												variant: "outline-warning",
 												onClick: () => onEdit(item),
 												title: "Edit"
 											},
 											{
 												icon: "trash",
-												iconClassName: "text-danger",
 												variant: "outline-danger",
 												onClick: () => onDelete(item.id),
 												title: "Delete"
 											}
 										]}
 									/>
-								</td>
-							</tr>
+								</TableCell>
+							</TableRow>
 						))}
-						</tbody>
-					</table>
-				</div>
+					</TableBody>
+				</Table>
 			)}
 		</UICard>
 	);
