@@ -1,6 +1,7 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import { useAuth } from "../context";
 import { logout as logoutUser } from "../features/auth";
+import { Button } from "@/components/ui/button";
 import Header from "../components/layout/header/Header.jsx";
 import Footer from "../components/layout/footer/Footer.jsx";
 import { UINavLink } from "../components/common/ui/index.js";
@@ -21,34 +22,30 @@ export default function ClientLayout() {
 		}
 	};
 
-	return (
-		<div className="d-flex flex-column min-vh-100 bg-light">
-			<Header>
-				<ul className="navbar-nav me-auto">
-					<UINavLink to="/">Home</UINavLink>
-					<UINavLink to="/our-team">Our team</UINavLink>
-					<UINavLink to="/services">Services</UINavLink>
-					<UINavLink to="/my-appointments">My appointments</UINavLink>
-					<UINavLink to="/about-us">About us</UINavLink>
-					<UINavLink to="/contact-us">Contact</UINavLink>
-				</ul>
+	const actions = isAuthenticated ? (
+		<>
+			<span className="truncate text-sm text-muted-foreground">{user?.email}</span>
+			<Button variant="outline" size="sm" onClick={handleLogout}>Logout</Button>
+		</>
+	) : (
+		<>
+			<Button variant="ghost" size="sm" asChild><Link to="/login">Log in</Link></Button>
+			<Button size="sm" asChild><Link to="/sign-up">Sign up</Link></Button>
+		</>
+	);
 
-				<ul className="navbar-nav">
-					{isAuthenticated ? (
-						<div className="align-items-center d-flex">
-							<span className="navbar-text me-2">{user?.email}</span>
-							<button className="btn btn-outline-light" onClick={handleLogout}>Logout</button>
-						</div>
-					) : (
-						<>
-							<Link to="/login" className="btn btn-outline-light m-1">Log In</Link>
-							<Link to="/sign-up" className="btn btn-outline-light m-1">Sign up</Link>
-						</>
-					)}
-				</ul>
+	return (
+		<div className="flex min-h-screen flex-col">
+			<Header actions={actions}>
+				<UINavLink to="/">Home</UINavLink>
+				<UINavLink to="/our-team">Our team</UINavLink>
+				<UINavLink to="/services">Services</UINavLink>
+				<UINavLink to="/my-appointments">My appointments</UINavLink>
+				<UINavLink to="/about-us">About us</UINavLink>
+				<UINavLink to="/contact-us">Contact</UINavLink>
 			</Header>
 
-			<main className="d-flex flex-column flex-grow-1">
+			<main className="flex flex-1 flex-col">
 				<Outlet />
 			</main>
 
