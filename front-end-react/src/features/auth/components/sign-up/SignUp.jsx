@@ -51,15 +51,13 @@ const SignUp = () => {
 	const rules = signUpRules({ getValues });
 
 	return (
-		<div className="container flex-grow-1 d-flex justify-content-center align-items-center py-4">
-			<div className="card shadow-sm p-4 bg-dark-subtle"
-				 style={{ maxWidth: 500, width: "100%"}}
-			>
-				<h3 className="text-center mb-4">Sign up</h3>
+		<div className="mx-auto w-full max-w-7xl px-4 flex-1 flex justify-center items-center py-12">
+			<div className="w-full max-w-xl rounded-2xl border bg-card p-8 shadow-lg">
+				<h1 className="mb-6 text-center">Sign up</h1>
 
 				<UIAppForm methods={methods} onSubmit={registerHandler} onInvalid={onInvalid}>
-					<div className="row">
-						<div className="col-md-12">
+					<div className="grid grid-cols-12 gap-4">
+						<div className="col-span-12 md:col-span-12">
 							<UIInput
 								name="name"
 								rules={rules.name}
@@ -68,7 +66,7 @@ const SignUp = () => {
 							/>
 						</div>
 
-						<div className="col-md-12">
+						<div className="col-span-12 md:col-span-12">
 							<UIInput
 								name="email"
 								rules={rules.email}
@@ -77,7 +75,7 @@ const SignUp = () => {
 							/>
 						</div>
 
-						<div className="col-md-6">
+						<div className="col-span-12 md:col-span-6">
 							<UIInput
 								type="password"
 								name="password"
@@ -87,7 +85,7 @@ const SignUp = () => {
 							/>
 						</div>
 
-						<div className="col-md-6">
+						<div className="col-span-12 md:col-span-6">
 							<UIInput
 								type="password"
 								name="confirm_password"
@@ -97,7 +95,7 @@ const SignUp = () => {
 							/>
 						</div>
 
-						<div className="col-md-12">
+						<div className="col-span-12 md:col-span-12">
 							<UIInput
 								name="address"
 								rules={rules.address}
@@ -107,10 +105,10 @@ const SignUp = () => {
 						</div>
 					</div>
 
-					<div className="row">
-						<div className="col-md-8">
-							<div className="row">
-								<div className="col-md-12">
+					<div className="grid grid-cols-12 gap-4">
+						<div className="col-span-12 md:col-span-8">
+							<div className="grid grid-cols-12 gap-4">
+								<div className="col-span-12 md:col-span-12">
 									<UIInput
 										name="phone"
 										rules={rules.phone}
@@ -120,7 +118,7 @@ const SignUp = () => {
 									/>
 								</div>
 
-								<div className="col-md-12">
+								<div className="col-span-12 md:col-span-12">
 									<UIDatePicker
 										name="birth_date"
 										rules={rules.birth_date}
@@ -131,7 +129,7 @@ const SignUp = () => {
 							</div>
 						</div>
 
-						<div className="col-md-4">
+						<div className="col-span-12 md:col-span-4">
 							<UIRadio
 								name="gender"
 								rules={rules.gender}
@@ -141,7 +139,7 @@ const SignUp = () => {
 						</div>
 					</div>
 
-					<UIButton type="submit" className="w-100" isLoading={isLoading}>
+					<UIButton type="submit" className="w-full" isLoading={isLoading}>
 						Register
 					</UIButton>
 				</UIAppForm>

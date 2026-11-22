@@ -73,11 +73,9 @@ const Login = ({ isClient, guard }) => {
 	const rules = loginRules;
 
 	return (
-		<div className="container flex-grow-1 d-flex justify-content-center align-items-center py-4">
-			<div className="card shadow-sm p-4 bg-dark-subtle"
-				 style={{ maxWidth: 400, width: "100%"}}
-			>
-				<h3 className="text-center mb-4">Login</h3>
+		<div className="mx-auto w-full max-w-7xl px-4 flex-1 flex justify-center items-center py-12">
+			<div className="w-full max-w-md rounded-2xl border bg-card p-8 shadow-lg">
+				<h1 className="mb-6 text-center">Login</h1>
 
 				<UIAppForm methods={methods} onSubmit={loginHandler} onInvalid={onInvalid}>
 					<UIInput
@@ -102,14 +100,14 @@ const Login = ({ isClient, guard }) => {
 						label="Remember me"
 					/>
 
-					<UIButton type="submit" className="w-100" isLoading={isLoading}>
+					<UIButton type="submit" className="w-full" isLoading={isLoading}>
 						Login
 					</UIButton>
 				</UIAppForm>
 
 				{isClient && (
-					<p className="text-center mt-3">
-						Don't have an account? <Link to="/sign-up">Sign up</Link>
+					<p className="text-center mt-4">
+						Don't have an account? <Link to="/sign-up" className="font-medium text-primary hover:underline">Sign up</Link>
 					</p>
 				)}
 			</div>
