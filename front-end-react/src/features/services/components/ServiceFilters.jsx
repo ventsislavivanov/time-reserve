@@ -1,25 +1,24 @@
+import { UIButton } from "../../../components/common/ui";
+
 const ServiceFilters = ({ categories, selectedCategory, onCategoryChange }) => {
+	const options = [
+		{ id: 'all', name: 'All services' },
+		...categories.map(c => ({ id: c.id.toString(), name: c.name })),
+	];
+
 	return (
-		<div className="mb-4">
-			<div className="btn-group flex-wrap" role="group">
-				<button
-					type="button"
-					className={`btn ${selectedCategory === 'all' ? 'btn-primary' : 'btn-outline-primary'}`}
-					onClick={() => onCategoryChange('all')}
+		<div className="mb-8 flex flex-wrap justify-center gap-2" role="group">
+			{options.map(option => (
+				<UIButton
+					key={option.id}
+					size="sm"
+					className="rounded-full"
+					variant={selectedCategory === option.id ? 'primary' : 'outline'}
+					onClick={() => onCategoryChange(option.id)}
 				>
-					All Services
-				</button>
-				{categories.map(category => (
-					<button
-						key={category.id}
-						type="button"
-						className={`btn ${selectedCategory === category.id.toString() ? 'btn-primary' : 'btn-outline-primary'}`}
-						onClick={() => onCategoryChange(category.id.toString())}
-					>
-						{category.name}
-					</button>
-				))}
-			</div>
+					{option.name}
+				</UIButton>
+			))}
 		</div>
 	);
 };

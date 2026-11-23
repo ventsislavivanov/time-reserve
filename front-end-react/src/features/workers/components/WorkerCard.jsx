@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router";
+import { CheckCircle2, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { UICard } from '../../../components/common/ui';
 
-const WorkerCard = ({ worker, user }) => {
+const WorkerCard = ({ worker }) => {
 	const navigate = useNavigate();
 
 	const handleBooking = () => {
@@ -10,55 +13,49 @@ const WorkerCard = ({ worker, user }) => {
 
 	return (
 		<UICard
-			className="h-100 d-flex flex-column"
-			bodyClassName="d-flex flex-column flex-grow-1"
+			className="h-full transition-shadow hover:shadow-md"
+			bodyClassName="flex h-full flex-col"
 		>
-			<div className="d-flex align-items-center mb-3">
-				<div className="avatar bg-primary text-white rounded-circle me-3"
-					 style={{ width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-					<i className="fas fa-user fa-2x"></i>
+			<div className="mb-5 flex items-center gap-4">
+				<div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+					<User className="size-6" />
 				</div>
 				<div>
-					<h5 className="mb-0">{worker.name}</h5>
+					<h3 className="text-lg">{worker.name}</h3>
 					{worker.job_position && (
-						<small className="text-muted">{worker.job_position.name}</small>
+						<p className="text-sm text-muted-foreground">{worker.job_position.name}</p>
 					)}
 				</div>
 			</div>
 
-			<div className="mb-3 flex-grow-1">
-				<h6 className="text-muted mb-2">Services:</h6>
+			<div className="mb-6 flex-1">
+				<h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Services</h4>
 				{worker.services && worker.services.length > 0 ? (
-					<ul className="list-unstyled mb-0">
+					<ul className="space-y-2">
 						{worker.services.slice(0, 3).map(service => (
-							<li key={service.id} className="mb-1">
-								<i className="fas fa-check-circle text-primary me-2"></i>
-								<span>{service.name}</span>
-								<span className="badge bg-light text-dark ms-2">
-                                    {service.price} € • {service.duration} min
-                                </span>
+							<li key={service.id} className="flex items-center gap-2 text-sm">
+								<CheckCircle2 className="size-4 shrink-0 text-primary" />
+								<span className="flex-1">{service.name}</span>
+								<Badge variant="muted">{service.price} € • {service.duration} min</Badge>
 							</li>
 						))}
 						{worker.services.length > 3 && (
-							<li className="text-muted small">
+							<li className="text-sm text-muted-foreground">
 								+{worker.services.length - 3} more services
 							</li>
 						)}
 					</ul>
 				) : (
-					<p className="text-muted small mb-0">No services available</p>
+					<p className="text-sm text-muted-foreground">No services available</p>
 				)}
 			</div>
 
-			<Link to={`/our-team/${worker.id}`} className="btn btn-outline-primary w-100 mt-auto mb-2">
-				View profile
-			</Link>
-			<button
-				className="btn btn-primary w-100"
-				onClick={handleBooking}
-			>
-				Book Appointment
-			</button>
+			<div className="grid gap-2">
+				<Button variant="outline" asChild>
+					<Link to={`/our-team/${worker.id}`}>View profile</Link>
+				</Button>
+				<Button onClick={handleBooking}>Book appointment</Button>
+			</div>
 		</UICard>
 	);
 };

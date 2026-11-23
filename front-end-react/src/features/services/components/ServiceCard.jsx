@@ -1,46 +1,41 @@
 import { Link } from 'react-router';
+import { Clock, Sparkles } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { UICard } from '../../../components/common/ui';
 
 const ServiceCard = ({ service, category }) => {
 	return (
-		<UICard className="h-100 shadow-sm hover-shadow transition">
-			<div
-				className="card-img-top bg-gradient"
-				style={{
-					height: '200px',
-					background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center'
-				}}
-			>
-				<i className="fas fa-spa fa-3x text-white opacity-50"></i>
+		<UICard className="h-full transition-shadow hover:shadow-md" bodyClassName="p-0 flex h-full flex-col">
+			<div className="flex h-44 items-center justify-center bg-gradient-to-br from-primary to-primary/60">
+				<Sparkles className="size-12 text-primary-foreground/70" />
 			</div>
 
-			<div className="card-body">
-				<div className="d-flex justify-content-between align-items-start mb-2">
-					<h5 className="card-title mb-0"><Link to={`/services/${service.id}`} className="text-decoration-none">{service.name}</Link></h5>
-					<span className="badge bg-primary">{category?.name}</span>
+			<div className="flex flex-1 flex-col gap-3 p-6">
+				<div className="flex items-start justify-between gap-2">
+					<h3 className="text-lg">
+						<Link to={`/services/${service.id}`} className="hover:text-primary">{service.name}</Link>
+					</h3>
+					{category?.name && <Badge variant="primary">{category.name}</Badge>}
 				</div>
 
 				{service.description && (
-					<p className="card-text text-muted small mb-3">
+					<p className="line-clamp-3 text-sm text-muted-foreground">
 						{service.description}
 					</p>
 				)}
 
-				<div className="d-flex justify-content-between align-items-center">
-					<div>
-						<i className="fas fa-clock me-1"></i>
-						<small>{service.duration} min</small>
-					</div>
-					<div className="text-end">
-						<h6 className="mb-0 text-primary">{service.price} €</h6>
-					</div>
+				<div className="mt-auto flex items-center justify-between pt-2">
+					<span className="flex items-center gap-1 text-sm text-muted-foreground">
+						<Clock className="size-4" />
+						{service.duration} min
+					</span>
+					<span className="text-lg font-semibold text-primary">{service.price} €</span>
 				</div>
-				<Link to={`/services/${service.id}`} className="btn btn-outline-primary btn-sm w-100 mt-3">
-					View details
-				</Link>
+
+				<Button variant="outline" asChild className="w-full">
+					<Link to={`/services/${service.id}`}>View details</Link>
+				</Button>
 			</div>
 		</UICard>
 	);

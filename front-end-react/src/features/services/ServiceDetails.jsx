@@ -1,5 +1,8 @@
 import { Link, useParams } from 'react-router';
-import { UILoading } from '../../components/common/ui';
+import { Clock } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { UICard, UILoading } from '../../components/common/ui';
 import { ReviewsSection } from '../reviews';
 import { useServiceDetails } from './hooks/useServiceDetails.js';
 
@@ -13,42 +16,40 @@ const ServiceDetails = () => {
 
 	if (error || !service) {
 		return (
-			<div className="container py-5">
-				<div className="alert alert-danger" role="alert">
+			<div className="mx-auto w-full max-w-4xl space-y-4 px-4 py-12">
+				<div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
 					{error ? `Error loading service: ${error}` : 'This service was not found.'}
 				</div>
-				<Link to="/services" className="btn btn-outline-primary">Back to services</Link>
+				<Button variant="outline" asChild><Link to="/services">Back to services</Link></Button>
 			</div>
 		);
 	}
 
 	return (
-		<div className="container py-5">
-			<div className="card shadow-sm">
-				<div className="card-body p-4">
-					<div className="d-flex justify-content-between align-items-start mb-3">
-						<h1 className="h2 mb-0">{service.name}</h1>
-						{service.category?.name && (
-							<span className="badge bg-primary">{service.category.name}</span>
-						)}
-					</div>
-
-					{service.description && <p className="lead text-muted">{service.description}</p>}
-
-					<div className="d-flex gap-4 mb-4">
-						<div>
-							<i className="fas fa-clock me-2"></i>
-							{service.duration} min
-						</div>
-						<div className="text-primary fw-bold">{service.price} €</div>
-					</div>
-
-					<div className="d-flex gap-2">
-						<Link to="/our-team" className="btn btn-primary">Choose a specialist</Link>
-						<Link to="/services" className="btn btn-outline-secondary">Back to services</Link>
-					</div>
+		<div className="mx-auto w-full max-w-4xl px-4 py-12">
+			<UICard>
+				<div className="mb-4 flex items-start justify-between gap-4">
+					<h1 className="text-3xl">{service.name}</h1>
+					{service.category?.name && (
+						<Badge variant="primary">{service.category.name}</Badge>
+					)}
 				</div>
-			</div>
+
+				{service.description && <p className="mb-6 text-lg text-muted-foreground">{service.description}</p>}
+
+				<div className="mb-8 flex items-center gap-6">
+					<div className="flex items-center gap-2 text-muted-foreground">
+						<Clock className="size-4" />
+						{service.duration} min
+					</div>
+					<div className="text-xl font-semibold text-primary">{service.price} €</div>
+				</div>
+
+				<div className="flex flex-wrap gap-2">
+					<Button asChild><Link to="/our-team">Choose a specialist</Link></Button>
+					<Button variant="outline" asChild><Link to="/services">Back to services</Link></Button>
+				</div>
+			</UICard>
 
 			<ReviewsSection serviceId={service.id} />
 		</div>

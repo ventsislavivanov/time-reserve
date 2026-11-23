@@ -1,3 +1,4 @@
+import { Users } from 'lucide-react';
 import WorkerCard from './components/WorkerCard.jsx';
 import { SkeletonWorkerCard } from '../../components/common/ui/index.js';
 import { useWorkers } from './hooks/useWorkers.js';
@@ -7,8 +8,8 @@ const WorkersList = () => {
 
 	if (error) {
 		return (
-			<div className="container py-5">
-				<div className="alert alert-danger" role="alert">
+			<div className="mx-auto w-full max-w-7xl px-4 py-12">
+				<div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
 					Error loading workers: {error}
 				</div>
 			</div>
@@ -16,33 +17,25 @@ const WorkersList = () => {
 	}
 
 	return (
-		<div className="container py-5">
-			<div className="text-center mb-5">
-				<h1 className="display-4">Our Team</h1>
-				<p className="lead text-muted">Choose your preferred specialist</p>
+		<div className="mx-auto w-full max-w-7xl px-4 py-12">
+			<div className="mb-10 text-center">
+				<h1 className="text-4xl font-bold">Our team</h1>
+				<p className="mt-2 text-lg text-muted-foreground">Choose your preferred specialist</p>
 			</div>
 
-			<div className="row g-4">
-				{isLoading ? (
-					[...Array(6)].map((_, index) => (
-						<div key={index} className="col-md-6 col-lg-4">
-							<SkeletonWorkerCard />
-						</div>
-					))
-				) : workers.length === 0 ? (
-					<div className="col-12 text-center py-5">
-						<i className="fas fa-users fa-4x text-muted mb-3"></i>
-						<h3 className="text-muted">No workers available</h3>
-						<p>Please check back later.</p>
-					</div>
-				) : (
-					workers.map(worker => (
-						<div key={worker.id} className="col-md-6 col-lg-4">
-							<WorkerCard worker={worker} />
-						</div>
-					))
-				)}
-			</div>
+			{!isLoading && workers.length === 0 ? (
+				<div className="flex flex-col items-center py-12 text-center">
+					<Users className="mb-4 size-12 text-muted-foreground" />
+					<h3 className="text-muted-foreground">No workers available</h3>
+					<p className="text-sm text-muted-foreground">Please check back later.</p>
+				</div>
+			) : (
+				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{isLoading
+						? [...Array(6)].map((_, index) => <SkeletonWorkerCard key={index} />)
+						: workers.map(worker => <WorkerCard key={worker.id} worker={worker} />)}
+				</div>
+			)}
 		</div>
 	);
 };

@@ -43,14 +43,14 @@ const ReviewForm = ({ initialValues, submitLabel, onSubmit, onCancel }) => {
 				rules={rules.comment}
 			/>
 
-			<div className="d-flex gap-2">
+			<div className="flex gap-2">
 				<UIButton type="submit" isLoading={methods.isLoading}>
 					{submitLabel}
 				</UIButton>
 				{onCancel && (
-					<button type="button" className="btn btn-outline-secondary" onClick={onCancel}>
+					<UIButton variant="outline-secondary" onClick={onCancel}>
 						Cancel
-					</button>
+					</UIButton>
 				)}
 			</div>
 		</UIAppForm>

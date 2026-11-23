@@ -24,9 +24,9 @@ const ManageServices = () => {
     } = useEntityManager(serviceService, 'Service', initialFormState);
 
     return (
-        <div className="container mt-4 pb-5">
-            <div className="row">
-                <div className="col-md-4">
+        <div className="mx-auto w-full max-w-7xl px-4 mt-6 pb-12">
+            <div className="grid grid-cols-12 gap-4">
+                <div className="col-span-12 md:col-span-4">
                     {isCategoriesLoading ? (
                         <SkeletonForm fields={8} />
                     ) : (
@@ -42,7 +42,7 @@ const ManageServices = () => {
                     )}
                 </div>
 
-                <div className="col-md-8">
+                <div className="col-span-12 md:col-span-8">
                     {isServicesLoading ? (
                         <SkeletonList rows={5} />
                     ) : (

@@ -1,5 +1,8 @@
 import { Link, useNavigate, useParams } from 'react-router';
-import { UILoading } from '../../components/common/ui';
+import { User } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { UICard, UILoading } from '../../components/common/ui';
 import { useWorker } from './hooks/useWorker.js';
 
 const WorkerDetails = () => {
@@ -13,66 +16,58 @@ const WorkerDetails = () => {
 
 	if (error || !worker) {
 		return (
-			<div className="container py-5">
-				<div className="alert alert-danger" role="alert">
+			<div className="mx-auto w-full max-w-4xl space-y-4 px-4 py-12">
+				<div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
 					{error && error !== 'not-found'
 						? `Error loading team member: ${error}`
 						: 'This team member was not found.'}
 				</div>
-				<Link to="/our-team" className="btn btn-outline-primary">Back to our team</Link>
+				<Button variant="outline" asChild><Link to="/our-team">Back to our team</Link></Button>
 			</div>
 		);
 	}
 
 	return (
-		<div className="container py-5">
-			<div className="card shadow-sm">
-				<div className="card-body p-4">
-					<div className="d-flex align-items-center mb-4">
-						<div
-							className="bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center"
-							style={{ width: '80px', height: '80px' }}
-						>
-							<i className="fas fa-user fa-3x"></i>
-						</div>
-						<div>
-							<h1 className="h2 mb-0">{worker.name}</h1>
-							{worker.job_position && (
-								<p className="text-muted mb-0">{worker.job_position.name}</p>
-							)}
-						</div>
+		<div className="mx-auto w-full max-w-4xl px-4 py-12">
+			<UICard>
+				<div className="mb-8 flex items-center gap-5">
+					<div className="flex size-20 items-center justify-center rounded-full bg-primary text-primary-foreground">
+						<User className="size-9" />
 					</div>
-
-					<h2 className="h5 text-muted mb-3">Services</h2>
-					{worker.services && worker.services.length > 0 ? (
-						<ul className="list-group mb-4">
-							{worker.services.map(service => (
-								<li
-									key={service.id}
-									className="list-group-item d-flex justify-content-between align-items-center"
-								>
-									<Link to={`/services/${service.id}`}>{service.name}</Link>
-									<span className="badge bg-light text-dark">
-										{service.price} € • {service.duration} min
-									</span>
-								</li>
-							))}
-						</ul>
-					) : (
-						<p className="text-muted">No services available.</p>
-					)}
-
-					<div className="d-flex gap-2">
-						<button
-							className="btn btn-primary"
-							onClick={() => navigate(`/our-team/book/${worker.id}`)}
-						>
-							Book Appointment
-						</button>
-						<Link to="/our-team" className="btn btn-outline-secondary">Back to our team</Link>
+					<div>
+						<h1 className="text-3xl">{worker.name}</h1>
+						{worker.job_position && (
+							<p className="text-muted-foreground">{worker.job_position.name}</p>
+						)}
 					</div>
 				</div>
-			</div>
+
+				<h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Services</h2>
+				{worker.services && worker.services.length > 0 ? (
+					<ul className="mb-8 divide-y rounded-xl border">
+						{worker.services.map(service => (
+							<li
+								key={service.id}
+								className="flex items-center justify-between gap-3 px-4 py-3"
+							>
+								<Link to={`/services/${service.id}`} className="font-medium hover:text-primary">{service.name}</Link>
+								<Badge variant="muted">
+									{service.price} € • {service.duration} min
+								</Badge>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p className="mb-8 text-muted-foreground">No services available.</p>
+				)}
+
+				<div className="flex flex-wrap gap-2">
+					<Button onClick={() => navigate(`/our-team/book/${worker.id}`)}>
+						Book appointment
+					</Button>
+					<Button variant="outline" asChild><Link to="/our-team">Back to our team</Link></Button>
+				</div>
+			</UICard>
 		</div>
 	);
 };

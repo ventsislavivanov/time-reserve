@@ -13,10 +13,10 @@ const ServicesCatalog = () => {
 	} = useServicesCatalog();
 
 	return (
-		<div className="container py-5">
-			<div className="text-center mb-5">
-				<h1 className="display-4">Our Services</h1>
-				<p className="lead text-muted">Choose from our wide range of professional services</p>
+		<div className="mx-auto w-full max-w-7xl px-4 py-12">
+			<div className="mb-10 text-center">
+				<h1 className="text-4xl font-bold">Our services</h1>
+				<p className="mt-2 text-lg text-muted-foreground">Choose from our wide range of professional services</p>
 			</div>
 
 			<ServiceFilters
@@ -25,28 +25,21 @@ const ServicesCatalog = () => {
 				onCategoryChange={setSelectedCategory}
 			/>
 
-			<div className="row g-4">
-				{isLoading ? (
-						[...Array(6)].map((_, index) => (
-							<div key={`skeleton-${index}`} className="col-md-6 col-lg-4">
-								<SkeletonServiceCard />
-							</div>
-						))
-					) : services.length === 0 ? (
-					<div className="col-12 text-center py-5">
-						<p className="text-muted">No services available in this category.</p>
-					</div>
-				) : (
-					services.map(service => (
-						<div key={service.id} className="col-md-6 col-lg-4">
+			{!isLoading && services.length === 0 ? (
+				<p className="py-12 text-center text-muted-foreground">No services available in this category.</p>
+			) : (
+				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{isLoading
+						? [...Array(6)].map((_, index) => <SkeletonServiceCard key={`skeleton-${index}`} />)
+						: services.map(service => (
 							<ServiceCard
+								key={service.id}
 								service={service}
 								category={categories.find(c => c.id === service.category_id)}
 							/>
-						</div>
-					))
-				)}
-			</div>
+						))}
+				</div>
+			)}
 		</div>
 	);
 };
