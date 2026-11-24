@@ -45,7 +45,7 @@ const DeclineAppointmentModal = ({
             {appointment && (
                 <FormProvider {...methods}>
                     <form onSubmit={handleSubmit(submit)}>
-                        <p className="mb-3">
+                        <p className="mb-4">
                             Please provide a reason for declining this appointment.
                         </p>
 
@@ -61,7 +61,7 @@ const DeclineAppointmentModal = ({
                 </FormProvider>
             )}
 
-            <p className="text-muted small">
+            <p className="text-muted-foreground text-sm">
                 Once confirmed, the client will be notified.
             </p>
         </UIActionModal>

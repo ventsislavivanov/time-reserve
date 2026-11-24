@@ -20,10 +20,10 @@ const AppointmentDetailsModal = ({ appointment, onClose }) => {
                 </UIButton>
             }
         >
-            <div className="modal-body">
-                <h5 className="mb-3">General Info</h5>
+            <div>
+                <h5 className="mb-4">General Info</h5>
 
-                <div className="mb-4">
+                <div className="mb-6">
                     <strong>Service:</strong> {appointment.service?.name} <br />
                     <strong>Worker:</strong> {appointment.worker?.name} <br />
                     {appointment.worker?.job_position && (
@@ -35,7 +35,7 @@ const AppointmentDetailsModal = ({ appointment, onClose }) => {
                     <strong>Time:</strong> {appointment.time}
                 </div>
 
-                <h5 className="mt-4">Status Timeline</h5>
+                <h5 className="mt-6">Status Timeline</h5>
 
                 {loading ? (
                     <SkeletonTableCompact rows={3} columns={4} />

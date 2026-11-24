@@ -2,16 +2,16 @@ import { UIAppointmentBadge } from "../../../components/common/ui";
 
 const AppointmentTimeline = ({ timeline }) => {
     if (!timeline?.length) {
-        return <p className="text-muted">No timeline data available.</p>;
+        return <p className="text-muted-foreground">No timeline data available.</p>;
     }
 
     return (
-        <ul className="list-group">
+        <ul className="divide-y rounded-xl border bg-card">
             {timeline.map((event) => (
-                <li key={event.id} className="list-group-item px-1 py-2">
+                <li key={event.id} className="px-4 py-3">
 
-                    <div className="d-flex align-items-center gap-2">
-                        <small className="text-muted">
+                    <div className="flex items-center gap-2">
+                        <small className="text-xs text-muted-foreground">
                             {new Date(event.created_at).toLocaleString()}
                         </small>
 
@@ -27,7 +27,7 @@ const AppointmentTimeline = ({ timeline }) => {
 
                     {event.reason && (
                         <div className="mt-1">
-                            <em className="text-muted">Reason: {event.reason}</em>
+                            <em className="text-muted-foreground">Reason: {event.reason}</em>
                         </div>
                     )}
                 </li>

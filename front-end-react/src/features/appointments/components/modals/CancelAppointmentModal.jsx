@@ -45,7 +45,7 @@ const CancelAppointmentModal = ({
 			{appointment && (
 				<FormProvider {...methods}>
 					<form onSubmit={handleSubmit(submit)}>
-						<p className="mb-3">
+						<p className="mb-4">
 							Are you sure you want to cancel this appointment?
 						</p>
 
@@ -61,7 +61,7 @@ const CancelAppointmentModal = ({
 				</FormProvider>
 			)}
 
-			<p className="text-muted small">
+			<p className="text-muted-foreground text-sm">
 				This action cannot be undone.
 			</p>
 		</UIActionModal>

@@ -26,18 +26,18 @@ const CompleteAppointmentModal = ({
             onConfirm={() => onConfirm(appointment.id)}
             onClose={onClose}
         >
-            <p className="mb-3">
+            <p className="mb-4">
                 Are you sure you want to complete this appointment?
             </p>
 
-            <ul className="list-unstyled mb-3">
+            <ul className="list-none p-0 mb-4">
                 <li><strong>Client:</strong> {clientName}</li>
                 <li><strong>Date:</strong> {date}</li>
                 <li><strong>Time:</strong> {time}</li>
                 {service && <li><strong>Service:</strong> {service}</li>}
             </ul>
 
-            <p className="text-muted small">
+            <p className="text-muted-foreground text-sm">
                 The working time will be recorded and saved.
             </p>
         </UIActionModal>

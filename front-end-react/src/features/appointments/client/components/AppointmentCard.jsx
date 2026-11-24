@@ -1,3 +1,4 @@
+import { CalendarDays, Clock, MessageSquareText } from 'lucide-react';
 import { UICard, UIButton, UIAppointmentBadge } from '../../../../components/common/ui/index.js';
 
 const AppointmentCard = ({ appointment, onCancel, onViewDetails }) => {
@@ -26,50 +27,45 @@ const AppointmentCard = ({ appointment, onCancel, onViewDetails }) => {
 	const canViewDetails = status === 'confirmed' || status === 'completed';
 
 	return (
-		<UICard className="h-100">
-			<div className="d-flex justify-content-between align-items-start mb-3">
+		<UICard className="h-full" bodyClassName="flex h-full flex-col gap-4">
+			<div className="flex items-start justify-between gap-3">
 				<div>
-					<h5 className="mb-1">{service?.name}</h5>
-					<p className="text-muted mb-0 small">with {worker?.name}</p>
+					<h4>{service?.name}</h4>
+					<p className="text-sm text-muted-foreground">with {worker?.name}</p>
 					{worker?.job_position && (
-						<p className="text-muted mb-0 small">{worker.job_position.name}</p>
+						<p className="text-sm text-muted-foreground">{worker.job_position.name}</p>
 					)}
 				</div>
 				<UIAppointmentBadge status={status} />
 			</div>
 
-			<hr className="my-2" />
-
-			<div className="row g-2 mb-3">
-				<div className="col-12">
-					<div className="d-flex align-items-center gap-2">
-						<i className="bi bi-calendar3 text-primary"></i>
-						<span className="small">{formatDate(date)}</span>
-					</div>
+			<div className="space-y-2 border-t pt-4 text-sm">
+				<div className="flex items-center gap-2">
+					<CalendarDays className="size-4 text-primary" />
+					<span>{formatDate(date)}</span>
 				</div>
-				<div className="col-12">
-					<div className="d-flex align-items-center gap-2">
-						<i className="bi bi-clock text-primary"></i>
-						<span className="small">{time}</span>
-					</div>
+				<div className="flex items-center gap-2">
+					<Clock className="size-4 text-primary" />
+					<span>{time}</span>
 				</div>
 			</div>
 
 			{notes && (
-				<div className="alert alert-light py-2 px-3 small mb-3">
-					<i className="bi bi-chat-left-text me-2 text-muted"></i>
+				<div className="flex gap-2 rounded-lg bg-muted/60 px-3 py-2 text-sm">
+					<MessageSquareText className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
 					{notes}
 				</div>
 			)}
-				<div className="d-flex justify-content-end mt-auto">
+
+			{(canViewDetails || isCancellable) && (
+				<div className="mt-auto flex justify-end gap-2">
 					{canViewDetails && (
 						<UIButton
 							variant="outline-info"
 							size="sm"
-							className="ms-2"
 							onClick={() => onViewDetails(appointment)}
 						>
-							View Details
+							View details
 						</UIButton>
 					)}
 
@@ -77,13 +73,13 @@ const AppointmentCard = ({ appointment, onCancel, onViewDetails }) => {
 						<UIButton
 							variant="outline-danger"
 							size="sm"
-							className="ms-2"
 							onClick={() => onCancel(appointment)}
 						>
 							Cancel
 						</UIButton>
 					)}
 				</div>
+			)}
 		</UICard>
 	);
 };
