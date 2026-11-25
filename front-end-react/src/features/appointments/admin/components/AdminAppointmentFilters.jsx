@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UICard, UIButton } from "../../../../components/common/ui";
+import { appointmentStatusLabel } from "../../../../components/common/ui/display/appointment-badge/statusLabels.js";
 import { NativeSelect } from "../../../../components/common/ui/base/native-select/NativeSelect.jsx";
 
 const Field = ({ label, children }) => (
@@ -46,7 +47,7 @@ const AdminAppointmentFilters = ({
                     <NativeSelect value={filters.status} onChange={e => updateFilter("status", e.target.value)}>
                         <option value="">All</option>
                         {statuses.map(s => (
-                            <option key={s} value={s}>{s}</option>
+                            <option key={s} value={s}>{appointmentStatusLabel(s)}</option>
                         ))}
                     </NativeSelect>
                 </Field>

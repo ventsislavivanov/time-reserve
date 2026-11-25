@@ -32,8 +32,8 @@ export const appointmentStatuses = async () => {
 	return response.data;
 };
 
-export const getStaffAppointments = async () => {
-	const response = await api.get('/staff/appointments');
+export const getStaffAppointments = async (params = {}) => {
+	const response = await api.get('/staff/appointments', { params });
 	return response.data;
 };
 

@@ -3,6 +3,8 @@ import AdminAppointmentFilters from "./components/AdminAppointmentFilters";
 import AdminAppointmentsTable from "./components/AdminAppointmentsTable";
 import { useAdminAppointments } from "./hooks/useAdminAppointments";
 import { useAdminAppointmentFilters } from "./hooks/useAdminAppointmentFilters";
+import { useAdminFilterOptions } from "./hooks/useAdminFilterOptions";
+import { APPOINTMENT_STATUSES } from "../../../components/common/ui/display/appointment-badge/statusLabels.js";
 
 import { useAppointmentModals } from "../hooks/useAppointmentModals.js";
 import {
@@ -43,11 +45,18 @@ const AdminAppointments = () => {
         noShow
     });
 
+    const { workers, updatedByList } = useAdminFilterOptions();
+
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const { showModal, hideModal } = useBootstrapModal();
 
     const applyFilters = () => {
         refetch(filters);
+    };
+
+    const handleReset = () => {
+        resetFilters();
+        refetch({});
     };
 
     const openDetails = (appointment) => {
@@ -67,20 +76,10 @@ const AdminAppointments = () => {
             <AdminAppointmentFilters
                 filters={filters}
                 updateFilter={updateFilter}
-                resetFilters={resetFilters}
-                workers={[]} // TODO: fetch workers
-                statuses={[
-                    "pending",
-                    "confirmed",
-                    "declined",
-                    "cancelled",
-                    "in_progress",
-                    "completed",
-                    "no_show",
-                    "expired",
-                    "timed_out"
-                ]}
-                updatedByList={[]} // TODO: fetch admins/staff
+                resetFilters={handleReset}
+                workers={workers}
+                statuses={APPOINTMENT_STATUSES}
+                updatedByList={updatedByList}
                 onApply={applyFilters}
             />
 

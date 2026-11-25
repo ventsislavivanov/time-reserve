@@ -1,3 +1,4 @@
+import { useCallback, useRef } from 'react';
 import { useFetchList } from '../../hooks/useFetchList';
 import { useActionHandler } from '../../hooks/useActionHandler';
 import {
@@ -7,13 +8,43 @@ import {
     noShowAppointment
 } from '../../services/appointmentService';
 
+// Form field -> query parameter of GET /staff/appointments
+const FILTER_PARAMS = {
+    id: 'id',
+    client: 'client',
+    worker: 'worker_id',
+    status: 'status',
+    dateFrom: 'date_from',
+    dateTo: 'date_to',
+    createdFrom: 'created_from',
+    createdTo: 'created_to',
+    updatedBy: 'updated_by'
+};
+
+const toParams = (filters = {}) =>
+    Object.fromEntries(
+        Object.entries(FILTER_PARAMS)
+            .filter(([field]) => filters[field] !== undefined && filters[field] !== '')
+            .map(([field, param]) => [param, filters[field]])
+    );
+
 export const useAdminAppointments = () => {
+    // The applied filters live in a ref so the fetch function stays stable and the list is
+    // reloaded with the same filters after confirm / decline / no-show.
+    const paramsRef = useRef({});
+    const fetchList = useCallback(() => getStaffAppointments(paramsRef.current), []);
+
     const {
         items: appointments,
         setItems: setAppointments,
         isLoading,
         fetchData: fetchAppointments
-    } = useFetchList(getStaffAppointments);
+    } = useFetchList(fetchList);
+
+    const refetch = (filters) => {
+        if (filters) paramsRef.current = toParams(filters);
+        return fetchAppointments();
+    };
 
     const {
         isUpdating,
@@ -70,6 +101,6 @@ export const useAdminAppointments = () => {
         confirm,
         decline,
         noShow,
-        refetch: fetchAppointments
+        refetch
     };
 };
