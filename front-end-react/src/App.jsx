@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router";
+import { Route, Routes } from "react-router";
 import { useEffect, useState } from "react";
 
 import { useAuth } from "./context";
@@ -26,10 +26,9 @@ import { AdminDashboard, WorkerDashboard } from "./features/dashboard";
 import { UILoading, UIToast } from "./components/common/ui";
 
 function App() {
-	const navigate = useNavigate();
-	const { login, logout } = useAuth();
+	const { login, logout, user } = useAuth();
+	const role = user?.role;
 	const [isLoading, setLoading] = useState(true);
-	const [role, setRole] = useState(null);
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -38,13 +37,13 @@ function App() {
 			if (token) {
 				try {
 					const user = await getMe();
-					setRole(user.role);
+					// Restore the session in place: the user stays on the URL they opened
+					// (GuestGuard already redirects logged in users away from the login pages).
 					login({
 						uid: user.id,
 						email: user.email,
 						role: user.role
 					});
-					user.role === 'client' ? navigate('/') : navigate('/staff/dashboard');
 				} catch (error) {
 					console.error("Session expired or invalid token");
 					localStorage.removeItem("token");
@@ -92,8 +91,11 @@ function App() {
 
 						<Route index element={ role === 'admin' ? <AdminDashboard /> : <WorkerDashboard /> } />
 
+						<Route element={<RoleGuard allowedRoles={['admin', 'worker']} />}>
+							<Route path="dashboard" element={ role === 'admin' ? <AdminDashboard /> : <WorkerDashboard /> } />
+						</Route>
+
 						<Route element={<RoleGuard allowedRoles={['admin']} />}>
-							<Route path="dashboard" element={ <AdminDashboard /> } />
 							<Route path="admin-appointments" element={<AdminAppointments />} />
 							<Route path="users" element={<ManageUsers />} />
 							<Route path="jobs" element={<ManageJobs />} />
@@ -103,7 +105,6 @@ function App() {
 						</Route>
 
 						<Route element={<RoleGuard allowedRoles={['worker']} />}>
-							<Route path="dashboard" element={ <WorkerDashboard /> } />
 							<Route path="appointments" element={<WorkerAppointments />} />
 							<Route path="pending" element={<PendingRequests />} />
 							<Route path="history" element={<HistoryAppointments />} />
