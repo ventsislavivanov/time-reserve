@@ -22,5 +22,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
 			BusinessHoursSeeder::class,
         ]);
+
+		// Demo workers, clients and appointment history: never seed fake data into production.
+		if (! app()->isProduction()) {
+			$this->call([
+				DemoUsersSeeder::class,
+				AppointmentHistorySeeder::class,
+			]);
+		}
     }
 }

@@ -97,7 +97,9 @@ docker compose -f docker-compose.local.yml exec react npm install <package>     
 docker compose -f docker-compose.local.yml down             # stop (add -v to also delete the database)
 ```
 
-Demo accounts: `admin@test.com` (staff login), `an@test.com` (worker, staff login), `eva@test.com` (client). The password is `password` for all of them.
+Demo accounts: `admin@test.com` (staff login), `an@test.com`, `maria@test.com`, `elena@test.com` (workers, staff login), `eva@test.com` (client). The password is `password` for all of them.
+
+Outside production the seeders also create 12 fake clients and appointment history (`DemoUsersSeeder`, `AppointmentHistorySeeder`). `eva@test.com` has 12 appointments in every status (completed, cancelled, declined, no-show, expired, confirmed, pending) for the personal history page. The admin sees about 55 appointments across all workers, where some confirmations and declines were done by the admin. To start over: `docker compose -f docker-compose.local.yml exec api php artisan migrate:fresh --seed`.
 
 ---
 
