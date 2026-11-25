@@ -84,15 +84,16 @@ docker compose -f docker-compose.local.yml up --build
 | Service | URL |
 |---|---|
 | React (Vite, hot reload) | http://localhost:5173 |
-| Laravel API | http://localhost:8081/api |
+| Angular (`ng serve`, hot reload) | http://localhost:4200 |
+| Laravel API | http://localhost:8989/api |
 | PostgreSQL (for DB tools) | `127.0.0.1:5433`, db `time_reserve_local`, user `postgres`, password `secret_local_pass` |
 
-On the first start the API container creates `back-end/.env` if it is missing, installs Composer packages, generates `APP_KEY`, runs the migrations and seeds the demo data (only into an empty database). The `queue` and `scheduler` containers run `queue:work` and `schedule:work`. The React container uses the `VITE_API_URL` from the compose file, so `front-end-react/.env` is not needed.
+On the first start the API container creates `back-end/.env` if it is missing, installs Composer packages, generates `APP_KEY`, runs the migrations and seeds the demo data (only into an empty database). The `queue` and `scheduler` containers run `queue:work` and `schedule:work`. The React container uses the `VITE_API_URL` from the compose file, so `front-end-react/.env` is not needed. The Angular container reads the API URL from `front-end-angular/src/environments/environment.development.ts` (`http://127.0.0.1:8989/api`). Both front ends run `npm ci` on the first start, so the first start takes a few minutes.
 
 ```bash
 docker compose -f docker-compose.local.yml logs -f api      # follow the API log
 docker compose -f docker-compose.local.yml exec api php artisan migrate:fresh --seed
-docker compose -f docker-compose.local.yml exec web npm install <package>
+docker compose -f docker-compose.local.yml exec react npm install <package>     # or: exec angular npm install --legacy-peer-deps <package>
 docker compose -f docker-compose.local.yml down             # stop (add -v to also delete the database)
 ```
 

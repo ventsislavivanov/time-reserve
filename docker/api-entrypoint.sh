@@ -20,4 +20,4 @@ if [ "$(php artisan tinker --execute='echo App\Models\User::count();' | tail -n 
     php artisan db:seed --force
 fi
 
-exec php artisan serve --host=0.0.0.0 --port=8081
+exec php artisan serve --host=0.0.0.0 --port=8989
