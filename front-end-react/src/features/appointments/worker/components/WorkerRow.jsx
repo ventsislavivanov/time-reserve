@@ -24,7 +24,7 @@ const WorkerRow = ({
         actions.push({
             id: `start-${app.id}`,
             label: "Start",
-            variant: "outline-warning",
+            variant: "outline-success",
             onClick: () => openModal("start", app),
             ...base,
         });
