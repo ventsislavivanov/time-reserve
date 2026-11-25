@@ -46,7 +46,7 @@ export default function StaffLayout() {
 	return (
 		<div className="flex min-h-screen flex-col">
 			{isAuthenticated && (
-				<Header actions={actions}>
+				<Header actions={actions} homeTo="/staff/dashboard">
 					<UINavLink to="/staff/dashboard">Dashboard</UINavLink>
 
 					{role === 'admin' && (

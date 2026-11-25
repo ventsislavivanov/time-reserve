@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import ThemeToggle from "../theme/ThemeToggle.jsx";
 
-const Brand = () => (
-	<Link to="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
+const Brand = ({ to }) => (
+	<Link to={to} className="flex items-center gap-2 text-lg font-bold tracking-tight">
 		<span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
 			<CalendarClock className="size-5" />
 		</span>
@@ -14,8 +14,9 @@ const Brand = () => (
 	</Link>
 );
 
-// children: the navigation links, actions: the right hand side (user info, buttons)
-const Header = ({ children, actions }) => {
+// children: the navigation links, actions: the right hand side (user info, buttons),
+// homeTo: where the logo leads (the staff layout points it at the dashboard)
+const Header = ({ children, actions, homeTo = "/" }) => {
 	const [open, setOpen] = useState(false);
 	const { pathname } = useLocation();
 	const [lastPath, setLastPath] = useState(pathname);
@@ -29,7 +30,7 @@ const Header = ({ children, actions }) => {
 	return (
 		<header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 			<div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
-				<Brand />
+				<Brand to={homeTo} />
 
 				<nav className="ml-4 hidden flex-1 items-center gap-1 lg:flex">
 					{children}
