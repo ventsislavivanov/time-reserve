@@ -21,7 +21,8 @@ const badgeVariants = cva(
         warning: "bg-warning/20 text-warning-foreground dark:text-warning",
         danger: "bg-destructive/10 text-destructive",
         primary: "bg-primary/10 text-primary",
-        muted: "bg-muted text-muted-foreground",
+        // Not bg-muted: that is the colour of the striped table rows, the badge would blend in.
+        muted: "bg-muted-foreground/15 text-foreground/75 ring-1 ring-inset ring-muted-foreground/25",
       },
     },
     defaultVariants: {
