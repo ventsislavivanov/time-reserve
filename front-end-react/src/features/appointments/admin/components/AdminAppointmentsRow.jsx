@@ -1,6 +1,9 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { UIAppointmentBadge, UIRowActions } from "../../../../components/common/ui";
 
+// "2026-11-24 11:15:36" -> "2026-11-24 11:15"
+const shortDateTime = (value) => (value ? String(value).slice(0, 16) : "—");
+
 const AdminAppointmentsRow = ({
                                   app,
                                   isUpdating,
@@ -60,14 +63,18 @@ const AdminAppointmentsRow = ({
     return (
         <TableRow>
             <TableCell>{app.id}</TableCell>
-            <TableCell>{app.date}</TableCell>
-            <TableCell>{app.time}</TableCell>
+            <TableCell>
+                <div>{app.date}</div>
+                <div className="text-xs text-muted-foreground">{app.time}</div>
+            </TableCell>
             <TableCell>{app.client?.name ?? "—"}</TableCell>
             <TableCell>{app.worker?.name ?? "—"}</TableCell>
-            <TableCell><UIAppointmentBadge status={app.status} /></TableCell>
-            <TableCell>{app.created_at}</TableCell>
-            <TableCell>{app.updated_at}</TableCell>
-            <TableCell>{app.changed_by?.type ?? "system"}{/* → {app.changed_by.name}*/}</TableCell>
+            <TableCell className="text-center"><UIAppointmentBadge status={app.status} /></TableCell>
+            <TableCell>
+                <div>{shortDateTime(app.created_at)}</div>
+                <div className="text-xs text-muted-foreground">{shortDateTime(app.updated_at)}</div>
+            </TableCell>
+            <TableCell className="text-center">{app.changed_by?.type ?? "system"}{/* → {app.changed_by.name}*/}</TableCell>
             <TableCell className="pr-4 text-right">
                 <UIRowActions actions={actions} />
             </TableCell>

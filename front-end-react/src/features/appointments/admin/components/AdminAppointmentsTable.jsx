@@ -20,14 +20,12 @@ const AdminAppointmentsTable = ({
                 <TableHeader className="bg-muted/40">
                     <TableRow>
                         <TableHead>ID</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Time</TableHead>
+                        <TableHead>Date &amp; time</TableHead>
                         <TableHead>Client</TableHead>
                         <TableHead>Worker</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Created at</TableHead>
-                        <TableHead>Updated at</TableHead>
-                        <TableHead>Changed by</TableHead>
+                        <TableHead className="text-center">Status</TableHead>
+                        <TableHead>Created / updated</TableHead>
+                        <TableHead className="text-center">Changed by</TableHead>
                         <TableHead className="pr-4 text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
