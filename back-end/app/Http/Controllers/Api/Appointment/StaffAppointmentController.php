@@ -36,6 +36,13 @@ class StaffAppointmentController extends Controller
 	)]
 	#[OA\Parameter(name: 'worker_id', in: 'query', required: false, schema: new OA\Schema(type: 'integer', example: 2))]
 	#[OA\Parameter(name: 'date', in: 'query', required: false, schema: new OA\Schema(type: 'string', format: 'date', example: '2026-03-15'))]
+	#[OA\Parameter(name: 'id', in: 'query', required: false, schema: new OA\Schema(type: 'integer', example: 12))]
+	#[OA\Parameter(name: 'client', in: 'query', required: false, description: 'Part of the client name', schema: new OA\Schema(type: 'string', example: 'eva'))]
+	#[OA\Parameter(name: 'date_from', in: 'query', required: false, description: 'Appointment date from', schema: new OA\Schema(type: 'string', format: 'date'))]
+	#[OA\Parameter(name: 'date_to', in: 'query', required: false, description: 'Appointment date to', schema: new OA\Schema(type: 'string', format: 'date'))]
+	#[OA\Parameter(name: 'created_from', in: 'query', required: false, schema: new OA\Schema(type: 'string', format: 'date'))]
+	#[OA\Parameter(name: 'created_to', in: 'query', required: false, schema: new OA\Schema(type: 'string', format: 'date'))]
+	#[OA\Parameter(name: 'updated_by', in: 'query', required: false, description: 'User id of the last change, or "system"', schema: new OA\Schema(type: 'string', example: 'system'))]
 	#[OA\Response(
 		response: 200,
 		description: 'Paginated list of appointments',
@@ -58,6 +65,17 @@ class StaffAppointmentController extends Controller
 			->when($user->isWorker(), fn($q) => $q->where('worker_id', $user->id))
 			->when($request->status, fn($q) => $q->where('status', $request->status))
 			->when($request->worker_id && $user->isAdmin(), fn($q) => $q->where('worker_id', $request->worker_id))
+			->when($request->id, fn($q) => $q->where('id', (int) $request->id))
+			->when($request->client, fn($q) => $q->whereHas(
+				'client',
+				fn($c) => $c->whereRaw('LOWER(name) LIKE ?', ['%' . mb_strtolower($request->client) . '%'])
+			))
+			->when($request->date_from, fn($q) => $q->whereDate('starts_at', '>=', $request->date_from))
+			->when($request->date_to, fn($q) => $q->whereDate('starts_at', '<=', $request->date_to))
+			->when($request->created_from, fn($q) => $q->whereDate('created_at', '>=', $request->created_from))
+			->when($request->created_to, fn($q) => $q->whereDate('created_at', '<=', $request->created_to))
+			->when($request->updated_by === 'system', fn($q) => $q->whereNull('changed_by'))
+			->when($request->updated_by && $request->updated_by !== 'system', fn($q) => $q->where('changed_by', (int) $request->updated_by))
 			->orderBy('starts_at', 'desc')
 			->paginate(20);
 
