@@ -29,6 +29,7 @@ class UserFactory extends Factory
 			'role' => 'client',
 			'is_approved' => true,
 			'is_active' => true,
+			'can_book_appointments' => true,
 		];
     }
 }

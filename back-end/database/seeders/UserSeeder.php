@@ -46,6 +46,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'client',
             'is_approved' => true,
+            'can_book_appointments' => true,
             'phone' => '+380991234567',
             'gender' => 'female',
             'email_verified_at' => now(),
