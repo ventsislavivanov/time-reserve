@@ -21,7 +21,8 @@ const AdminAppointments = () => {
         activeActionId,
         confirm,
         decline,
-        noShow
+        noShow,
+        refetch
     } = useAdminAppointments();
 
     const {

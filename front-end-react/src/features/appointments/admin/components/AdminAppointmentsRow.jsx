@@ -62,12 +62,12 @@ const AdminAppointmentsRow = ({
             <TableCell>{app.id}</TableCell>
             <TableCell>{app.date}</TableCell>
             <TableCell>{app.time}</TableCell>
-            <TableCell>{app.client.name}</TableCell>
-            <TableCell>{app.worker.name}</TableCell>
+            <TableCell>{app.client?.name ?? "—"}</TableCell>
+            <TableCell>{app.worker?.name ?? "—"}</TableCell>
             <TableCell><UIAppointmentBadge status={app.status} /></TableCell>
             <TableCell>{app.created_at}</TableCell>
             <TableCell>{app.updated_at}</TableCell>
-            <TableCell>{app.changed_by.type}{/* → {app.changed_by.name}*/}</TableCell>
+            <TableCell>{app.changed_by?.type ?? "system"}{/* → {app.changed_by.name}*/}</TableCell>
             <TableCell className="pr-4 text-right">
                 <UIRowActions actions={actions} />
             </TableCell>
