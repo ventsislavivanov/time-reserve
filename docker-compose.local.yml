@@ -1,0 +1,93 @@
+# Local development stack: PostgreSQL + Laravel API (+ queue, scheduler) + React (Vite).
+#
+#   docker compose -f docker-compose.local.yml up --build
+#
+# React:  http://localhost:5173      API: http://localhost:8081/api
+
+x-api: &api
+  build:
+    context: ./docker
+    dockerfile: api.Dockerfile
+  user: "${UID:-1000}:${GID:-1000}"
+  working_dir: /var/www
+  volumes:
+    - ./back-end:/var/www
+    - ./docker/api-entrypoint.sh:/entrypoint.sh:ro
+  environment:
+    HOME: /tmp
+    COMPOSER_HOME: /tmp/composer
+    APP_ENV: local
+    APP_DEBUG: "true"
+    APP_URL: http://localhost:8081
+    DB_CONNECTION: pgsql
+    DB_HOST: database
+    DB_PORT: "5432"
+    DB_DATABASE: time_reserve_local
+    DB_USERNAME: postgres
+    DB_PASSWORD: secret_local_pass
+    PHP_CLI_SERVER_WORKERS: "4"
+
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: time_reserve_local
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret_local_pass
+    ports:
+      - "127.0.0.1:5433:5432"   # 5433 so it does not clash with a PostgreSQL on the host
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d time_reserve_local"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    <<: *api
+    entrypoint: ["sh", "/entrypoint.sh"]
+    ports:
+      - "8081:8081"
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8081/up >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 10s
+
+  queue:
+    <<: *api
+    command: ["php", "artisan", "queue:work", "--tries=3"]
+    depends_on:
+      api:
+        condition: service_healthy
+
+  scheduler:
+    <<: *api
+    command: ["php", "artisan", "schedule:work"]
+    depends_on:
+      api:
+        condition: service_healthy
+
+  web:
+    image: node:22-bookworm-slim
+    user: "${UID:-1000}:${GID:-1000}"
+    working_dir: /app
+    volumes:
+      - ./front-end-react:/app
+    environment:
+      HOME: /tmp
+      # Read by the browser, so it points at the port published on the host.
+      VITE_API_URL: http://localhost:8081/api
+    # Installs only when node_modules is missing, so package-lock.json is never rewritten.
+    # After changing dependencies run: docker compose -f docker-compose.local.yml exec web npm install
+    command: sh -c "[ -d node_modules ] || npm ci --no-audit --no-fund; npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+
+volumes:
+  pgdata:

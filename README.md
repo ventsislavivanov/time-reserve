@@ -72,6 +72,32 @@ php artisan serve --host=127.0.0.1 --port=8989
 
 Then set `VITE_API_URL=http://127.0.0.1:8989/api` in the React `.env`.
 
+### Running everything with Docker (WSL / Linux / macOS)
+
+Only Docker with the Compose plugin is needed. No PHP, Composer, Node or PostgreSQL on the host.
+
+```bash
+cd time-reserve
+docker compose -f docker-compose.local.yml up --build
+```
+
+| Service | URL |
+|---|---|
+| React (Vite, hot reload) | http://localhost:5173 |
+| Laravel API | http://localhost:8081/api |
+| PostgreSQL (for DB tools) | `127.0.0.1:5433`, db `time_reserve_local`, user `postgres`, password `secret_local_pass` |
+
+On the first start the API container creates `back-end/.env` if it is missing, installs Composer packages, generates `APP_KEY`, runs the migrations and seeds the demo data (only into an empty database). The `queue` and `scheduler` containers run `queue:work` and `schedule:work`. The React container uses the `VITE_API_URL` from the compose file, so `front-end-react/.env` is not needed.
+
+```bash
+docker compose -f docker-compose.local.yml logs -f api      # follow the API log
+docker compose -f docker-compose.local.yml exec api php artisan migrate:fresh --seed
+docker compose -f docker-compose.local.yml exec web npm install <package>
+docker compose -f docker-compose.local.yml down             # stop (add -v to also delete the database)
+```
+
+Demo accounts: `admin@test.com` (staff login), `an@test.com` (worker, staff login), `eva@test.com` (client). The password is `password` for all of them.
+
 ---
 
 # Functional Guide
