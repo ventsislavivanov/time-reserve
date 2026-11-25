@@ -139,8 +139,8 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
             footer={footer}
         >
             <UIAppForm methods={methods} onSubmit={onSubmit} id="user-form">
-                <div className="row">
-                    <div className="col-md-6">
+                <div className="grid grid-cols-12 gap-4">
+                    <div className="col-span-12 md:col-span-6">
                         <UIInput
                             name="name"
                             label="Full Name"
@@ -149,7 +149,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                             rules={rules.name}
                         />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-span-12 md:col-span-6">
                         <UIInput
                             name="email"
                             label="Email Address"
@@ -159,7 +159,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                             rules={rules.email}
                         />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-span-12 md:col-span-6">
                         <UIInput
                             name="phone"
                             label="Phone Number"
@@ -168,7 +168,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                             rules={rules.phone}
                         />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-span-12 md:col-span-6">
                         <UIDatePicker
                             name="birth_date"
                             label="Birth Date"
@@ -176,7 +176,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                             rules={rules.birth_date}
                         />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-span-12 md:col-span-6">
                         <UIRadio
                             name="gender"
                             label="Gender"
@@ -184,7 +184,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                             rules={rules.gender}
                         />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-span-12 md:col-span-6">
                         <UIRadio
                             name="role"
                             label="Role"
@@ -193,7 +193,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                         />
                     </div>
                     {selectedRole === 'worker' && (
-                        <div className="col-md-6">
+                        <div className="col-span-12 md:col-span-6">
                             <UISelect
                                 name="job_position_id"
                                 label="Job Position"
@@ -203,7 +203,7 @@ const UserFormModal = ({ user, onSuccess, onCancel }) => {
                             />
                         </div>
                     )}
-                    <div className="col-md-12 mt-3">
+                    <div className="col-span-12 md:col-span-12 mt-4">
                         <UIInput
                             name="password"
                             label={user ? 'New Password (leave blank to keep current)' : 'Password'}

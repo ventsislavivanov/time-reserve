@@ -1,15 +1,16 @@
+import { TableCell, TableRow } from "@/components/ui/table";
 import { UIAppointmentBadge, UIButton } from "../../../../components/common/ui";
 
 const HistoryRow = ({app, onView}) => {
     return (
-        <tr key={app.id}>
-            <td>{app.id}</td>
-            <td>{app.date}</td>
-            <td>{app.time}</td>
-            <td>{app.client.name}</td>
-            <td>{app.service.name}</td>
-            <td className="text-center"><UIAppointmentBadge status={app.status} /></td>
-            <td className="text-center">
+        <TableRow key={app.id}>
+            <TableCell>{app.id}</TableCell>
+            <TableCell>{app.date}</TableCell>
+            <TableCell>{app.time}</TableCell>
+            <TableCell>{app.client.name}</TableCell>
+            <TableCell>{app.service.name}</TableCell>
+            <TableCell className="text-center"><UIAppointmentBadge status={app.status} /></TableCell>
+            <TableCell className="text-center">
                 <UIButton
                     variant="outline-info"
                     size="sm"
@@ -17,8 +18,8 @@ const HistoryRow = ({app, onView}) => {
                 >
                     View
                 </UIButton>
-            </td>
-        </tr>
+            </TableCell>
+        </TableRow>
     );
 };
 

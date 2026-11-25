@@ -1,3 +1,4 @@
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import HistoryRow from "./HistoryRow.jsx";
 import { SkeletonTable } from "../../../../components/common/ui";
 
@@ -14,26 +15,26 @@ const HistoryTable = ({
 
     return (
         history.length === 0 ? (
-            <div className="alert alert-info">
+            <div className="rounded-lg border px-4 py-3 text-sm border-primary/20 bg-primary/5 text-foreground">
                 There are no entries in the history.
             </div>
         ) : (
-            <div className="card shadow-sm border-0 rounded-3 overflow-hidden bg-white">
-                <div className="table-responsive">
-                    <table className="table table-striped align-middle mb-0">
-                        <thead className="bg-light text-secondary text-uppercase">
-                        <tr>
-                            <th>#</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Client</th>
-                            <th>Service</th>
-                            <th className="text-center">Status</th>
-                            <th className="text-center">Details</th>
-                        </tr>
-                        </thead>
+            <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+                <div className="overflow-x-auto">
+                    <Table>
+                        <TableHeader>
+                        <TableRow>
+                            <TableHead>#</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Time</TableHead>
+                            <TableHead>Client</TableHead>
+                            <TableHead>Service</TableHead>
+                            <TableHead className="text-center">Status</TableHead>
+                            <TableHead className="text-center">Details</TableHead>
+                        </TableRow>
+                        </TableHeader>
 
-                        <tbody>
+                        <TableBody>
                         {history.map(app => (
                             <HistoryRow
                                 key={app.id}
@@ -41,8 +42,8 @@ const HistoryTable = ({
                                 onView={openModal}
                             />
                         ))}
-                        </tbody>
-                    </table>
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
         )

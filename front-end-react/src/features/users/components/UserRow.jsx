@@ -1,82 +1,82 @@
-﻿import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Badge } from "@/components/ui/badge";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import { UIStatusBadge, UIRowActions } from "../../../components/common/ui";
 
 const UserRow = ({ user, roleBadgeMap, onToggleActive, onViewDetails, onEdit }) => {
     const actions = [
         {
-            key: `edit-${user.id}`,
+            id: `edit-${user.id}`,
             icon: "edit",
-            variant: "light",
-            className: "border shadow-sm rounded-circle p-0",
-            style: { width: "32px", height: "32px" },
-            iconClassName: "text-warning small",
-            title: "Edit User",
+            variant: "outline",
+            className: "rounded-full",
+            size: "icon",
+            title: "Edit user",
             onClick: () => onEdit(user)
         },
         {
-            key: `view-${user.id}`,
+            id: `view-${user.id}`,
             icon: "eye",
-            variant: "light",
-            className: "border shadow-sm rounded-circle p-0",
-            style: { width: "32px", height: "32px" },
-            iconClassName: "text-primary small",
-            title: "View Details",
+            variant: "outline",
+            className: "rounded-full",
+            size: "icon",
+            title: "View details",
             onClick: () => onViewDetails(user)
         },
         {
-            key: `toggle-${user.id}-${user.is_active}`,
+            id: `toggle-${user.id}-${user.is_active}`,
             icon: user.is_active ? "ban" : "check",
             variant: user.is_active ? "outline-danger" : "outline-success",
-            className: "shadow-sm rounded-pill px-3",
+            className: "rounded-full px-3",
             label: user.is_active ? "Block" : "Activate",
-            iconClassName: user.is_active ? "text-danger small" : "text-success small",
             onClick: () => onToggleActive(user.id)
         }
     ]
 
     return (
-        <tr className={!user.is_active ? "bg-light opacity-75" : ""}>
-            <td className="ps-4 py-3">
-                <div className="d-flex align-items-center">
-                    <div className={`rounded-circle bg-opacity-10 d-flex align-items-center justify-content-center me-3 ${user.is_active ? 'bg-primary text-primary' : 'bg-secondary text-secondary'}`}
-                         style={{ width: '38px', height: '38px' }}
-                    >
+        <TableRow className={cn(!user.is_active && "bg-muted/40 opacity-75")}>
+            <TableCell className="py-4 pl-6">
+                <div className="flex items-center gap-3">
+                    <div className={cn(
+                        "flex size-10 items-center justify-center rounded-full",
+                        user.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                    )}>
                         <FontAwesomeIcon icon="user" />
                     </div>
                     <div>
-                        <div className="fw-bold text-dark">{user.name}</div>
-                        <div className="text-muted small">ID: #{user.id}</div>
+                        <div className="font-semibold">{user.name}</div>
+                        <div className="text-sm text-muted-foreground">ID: #{user.id}</div>
                     </div>
                 </div>
-            </td>
-            <td className="py-3">
-                <div className="d-flex flex-column text-truncate" style={{maxWidth: '200px'}}>
-                    <span className="text-dark mb-1">
-                        <FontAwesomeIcon icon="envelope" className="me-2 small opacity-50" />
+            </TableCell>
+            <TableCell className="py-4">
+                <div className="flex max-w-52 flex-col gap-1 text-sm">
+                    <span className="truncate">
+                        <FontAwesomeIcon icon="envelope" className="mr-2 text-muted-foreground" />
                         {user.email}
                     </span>
-                    <span className="text-muted small">
-                        <FontAwesomeIcon icon="phone" className="me-2 small opacity-50" />
+                    <span className="truncate text-muted-foreground">
+                        <FontAwesomeIcon icon="phone" className="mr-2" />
                         {user.phone}
                     </span>
                 </div>
-            </td>
-            <td className="text-center py-3">
-                <span className={`badge ${roleBadgeMap[user.role] || 'bg-secondary'}`}>
+            </TableCell>
+            <TableCell className="py-4 text-center">
+                <Badge variant={roleBadgeMap[user.role] || 'muted'} className="capitalize">
                     {user.role}
-                </span>
-            </td>
-            <td className="text-center py-3">
-                <div className="d-flex flex-column gap-1 align-items-center">
+                </Badge>
+            </TableCell>
+            <TableCell className="py-4 text-center">
+                <div className="flex flex-col items-center gap-1">
                     <UIStatusBadge condition={user.is_active} trueText="Active" falseText="Blocked" />
                     <UIStatusBadge condition={user.is_approved} trueText="Approved" falseText="Pending" />
                 </div>
-            </td>
-            <td className="pe-4 text-center py-3">
-                <UIRowActions actions={actions} />
-            </td>
-        </tr>
+            </TableCell>
+            <TableCell className="py-4 pr-6 text-center">
+                <UIRowActions actions={actions} align="center" />
+            </TableCell>
+        </TableRow>
     );
 };
 

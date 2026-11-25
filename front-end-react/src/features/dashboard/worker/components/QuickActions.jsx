@@ -5,10 +5,10 @@ const QuickActions = () => {
     const navigate = useNavigate();
 
     return (
-        <UICard className="p-4">
-            <h5 className="mb-3">Quick Actions</h5>
+        <UICard>
+            <h5 className="mb-4">Quick Actions</h5>
 
-            <div className="d-flex flex-column gap-2">
+            <div className="flex flex-col gap-2">
 
                 <UIButton
                     variant="outline-primary"

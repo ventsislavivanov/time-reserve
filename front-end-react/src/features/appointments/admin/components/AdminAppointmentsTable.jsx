@@ -1,48 +1,51 @@
 import AdminAppointmentsRow from "./AdminAppointmentsRow.jsx";
-import { SkeletonTable } from "../../../../components/common/ui";
+import { SkeletonTable, UICard } from "../../../../components/common/ui";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const AdminAppointmentsTable = ({
                                     appointments,
                                     isLoading,
                                     isUpdating,
                                     activeActionId,
-                                    openModal={openModal},
-                                    openDetails= {openDetails}
+                                    openModal,
+                                    openDetails
                                 }) => {
     if (isLoading) {
         return <SkeletonTable rows={15} columns={6} />;
     }
 
     return (
-        <table className="table table-striped align-middle">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Client</th>
-                <th>Worker</th>
-                <th>Status</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Changed By</th>
-                <th className="text-end">Actions</th>
-            </tr>
-            </thead>
+        <UICard bodyClassName="p-0" className="overflow-x-auto">
+            <Table>
+                <TableHeader className="bg-muted/40">
+                    <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Time</TableHead>
+                        <TableHead>Client</TableHead>
+                        <TableHead>Worker</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Created at</TableHead>
+                        <TableHead>Updated at</TableHead>
+                        <TableHead>Changed by</TableHead>
+                        <TableHead className="pr-4 text-right">Actions</TableHead>
+                    </TableRow>
+                </TableHeader>
 
-            <tbody>
-            {appointments.map(app => (
-                <AdminAppointmentsRow
-                    key={app.id}
-                    app={app}
-                    isUpdating={isUpdating}
-                    activeActionId={activeActionId}
-                    openModal={openModal}
-                    openDetails={openDetails}
-                />
-            ))}
-            </tbody>
-        </table>
+                <TableBody>
+                    {appointments.map(app => (
+                        <AdminAppointmentsRow
+                            key={app.id}
+                            app={app}
+                            isUpdating={isUpdating}
+                            activeActionId={activeActionId}
+                            openModal={openModal}
+                            openDetails={openDetails}
+                        />
+                    ))}
+                </TableBody>
+            </Table>
+        </UICard>
     );
 };
 

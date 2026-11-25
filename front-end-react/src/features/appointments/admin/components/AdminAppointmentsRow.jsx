@@ -1,3 +1,4 @@
+import { TableCell, TableRow } from "@/components/ui/table";
 import { UIAppointmentBadge, UIRowActions } from "../../../../components/common/ui";
 
 const AdminAppointmentsRow = ({
@@ -57,20 +58,20 @@ const AdminAppointmentsRow = ({
     }
 
     return (
-        <tr>
-            <td>{app.id}</td>
-            <td>{app.date}</td>
-            <td>{app.time}</td>
-            <td>{app.client.name}</td>
-            <td>{app.worker.name}</td>
-            <td><UIAppointmentBadge status={app.status} /></td>
-            <td>{app.created_at}</td>
-            <td>{app.updated_at}</td>
-            <td>{app.changed_by.type}{/* → {app.changed_by.name}*/}</td>
-            <td className="text-end">
+        <TableRow>
+            <TableCell>{app.id}</TableCell>
+            <TableCell>{app.date}</TableCell>
+            <TableCell>{app.time}</TableCell>
+            <TableCell>{app.client.name}</TableCell>
+            <TableCell>{app.worker.name}</TableCell>
+            <TableCell><UIAppointmentBadge status={app.status} /></TableCell>
+            <TableCell>{app.created_at}</TableCell>
+            <TableCell>{app.updated_at}</TableCell>
+            <TableCell>{app.changed_by.type}{/* → {app.changed_by.name}*/}</TableCell>
+            <TableCell className="pr-4 text-right">
                 <UIRowActions actions={actions} />
-            </td>
-        </tr>
+            </TableCell>
+        </TableRow>
     );
 };
 

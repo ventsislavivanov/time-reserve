@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getAll as getServices } from '../../services';
 import { getUserServices, syncUserServices } from '../';
-import { UILoading } from "../../../components/common/ui";
+import { Checkbox } from "@/components/ui/checkbox";
+import { UILoading, UILoadingButton } from "../../../components/common/ui";
 import { notify } from "../../../services";
 
 const WorkerServicesManager = ({ workerId }) => {
@@ -59,32 +60,24 @@ const WorkerServicesManager = ({ workerId }) => {
     }
 
     return (
-        <div className="worker-services-manager mt-4">
-            <h6 className="border-bottom pb-2 mb-3">
-                <FontAwesomeIcon icon="concierge-bell" className="me-2 text-primary" />
+        <div className="worker-services-manager mt-6">
+            <h4 className="mb-4 border-b pb-2 text-base">
+                <FontAwesomeIcon icon="concierge-bell" className="mr-2 text-primary" />
                 Assigned Services
-            </h6>
-            <div className="row g-2">
+            </h4>
+            <div className="grid grid-cols-12 gap-4">
                 {allServices.length === 0 ? (
-                    <div className="col-12 text-muted">No active services available.</div>
+                    <div className="col-span-12 text-muted-foreground">No active services available.</div>
                 ) : (
                     allServices.map(service => (
-                        <div key={service.id} className="col-md-6 col-lg-4">
-                            <div className={`card h-100 service-selection-card ${selectedServiceIds.includes(service.id) ? 'border-primary bg-light' : ''}`} 
-                                 onClick={() => handleToggleService(service.id)}
-                                 style={{ cursor: 'pointer' }}>
-                                <div className="card-body p-2 d-flex align-items-center">
-                                    <div className="form-check mb-0">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            checked={selectedServiceIds.includes(service.id)}
-                                            onChange={() => {}}
-                                        />
-                                    </div>
-                                    <div className="ms-2">
-                                        <div className="fw-bold small">{service.name}</div>
-                                        <div className="text-muted" style={{ fontSize: '0.75rem' }}>{service.duration} min</div>
+                        <div key={service.id} className="col-span-12 md:col-span-6 lg:col-span-4">
+                            <div className={`h-full cursor-pointer rounded-xl border p-3 transition-colors ${selectedServiceIds.includes(service.id) ? "border-primary bg-primary/5" : "hover:border-primary/40"}`}
+                                 onClick={() => handleToggleService(service.id)}>
+                                <div className="flex items-center">
+                                    <Checkbox checked={selectedServiceIds.includes(service.id)} onCheckedChange={() => handleToggleService(service.id)} onClick={(e) => e.stopPropagation()} />
+                                    <div className="ml-2">
+                                        <div className="font-bold text-sm">{service.name}</div>
+                                        <div className="text-xs text-muted-foreground">{service.duration} min</div>
                                     </div>
                                 </div>
                             </div>
@@ -92,18 +85,10 @@ const WorkerServicesManager = ({ workerId }) => {
                     ))
                 )}
             </div>
-            <div className="mt-3">
-                <button 
-                    className="btn btn-primary btn-sm" 
-                    onClick={handleSave}
-                    disabled={selectedServiceIds.length === 0 || isSaving}
-                >
-                    {isSaving ? (
-                        <><span className="spinner-border spinner-border-sm me-1"></span> Saving...</>
-                    ) : (
-                        <><FontAwesomeIcon icon="save" className="me-1" /> Save Assignments</>
-                    )}
-                </button>
+            <div className="mt-4">
+                <UILoadingButton size="sm" onClick={handleSave} loading={isSaving} loadingLabel="Saving..." disabled={selectedServiceIds.length === 0}>
+                    <FontAwesomeIcon icon="save" className="mr-1" /> Save Assignments
+                </UILoadingButton>
             </div>
         </div>
     );

@@ -1,14 +1,14 @@
 const DashboardMiniRow = ({ app }) => {
     return (
-        <div className="d-flex justify-content-between py-2 border-bottom">
+        <div className="flex justify-between py-2 border-b">
             <div>
                 <strong>{app.client.name}</strong>
-                <div className="text-muted small">{app.service.name}</div>
+                <div className="text-muted-foreground text-sm">{app.service.name}</div>
             </div>
 
-            <div className="text-end">
+            <div className="text-right">
                 <div>{app.date}</div>
-                <div className="small">{app.time}</div>
+                <div className="text-sm">{app.time}</div>
             </div>
         </div>
     );

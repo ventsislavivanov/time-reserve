@@ -1,3 +1,4 @@
+import { TableCell, TableRow } from "@/components/ui/table";
 import { UIAppointmentBadge, UIRowActions } from "../../../../components/common/ui";
 
 const WorkerRow = ({
@@ -58,18 +59,18 @@ const WorkerRow = ({
     }
 
     return (
-        <tr>
-            <td>{app.client.name}</td>
-            <td>{app.service.name}</td>
-            <td>{app.date}</td>
-            <td>{app.time}</td>
-            <td className="text-center">
+        <TableRow>
+            <TableCell>{app.client.name}</TableCell>
+            <TableCell>{app.service.name}</TableCell>
+            <TableCell>{app.date}</TableCell>
+            <TableCell>{app.time}</TableCell>
+            <TableCell className="text-center">
                 <UIAppointmentBadge status={app.status} />
-            </td>
-            <td className="text-end">
+            </TableCell>
+            <TableCell className="text-right">
                 <UIRowActions actions={actions} />
-            </td>
-        </tr>
+            </TableCell>
+        </TableRow>
     );
 };
 

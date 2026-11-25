@@ -1,3 +1,5 @@
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -32,9 +34,9 @@ export default function ManageUsers() {
 	const { showModal, hideModal } = useBootstrapModal();
 
 	const roleBadgeMap = {
-		admin: 'bg-primary',
-		worker: 'bg-info',
-		client: 'bg-secondary'
+		admin: "default",
+		worker: "primary",
+		client: "muted"
 	};
 
 	const openDetails = (user) => {
@@ -69,7 +71,7 @@ export default function ManageUsers() {
 
 	if (isLoading) {
 		return (
-			<div className="container py-5">
+			<div className="mx-auto w-full max-w-7xl px-4 py-12">
 				<SkeletonTable rows={15} columns={6} />
 			</div>
 		);
@@ -77,28 +79,23 @@ export default function ManageUsers() {
 	}
 
 	return (
-		<div className="container mt-4 pb-5">
-			<div className="d-flex justify-content-between align-items-center mb-4">
-				<h3 className="fw-bold text-primary m-0">
-					<FontAwesomeIcon icon="users-cog" className="me-2" />
+		<div className="mx-auto w-full max-w-7xl px-4 mt-6 pb-12">
+			<div className="flex justify-between items-center mb-6">
+				<h1 className="flex items-center gap-2 text-2xl">
+					<FontAwesomeIcon icon="users-cog" className="mr-2" />
 					Manage Users
-				</h3>
-				<div className="d-flex gap-2">
+				</h1>
+				<div className="flex gap-2">
 					<UIButton
 						size="sm"
 						variant="success"
-						className="shadow-sm"
 						onClick={handleCreate}
 						icon="user-plus"
 					>
 						Add User
 					</UIButton>
-					<span className="badge bg-light text-dark shadow-sm border p-2">
-                        Filtered: {users.length}
-                    </span>
-					<span className="badge bg-primary shadow-sm p-2">
-                        Total: {totalItems}
-                    </span>
+					<Badge variant="outline">Filtered: {users.length}</Badge>
+					<Badge>Total: {totalItems}</Badge>
 				</div>
 			</div>
 
@@ -112,19 +109,19 @@ export default function ManageUsers() {
 				}
 			/>
 
-			<div className="card shadow-sm border-0 rounded-3 overflow-hidden bg-white">
-				<div className="table-responsive">
-					<table className="table table-hover table-striped align-middle mb-0">
-						<thead className="bg-light text-secondary text-uppercase">
-						<tr>
-							<th className="ps-4 py-3">User info</th>
-							<th className="py-3">Contacts</th>
-							<th className="text-center py-3">Role</th>
-							<th className="text-center py-3">Status</th>
-							<th className="pe-4 text-center py-3">Actions</th>
-						</tr>
-						</thead>
-						<tbody>
+			<div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+				<div className="overflow-x-auto">
+					<Table>
+						<TableHeader>
+						<TableRow>
+							<TableHead className="pl-6 py-4">User info</TableHead>
+							<TableHead className="py-4">Contacts</TableHead>
+							<TableHead className="text-center py-4">Role</TableHead>
+							<TableHead className="text-center py-4">Status</TableHead>
+							<TableHead className="pr-6 text-center py-4">Actions</TableHead>
+						</TableRow>
+						</TableHeader>
+						<TableBody>
 						{users && users.length > 0 ? (
 							users.map(user => (
 								<UserRow
@@ -137,14 +134,14 @@ export default function ManageUsers() {
 								/>
 							))
 						) : (
-							<tr>
-								<td colSpan="5" className="text-center py-4 text-muted">
+							<TableRow>
+								<TableCell colSpan="5" className="text-center py-6 text-muted-foreground">
 									No users found
-								</td>
-							</tr>
+								</TableCell>
+							</TableRow>
 						)}
-						</tbody>
-					</table>
+						</TableBody>
+					</Table>
 				</div>
 			</div>
 

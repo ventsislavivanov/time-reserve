@@ -6,13 +6,13 @@ const PendingRequestsPreview = () => {
     const { pending, isLoading } = useWorkerDashboard();
 
     return (
-        <UICard className="p-4">
-            <h5 className="mb-3">Pending Requests</h5>
+        <UICard>
+            <h5 className="mb-4">Pending Requests</h5>
 
             {isLoading ? (
                 <p>Loading...</p>
             ) : pending.length === 0 ? (
-                <p className="text-muted">No pending requests</p>
+                <p className="text-muted-foreground">No pending requests</p>
             ) : (
                 pending.map(app => (
                     <DashboardMiniRow key={app.id} app={app} />

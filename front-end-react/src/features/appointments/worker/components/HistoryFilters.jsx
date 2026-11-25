@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
 import { SearchInput, Select, UIButton } from '../../../../components/common/ui';
 import { useAppointmentStatuses } from "../../hooks/useAppointmentStatuses.js";
 
@@ -32,13 +33,12 @@ export default function HistoryFilters({ filters, onFilterChange, onReset }) {
     };
 
     return (
-        <div className="card shadow-sm border-0 mb-4 p-3 bg-white rounded-3">
-            <div className="row g-3 align-items-end">
+        <div className="mb-6 rounded-xl border bg-card p-4 shadow-sm">
+            <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-end">
 
-                <div className="col-md-2">
-                    <input
+                <div className="md:w-44">
+                    <Input
                         type="date"
-                        className="form-control"
                         value={localFilters.dateFrom}
                         onChange={(e) =>
                             setLocalFilters(prev => ({ ...prev, dateFrom: e.target.value }))
@@ -46,10 +46,9 @@ export default function HistoryFilters({ filters, onFilterChange, onReset }) {
                     />
                 </div>
 
-                <div className="col-md-2">
-                    <input
+                <div className="md:w-44">
+                    <Input
                         type="date"
-                        className="form-control"
                         value={localFilters.dateTo}
                         onChange={(e) =>
                             setLocalFilters(prev => ({ ...prev, dateTo: e.target.value }))
@@ -75,10 +74,10 @@ export default function HistoryFilters({ filters, onFilterChange, onReset }) {
                     }
                 />
 
-                <div className="col-md-2 d-flex gap-2">
+                <div className="flex gap-2 md:ml-auto">
                     <UIButton
                         size="sm"
-                        className="w-100 shadow-sm"
+                       
                         onClick={handleApply}
                         icon="filter"
                     >
@@ -88,8 +87,7 @@ export default function HistoryFilters({ filters, onFilterChange, onReset }) {
                     <UIButton
                         size="sm"
                         variant="outline-secondary"
-                        className="shadow-sm"
-                        onClick={handleReset}
+                                                onClick={handleReset}
                         title="Reset"
                         icon="undo"
                     />

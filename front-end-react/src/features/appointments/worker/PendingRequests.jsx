@@ -25,8 +25,8 @@ const PendingRequests = () => {
 	})
 
 	return (
-		<div className="container py-5">
-			<h2 className="mb-4">Pending Requests</h2>
+		<div className="mx-auto w-full max-w-7xl px-4 py-12">
+			<h2 className="mb-6">Pending Requests</h2>
 
 			<PendingTable
 				appointments={appointments}

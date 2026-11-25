@@ -1,3 +1,4 @@
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import PendingRow from "./PendingRow.jsx";
 import { SkeletonTable } from "../../../../components/common/ui";
 
@@ -15,23 +16,24 @@ const PendingTable = ({
 
     return (
         appointments.length === 0 ? (
-            <div className="alert alert-info">
+            <div className="rounded-lg border px-4 py-3 text-sm border-primary/20 bg-primary/5 text-foreground">
                 You have no pending requests.
             </div>
         ) : (
-            <table className="table table-striped align-middle">
-                <thead>
-                <tr>
-                    <th>Client</th>
-                    <th>Service</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th className="text-center">Status</th>
-                    <th className="text-end">Actions</th>
-                </tr>
-                </thead>
+            <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+<Table>
+                <TableHeader>
+                <TableRow>
+                    <TableHead>Client</TableHead>
+                    <TableHead>Service</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Time</TableHead>
+                    <TableHead className="text-center">Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+                </TableHeader>
 
-                <tbody>
+                <TableBody>
                 {appointments.map(app => (
                     <PendingRow
                         key={app.id}
@@ -41,8 +43,9 @@ const PendingTable = ({
                         openModal={openModal}
                     />
                 ))}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
+</div>
         )
     );
 };

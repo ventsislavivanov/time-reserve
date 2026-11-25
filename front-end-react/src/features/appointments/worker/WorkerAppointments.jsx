@@ -34,8 +34,8 @@ const WorkerAppointments = () => {
 	});
 
 	return (
-		<div className="container py-5">
-			<h2 className="mb-4">My Appointments</h2>
+		<div className="mx-auto w-full max-w-7xl px-4 py-12">
+			<h2 className="mb-6">My Appointments</h2>
 
 			<WorkerTable
 				appointments={appointments}

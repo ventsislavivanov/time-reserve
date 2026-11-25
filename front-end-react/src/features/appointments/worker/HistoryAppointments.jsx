@@ -37,16 +37,16 @@ const HistoryAppointments = () => {
 
     if (isLoading) {
         return (
-            <div className="container py-5">
-                <h2 className="mb-4">Appointment History</h2>
+            <div className="mx-auto w-full max-w-7xl px-4 py-12">
+                <h2 className="mb-6">Appointment History</h2>
                 <SkeletonTable rows={8} columns={6} />
             </div>
         );
     }
 
     return (
-        <div className="container py-5">
-            <h2 className="mb-4">Appointment History</h2>
+        <div className="mx-auto w-full max-w-7xl px-4 py-12">
+            <h2 className="mb-6">Appointment History</h2>
 
             <HistoryFilters
                 filters={filters}

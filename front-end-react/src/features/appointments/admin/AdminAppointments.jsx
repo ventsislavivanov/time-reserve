@@ -60,8 +60,8 @@ const AdminAppointments = () => {
     };
 
     return (
-        <div className="container py-5">
-            <h2 className="mb-4">Admin Appointments</h2>
+        <div className="mx-auto w-full max-w-7xl px-4 py-12">
+            <h1 className="mb-6">Appointments</h1>
 
             <AdminAppointmentFilters
                 filters={filters}

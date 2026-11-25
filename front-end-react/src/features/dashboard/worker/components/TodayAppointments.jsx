@@ -6,13 +6,13 @@ const TodayAppointments = () => {
     const { today, isLoading } = useWorkerDashboard();
 
     return (
-        <UICard className="p-4">
-            <h5 className="mb-3">Today's Appointments</h5>
+        <UICard>
+            <h5 className="mb-4">Today's Appointments</h5>
 
             {isLoading ? (
                 <p>Loading...</p>
             ) : today.length === 0 ? (
-                <p className="text-muted">No appointments today</p>
+                <p className="text-muted-foreground">No appointments today</p>
             ) : (
                 today.map(app => (
                     <DashboardMiniRow key={app.id} app={app} />

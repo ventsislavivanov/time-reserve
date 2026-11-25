@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Badge } from "@/components/ui/badge";
 import { UIModal, UIStatusBadge, UINavTabLink } from '../../../../components/common/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import WorkerServicesManager from '../WorkerServicesManager';
@@ -9,9 +10,9 @@ const UserDetailsModal = ({ user }) => {
 	if (!user) return null;
 
 	const roleBadgeMap = {
-		admin: 'bg-primary',
-		worker: 'bg-info',
-		client: 'bg-secondary'
+		admin: "default",
+		worker: "primary",
+		client: "muted"
 	};
 
 	return (
@@ -22,7 +23,7 @@ const UserDetailsModal = ({ user }) => {
 			size="modal-lg"
 			key={user?.id}
 		>
-			<ul className="nav nav-tabs mb-3">
+			<ul role="tablist" className="mb-4 flex gap-1 border-b">
 				<UINavTabLink
 					tabKey="info"
 					activeTab={activeTab}
@@ -46,17 +47,13 @@ const UserDetailsModal = ({ user }) => {
 			<div className="tab-content">
 				{activeTab === 'info' && (
 					<div>
-						<div className="text-center mb-4 pb-3 border-bottom">
-							<div className={`rounded-circle bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3 ${user.is_active ? 'bg-primary text-primary' : 'bg-secondary text-secondary'}`}
-								 style={{ width: '80px', height: '80px', fontSize: '2rem' }}
-							>
+						<div className="text-center mb-6 pb-4 border-b">
+							<div className={`mb-4 inline-flex size-20 items-center justify-center rounded-full text-3xl ${user.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
 								<FontAwesomeIcon icon="user" />
 							</div>
-							<h4 className="mb-2 fw-bold">{user.name}</h4>
-							<div className="d-flex gap-2 justify-content-center mb-2">
-                                <span className={`badge ${roleBadgeMap[user.role] || 'bg-secondary'}`}>
-                                    {user.role}
-                                </span>
+							<h4 className="mb-2 font-bold">{user.name}</h4>
+							<div className="flex gap-2 justify-center mb-2">
+                                <Badge variant={roleBadgeMap[user.role] || "muted"} className="capitalize">{user.role}</Badge>
 								<UIStatusBadge
 									condition={user.is_active}
 									trueText="Active"
@@ -71,47 +68,47 @@ const UserDetailsModal = ({ user }) => {
 						</div>
 
 						{/* User Information */}
-						<div className="row g-3">
-							<div className="col-md-6">
-								<div className="card border-0 bg-light h-100">
-									<div className="card-body">
-										<h6 className="text-muted mb-3">
-											<FontAwesomeIcon icon="address-card" className="me-2" />
+						<div className="grid grid-cols-12 gap-4">
+							<div className="col-span-12 md:col-span-6">
+								<div className="rounded-xl bg-muted/60 h-full">
+									<div className="p-5">
+										<h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+											<FontAwesomeIcon icon="address-card" className="mr-2" />
 											Personal Info
-										</h6>
+										</h4>
 										<div className="mb-2">
-											<small className="text-muted d-block">Full Name</small>
+											<small className="block text-xs text-muted-foreground">Full Name</small>
 											<strong>{user.name}</strong>
 										</div>
 										<div className="mb-2">
-											<small className="text-muted d-block">Gender</small>
-											<strong className="text-capitalize">{user.gender}</strong>
+											<small className="block text-xs text-muted-foreground">Gender</small>
+											<strong className="capitalize">{user.gender}</strong>
 										</div>
 										<div className="mb-2">
-											<small className="text-muted d-block">Birth Date</small>
+											<small className="block text-xs text-muted-foreground">Birth Date</small>
 											<strong>{user.birth_date || 'Not provided'}</strong>
 										</div>
 									</div>
 								</div>
 							</div>
 
-							<div className="col-md-6">
-								<div className="card border-0 bg-light h-100">
-									<div className="card-body">
-										<h6 className="text-muted mb-3">
-											<FontAwesomeIcon icon="envelope" className="me-2" />
+							<div className="col-span-12 md:col-span-6">
+								<div className="rounded-xl bg-muted/60 h-full">
+									<div className="p-5">
+										<h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+											<FontAwesomeIcon icon="envelope" className="mr-2" />
 											Contact Info
-										</h6>
+										</h4>
 										<div className="mb-2">
-											<small className="text-muted d-block">Email</small>
+											<small className="block text-xs text-muted-foreground">Email</small>
 											<strong>{user.email}</strong>
 										</div>
 										<div className="mb-2">
-											<small className="text-muted d-block">Phone</small>
+											<small className="block text-xs text-muted-foreground">Phone</small>
 											<strong>{user.phone || 'Not provided'}</strong>
 										</div>
 										<div className="mb-2">
-											<small className="text-muted d-block">User ID</small>
+											<small className="block text-xs text-muted-foreground">User ID</small>
 											<strong>#{user.id}</strong>
 										</div>
 									</div>
@@ -119,20 +116,20 @@ const UserDetailsModal = ({ user }) => {
 							</div>
 
 							{user.role === 'worker' && user.job_position && (
-								<div className="col-12">
-									<div className="card border-0 bg-light">
-										<div className="card-body">
-											<h6 className="text-muted mb-3">
-												<FontAwesomeIcon icon="briefcase" className="me-2" />
+								<div className="col-span-12">
+									<div className="rounded-xl bg-muted/60">
+										<div className="p-5">
+											<h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+												<FontAwesomeIcon icon="briefcase" className="mr-2" />
 												Job Position
-											</h6>
-											<div className="d-flex align-items-center">
-												<div className="badge bg-info bg-opacity-10 text-info p-3 me-3">
-													<FontAwesomeIcon icon="briefcase" size="2x" />
+											</h4>
+											<div className="flex items-center">
+												<div className="mr-4 flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+													<FontAwesomeIcon icon="briefcase" />
 												</div>
 												<div>
-													<strong className="d-block">{user.job_position.name}</strong>
-													<small className="text-muted">Position ID: #{user.job_position.id}</small>
+													<strong className="block">{user.job_position.name}</strong>
+													<small className="text-muted-foreground">Position ID: #{user.job_position.id}</small>
 												</div>
 											</div>
 										</div>
@@ -140,36 +137,36 @@ const UserDetailsModal = ({ user }) => {
 								</div>
 							)}
 
-							<div className="col-12">
-								<div className="card border-0 bg-light">
-									<div className="card-body">
-										<h6 className="text-muted mb-3">
-											<FontAwesomeIcon icon="clock" className="me-2" />
+							<div className="col-span-12">
+								<div className="rounded-xl bg-muted/60">
+									<div className="p-5">
+										<h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+											<FontAwesomeIcon icon="clock" className="mr-2" />
 											Account Info
-										</h6>
-										<div className="row">
-											<div className="col-md-4">
-												<small className="text-muted d-block">Created At</small>
+										</h4>
+										<div className="grid grid-cols-12 gap-4">
+											<div className="col-span-12 md:col-span-4">
+												<small className="block text-xs text-muted-foreground">Created At</small>
 												<strong>{new Date(user.created_at).toLocaleDateString()}</strong>
 											</div>
-											<div className="col-md-4">
-												<small className="text-muted d-block">Email Verified</small>
+											<div className="col-span-12 md:col-span-4">
+												<small className="block text-xs text-muted-foreground">Email Verified</small>
 												<strong>
 													{user.email_verified ? (
 														<span className="text-success">
-                                                            <FontAwesomeIcon icon="check-circle" className="me-1" />
+                                                            <FontAwesomeIcon icon="check-circle" className="mr-1" />
                                                             Verified
                                                         </span>
 													) : (
 														<span className="text-warning">
-                                                            <FontAwesomeIcon icon="exclamation-circle" className="me-1" />
+                                                            <FontAwesomeIcon icon="exclamation-circle" className="mr-1" />
                                                             Not Verified
                                                         </span>
 													)}
 												</strong>
 											</div>
-											<div className="col-md-4">
-												<small className="text-muted d-block">Status</small>
+											<div className="col-span-12 md:col-span-4">
+												<small className="block text-xs text-muted-foreground">Status</small>
 												<strong>
 													<UIStatusBadge
 														condition={user.is_active}
